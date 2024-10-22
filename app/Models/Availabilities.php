@@ -15,4 +15,9 @@ class Availabilities extends Model
     {
        return $this->belongsTo(Instructor::class);
     }
+
+    public function course()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

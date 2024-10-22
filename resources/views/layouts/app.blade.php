@@ -20,28 +20,20 @@
         <!-- Main Content -->
         <div class="zMainContent w-57 ms-auto">
 
-            @include('layouts.nav')
-            <!-- Content -->
+{{--            @include('layouts.nav')--}}
+
             @yield('content')
 
         </div>
     </div>
 </div>
-@if (!empty(getOption('cookie_status')) && getOption('cookie_status') == STATUS_ACTIVE)
-    <div class="cookie-consent-wrap shadow-lg">
-        @include('cookie-consent::index')
-    </div>
-@endif
 
 @include('layouts.script')
 
-
-<!-- Toastr CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
 @stack('script')
 
-<!-- Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>

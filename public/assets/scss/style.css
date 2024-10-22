@@ -14,9 +14,16 @@
 #.register-area
 =================================*/
 :root {
-    --primary-color: #002a5c;
-    --primary-light:#1d4a80;
-    --secondary-color: #f1a527;
+    --primary-color: #5f2ded;      /* Blue */
+    --secondary-color: #28A745;    /* Green */
+    --warning-color: #FFC107;       /* Yellow */
+    --error-color: #FF5733;         /* Orange */
+    --light-blue: #D1E7FF;          /* Light Blue */
+    --light-green: #C3E6CB;         /* Light Green */
+    --light-yellow: #FFECA6;        /* Light Yellow */
+    --light-orange: #FFB3A0;        /* Light Orange */
+    --dark-blue: #004085;           /* Dark Blue */
+    --dark-green: #155724;
     --light-secondary-color:#ffbd4f;
   --hover-color: #f1a527;
     --hover-color-dark:#EF750F;
@@ -1525,7 +1532,7 @@ bg-custom-secondary{
     color: var(--secondary-color) !important;
 }
 .hover-bg-one:hover {
-  background-color: var(--secondary-color) !important;
+  background-color: var(--primary-color) !important;
 }
 .hover-bg-two:hover {
   background-color: var(--primary-color) !important;
@@ -2343,7 +2350,7 @@ bg-custom-secondary{
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1rem;
-  color: var(--white-70);
+  color: rgb(95 108 118);
 }
 .zSidebar-menu > li > a::before {
   position: absolute;
@@ -2374,7 +2381,7 @@ bg-custom-secondary{
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.5rem;
-  color: var(--white-70);
+  color:  rgb(95 108 118);
 }
 .zSidebar-menu > li > a ~ div .zSidebar-submenu li a::before {
   content: "";
@@ -2387,10 +2394,10 @@ bg-custom-secondary{
   background-color: var(--white-70);
 }
 .zSidebar-menu > li > a ~ div .zSidebar-submenu li a:hover, .zSidebar-menu > li > a ~ div .zSidebar-submenu li a.active {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 .zSidebar-menu > li > a ~ div .zSidebar-submenu li a:hover::before, .zSidebar-menu > li > a ~ div .zSidebar-submenu li a.active::before {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
 }
 .zSidebar-menu > li > a.has-subMenu-arrow::before {
   opacity: 1;
@@ -2414,26 +2421,26 @@ bg-custom-secondary{
   width: 0.125rem;
   height: 1.5625rem;
   border-radius: 0 0.625rem 0.625rem 0;
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 .zSidebar-menu > li > a:hover, .zSidebar-menu > li > a.active {
-  background-color: rgba(255, 255, 255, 0.09);
+  background-color: rgba(35, 55, 255, 0.09);
 }
 .zSidebar-menu > li > a:hover svg path,
 .zSidebar-menu > li > a:hover svg circle,
 .zSidebar-menu > li > a:hover svg rect, .zSidebar-menu > li > a.active svg path,
 .zSidebar-menu > li > a.active svg circle,
 .zSidebar-menu > li > a.active svg rect {
-  stroke: var(--secondary-color);
+  stroke: var(--primary-color);
 }
 .zSidebar-menu > li > a:hover span, .zSidebar-menu > li > a.active span {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 .zSidebar-menu > li > a:hover::before, .zSidebar-menu > li > a.active::before {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 .zSidebar-menu > li > a:hover::after, .zSidebar-menu > li > a.active::after {
   left: -12px;
@@ -2614,7 +2621,8 @@ bg-custom-secondary{
   padding: 0 !important;
 }
 .zTable > :not(caption):first-child > * > * > * {
-  background-color: var(--secondary-color);
+    color: var(--white);
+  background-color: var(--primary-color);
 }
 .zTable > :not(caption):first-child > * > *:first-child {
   padding-left: 0 !important;
@@ -2679,7 +2687,7 @@ bg-custom-secondary{
   font-size: 0.875rem !important;
   font-weight: 500 !important;
   line-height: 1.125rem;
-  color: var(--colorOne);
+  color: var(--warning-color);
 }
 .zTable > tbody > tr > * {
   transition: all 0.3s;
@@ -3723,7 +3731,7 @@ html,
 body {
   height: 100%;
   font-family: "Inter Tight", sans-serif;
-  /*background-color: var(--body-bg);*/
+    background-color: rgb(251 251 251);
   color: var(--bColor);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3884,14 +3892,14 @@ a {
 }
 
 a:hover {
-  color: var(--secondary-color);
+  color: var(--primary-color);
   text-decoration: none;
 }
 
 a:active,
 a:hover {
   outline: 0 none;
-  color: var(--hover-color);
+  color: var(--primary-color);
 }
 
 ul {
@@ -4037,7 +4045,7 @@ scrollUp
   left: 0;
   width: 240px;
   height: 100%;
-  background-color: var(--primary-color);
+  background-color: var(--white);
   z-index: 1001;
   -webkit-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -4357,9 +4365,9 @@ height: 100%;
   margin-left: 0.5rem !important;
 }
 .tablePagi .paginate_button.current, .tablePagi .paginate_button:hover {
-  color: var(--text-black) !important;
-  background: var(--secondary-color) !important;
-  border-color: var(--secondary-color) !important;
+  color: var(--white) !important;
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -4648,7 +4656,7 @@ input[type=number] {
   transition: all 0.3s linear;
 }
 .header-area .navbar-nav .dropdown-menu li a:hover {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 .header-area .header-right {
   grid-column-gap: 2rem;

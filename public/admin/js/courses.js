@@ -36,6 +36,20 @@
                 "orderable": true
             },
             {
+                "data": "instructor",
+                "name": "instructor",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
+            {
+                "data": "days",
+                "name": "days",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
+            {
                 "data": "status",
                 "name": "status",
                 "responsivePriority": 1,

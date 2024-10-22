@@ -1,7 +1,16 @@
 :root {
     // font-size: 62.5%;
-    --primary-color: #002a5c;
-    --secondary-color: #f1a527;
+    --primary-color: #5f2ded;      /* Blue */
+    --secondary-color: #28A745;    /* Green */
+    --warning-color: #FFC107;       /* Yellow */
+    --error-color: #FF5733;         /* Orange */
+    --light-blue: #D1E7FF;          /* Light Blue */
+    --light-green: #C3E6CB;         /* Light Green */
+    --light-yellow: #FFECA6;        /* Light Yellow */
+    --light-orange: #FFB3A0;        /* Light Orange */
+    --dark-blue: #004085;           /* Dark Blue */
+    --dark-green: #155724;
+
     --hover-color: #f1a527;
     --bColor: #707070;
     --colorOne: #707070;
@@ -310,14 +319,14 @@ a {
 }
 
 a:hover {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 a:active,
 a:hover {
     outline: 0 none;
-    color: var(--hover-color);
+    color: var(--primary-color);
 }
 
 ul {

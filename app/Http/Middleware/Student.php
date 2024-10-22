@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class Admin
+class Student
 {
     /**
      * Handle an incoming request.
@@ -19,8 +19,8 @@ class Admin
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role_id == 2) { // Check if the user is an admin
-                return $next($request); // Allow access
+            if ($user->role_id == 4) {
+                return $next($request);
             }
         }
 

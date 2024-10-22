@@ -9,7 +9,6 @@
             url: url,
             success: function (data) {
                 $(document).find(modalId).find('.modal-content').html(data);
-
                 // Initialize Select2 for skills
                 var skillsSelect = $(document).find(modalId).find('.skills-select');
                 if (skillsSelect.length) {

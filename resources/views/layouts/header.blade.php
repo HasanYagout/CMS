@@ -8,7 +8,7 @@
     @hasSection('meta')
     @stack('meta')
     @else
-{
+
     <meta property="og:type" content="{{ __('Alumni') }}">
 
     <meta property="og:url" content="{{ url()->current() }}">

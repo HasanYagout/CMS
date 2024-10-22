@@ -15,6 +15,8 @@
                         <tr>
 
                             <th scope="col"><div>{{ __('Name') }}</div></th>
+                            <th scope="col"><div>{{ __('Instructor') }}</div></th>
+                            <th scope="col"><div>{{ __('Days') }}</div></th>
                             <th scope="col"><div>{{ __('Status') }}</div></th>
                             <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                         </tr>
@@ -24,26 +26,10 @@
                 <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
+                        </div>
+                    </div>
+                </div>
 
-                        </div>
-                    </div>
-                </div>
-                <!-- Facebook Modal -->
-                <div class="modal fade zModalTwo" id="alumniEmail" tabindex="-1" aria-labelledby="alumniFacebookLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content zModalTwo-content">
-                            <div class="modal-body zModalTwo-body">
-                                <div class="text-center py-30">
-                                    <p class="fs-14 fw-500 lh-18 text-707070 pb-10">{{ __('Contact with') }} <span
-                                            class="contact-name"></span>
-                                    </p>
-                                    <h4 class="fs-32 fw-500 lh-42 text-black show-email"></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
             </div>

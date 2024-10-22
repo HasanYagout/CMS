@@ -17,9 +17,17 @@
 =================================*/
 :root {
   font-size: 62.5%;
-    --primary-color: #002a5c;
-    --secondary-color: #f1a527;
-  --hover-color: #f1a527;
+    --primary-color: #5f2ded;      /* Blue */
+    --secondary-color: #28A745;    /* Green */
+    --warning-color: #FFC107;       /* Yellow */
+    --error-color: #FF5733;         /* Orange */
+    --light-blue: #D1E7FF;          /* Light Blue */
+    --light-green: #C3E6CB;         /* Light Green */
+    --light-yellow: #FFECA6;        /* Light Yellow */
+    --light-orange: #FFB3A0;        /* Light Orange */
+    --dark-blue: #004085;           /* Dark Blue */
+    --dark-green: #155724;
+    --hover-color: #f1a527;
   --bColor: #707070;
   --black-color: #1b1c17;
   --border-color: #ededed;
@@ -37,6 +45,7 @@ body {
   font-weight: 500;
   line-height: 1.5;
   color: $bColor;
+    background-color: rgb(251 251 251);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -205,7 +214,7 @@ a:hover {
 a:active,
 a:hover {
   outline: 0 none;
-  color: var(--hover-color);
+  color: var(--primary-color);
 }
 
 ul {

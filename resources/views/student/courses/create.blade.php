@@ -5,12 +5,12 @@
     <div class="p-30" >
         <div class="">
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-                <form method="POST" action="{{route('admin.courses.store')}}" enctype="multipart/form-data" >
+                <form action="{{route('admin.courses.store')}}" >
                     @csrf
-                    <div>
+                    <div class="max-w-840">
                         <div class="pb-30"></div>
                         <div class="row rg-25">
-                            <div class="col-4">
+                            <div class="col-12">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap">
                                         <label for="title" class="form-label">{{__('Name')}} <span class="text-danger">*</span></label>
@@ -19,7 +19,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-4">
+                            <div class="col-12">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap">
                                         <label for="instructor" class="form-label">{{__('Instructor')}} <span class="text-danger">*</span></label>
@@ -33,30 +33,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="primary-form-group">
-                                    <div class="primary-form-group-wrap">
-                                        <label for="description" class="form-label">{{__('Description')}} <span class="text-danger">*</span></label>
-                                        <textarea name="description" class="primary-form-control summernoteOne min-h-180" id="description" placeholder="Details" spellcheck="false"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pb-4 col-md-6 ">
-                                <div class="primary-form-group">
-                                    <div class="primary-form-group-wrap zImage-upload-details">
-                                        <div class="zImage-inside">
-                                            <div class="d-flex pb-12"><img src="{{asset('public/assets/images/icon/upload-img-1.svg')}}" alt="" /></div>
-                                            <p class="fs-15 fw-500 lh-16 text-1b1c17">{{__('Drag & drop files here')}}</p>
-                                        </div>
-                                        <label for="zImageUpload" class="form-label">{{__('Upload Image')}} <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
-                                        <div class="upload-img-box">
-                                            <img src="">
-                                            <input type="file" name="image" accept="image/*" onchange="previewFile(this)">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
+
+                            <div class="col-12">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap">
                                         <label for="availability" class="form-label">{{__('Availability')}} <span class="text-danger">*</span></label>
@@ -65,9 +43,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class="primary-form-group">
+                                    <div class="primary-form-group-wrap">
+                                        <label for="description" class="form-label">{{__('Description')}} <span class="text-danger">*</span></label>
+                                        <textarea name="description" class="primary-form-control summernoteOne min-h-180" id="description" placeholder="Details" spellcheck="false"></textarea>
+                                    </div>
+                                </div>
+                            </div>
 
-
-                            <div class="col-4">
+                            <div class="col-12">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap">
                                         <label for="instructor" class="form-label">{{__('Semester')}} <span class="text-danger">*</span></label>

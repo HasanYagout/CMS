@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Availabilities;
+use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\Semester;
@@ -16,7 +17,7 @@ class CourseController extends Controller
     {
 
         if ($request->ajax()) {
-            $course = Course::orderBy('id', 'desc')->get();
+            $course = Course::with('instructor','availability')->orderBy('id', 'desc')->get();
 
             return datatables($course)
                 ->addIndexColumn()
@@ -25,6 +26,15 @@ class CourseController extends Controller
                 })
                 ->addColumn('name', function ($data) {
                     return $data->name;
+                })
+                ->addColumn('instructor', function ($data) {
+                    return $data->instructor->first_name.' '.$data->instructor->last_name;
+                })
+                ->addColumn('days', function ($data) {
+                    $days = json_decode($data->availability->days, true); // Decode as an associative array
+                    $days= implode(', ', $days);
+                    return $days.'( '.$data->availability->start_time.' - '. $data->availability->end_time. ' )';
+
                 })
 
                 ->addColumn('status', function ($data) {
@@ -39,21 +49,25 @@ class CourseController extends Controller
             </ul>';
                 })
                 ->addColumn('images', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo" title="' . __('Upload') . '">
-                            <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
-                        </button>';
+                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>';
                 })
-                ->rawColumns(['name','status','images'])
+                ->rawColumns(['name','status','images','instructor'])
                 ->make(true);
         }
-
-
-        return view('admin.courses.index');
+        $data['showCourseManagement']='show';
+        $data['activeCourseALL']='active';
+        return view('admin.courses.index',$data);
     }
 
-    public function edit()
+    public function edit($id)
     {
-
+        $course=Course::with('instructor')->find($id);
+        $instructors=Instructor::all();
+        $availabilities=Availabilities::all();
+        $semesters=Semester::all();
+        return view('admin.courses.edit-form',compact('course','instructors','availabilities','semesters'));
     }
 
     public function create()
@@ -69,11 +83,26 @@ class CourseController extends Controller
       $course= $request->validate([
           'name' => 'required',
            'instructor_id' => 'required|exists:instructor,id',
+           'image'=>'required',
            'availability_id' => 'required|exists:availabilities,id',
            'semester_id' => 'required|exists:academic_years,id',
            'description' => 'required',
        ]);
+        $image = NULL;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $date = now()->format('Ymd'); // Get current date in YYYYMMDD format
+            $randomSlug = Str::random(10); // Generate a random string of 10 characters
+            $randomNumber = rand(100000, 999999); // Generate a random number
+
+            $fileName = $date . '_' . $randomSlug . '_' . $randomNumber . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/admin/course'), $fileName); // Save the file to the specified path
+
+            $image = $fileName; // Save only the file name to the database
+        }
+
       $course['status']=1;
+      $course['image']=$image;
       $course['slug']=Str::slug($course['name']).'-'.Str::random(6);
       Course::create($course);
         session()->flash('success', 'Course Created Successfully');
@@ -81,6 +110,69 @@ class CourseController extends Controller
 
     }
 
+    public function update()
+    {
 
+    }
+
+    public function chapter(Request $request)
+    {
+        if ($request->ajax()) {
+            $courseId = $request->get('course_id'); // Get the course ID from the request
+            $query = Chapter::with('course');
+
+            if ($courseId) {
+                $query->where('course_id', $courseId); // Filter by course ID
+            }
+
+            $chapters = $query->get(); // Get filtered chapters
+
+            return datatables($chapters)
+                ->addIndexColumn()
+                ->addColumn('id', function ($data) {
+                    return $data->id;
+                })
+                ->addColumn('title', function ($data) {
+                    return $data->title;
+                })
+                ->addColumn('course', function ($data) {
+                    return $data->course->name;
+                })
+                ->addColumn('status', function ($data) {
+                    $checked = $data->status ? 'checked' : '';
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                    <li class="d-flex gap-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input toggle-status" type="checkbox" data-id="' . $data->id . '" id="toggleStatus' . $data->id . '" ' . $checked . '>
+                            <label class="form-check-label" for="toggleStatus' . $data->id . '"></label>
+                        </div>
+                    </li>
+                </ul>';
+                })
+                ->rawColumns(['title','status','course'])
+                ->make(true);
+        }
+
+        $data['courses'] = Course::with('instructor')->get();
+        return view('admin.courses.chapter', $data);
+    }
+
+    public function store_chapter(Request $request)
+    {
+
+       $request->validate([
+            'titles' => 'required',
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        foreach ($request->titles as $title) {
+            Chapter::create([
+                'title' => $title,
+                'course_id' => $request->course_id,
+                'status'=>1
+            ]);
+        }
+
+    }
 
 }
