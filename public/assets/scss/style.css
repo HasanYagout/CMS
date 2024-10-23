@@ -15,7 +15,8 @@
 =================================*/
 :root {
     --primary-color: #5f2ded;      /* Blue */
-    --secondary-color: #28A745;    /* Green */
+    --secondary-color: rgb(68 206 169);    /* Green */
+    --third-color: rgb(242 39 126);
     --warning-color: #FFC107;       /* Yellow */
     --error-color: #FF5733;         /* Orange */
     --light-blue: #D1E7FF;          /* Light Blue */
@@ -448,8 +449,11 @@
     background-color: var(--primary-light) !important;
 
 }
+.bg-third-color{
+    background-color: var(--third-color) !important;
+}
 .bg-secondary-color {
-  background-color: var(--hover-color) !important;
+  background-color: var(--secondary-color) !important;
 }
 .bg-light{
     background-color: var(--light-secondary-color) !important;
@@ -2273,11 +2277,11 @@ bg-custom-secondary{
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.5625rem;
-  color: var(--black);
+  color: var(--white);
   padding: 0.625rem 1.625rem;
   border: none;
   border-radius: 0.75rem;
-  background-color: var(--colorSeven);
+  background-color: var(--primary-color);
   transition: all 0.3s;
 }
 .zBtn-one.active {
@@ -2287,12 +2291,23 @@ bg-custom-secondary{
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.5625rem;
-  color: var(--black);
+  color: var(--white);
   padding: 0.625rem 1.625rem;
   border: none;
   border-radius: 0.75rem;
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   transition: all 0.3s;
+}
+.zBtn-three {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5625rem;
+    color: var(--white);
+    padding: 0.625rem 1.625rem;
+    border: none;
+    border-radius: 0.75rem;
+    background-color: var(--third-color);
+    transition: all 0.3s;
 }
 .zBtn-filter {
   width: 2.8125rem;
@@ -2681,13 +2696,13 @@ bg-custom-secondary{
   font-size: 0.875rem !important;
   font-weight: 500 !important;
   line-height: 1.5rem;
-  color: var(--text-black);
+  color: var(--white);
 }
 .zTable tbody tr td {
   font-size: 0.875rem !important;
   font-weight: 500 !important;
   line-height: 1.125rem;
-  color: var(--warning-color);
+  color: rgb(95 108 118);
 }
 .zTable > tbody > tr > * {
   transition: all 0.3s;

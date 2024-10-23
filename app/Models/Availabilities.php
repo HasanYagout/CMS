@@ -13,11 +13,11 @@ class Availabilities extends Model
 
     public function instructor()
     {
-       return $this->belongsTo(Instructor::class);
+       return $this->belongsTo(Instructor::class,'user_id');
     }
 
     public function course()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 }

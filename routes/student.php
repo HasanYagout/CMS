@@ -10,6 +10,8 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::group(['prefix'=>'courses','as' => 'courses.'], function () {
     Route::get('/courses', [\App\Http\Controllers\Student\CourseController::class, 'index'])->name('index');
+    Route::post('/register', [\App\Http\Controllers\Student\CourseController::class, 'store'])->name('register');
+    Route::get('/info/{slug}', [\App\Http\Controllers\Student\CourseController::class, 'info'])->name('info');
 
 });
 

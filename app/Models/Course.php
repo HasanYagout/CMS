@@ -24,4 +24,8 @@ class Course extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+    public function instructor_assignment()
+    {
+        return $this->hasMany(InstructorAssignments::class);
+    }
 }

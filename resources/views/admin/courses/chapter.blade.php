@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="p-30" >
-        <div class="">
+
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
                 <form method="POST" action="{{route('admin.courses.chapters.store')}}" enctype="multipart/form-data" >
                     @csrf
@@ -38,7 +38,7 @@
                         <button type="submit" class="d-inline-flex py-13 px-26 bd-ra-12 bg-cdef84 fs-15 fw-500 lh-25 text-black mt-30 hover-bg-one border-0">{{__('Publish Now')}}</button>                    </div>
                 </form>
             </div>
-        </div>
+
         <div>
             <input type="hidden" id="chapter-route" value="{{ route('admin.courses.chapters.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
@@ -112,11 +112,13 @@
                     }
                 },
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    // { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'title', name: 'title' },
                     { data: 'course', name: 'course' },
                     { data: 'status', name: 'status', orderable: false, searchable: false },
+                    { data: 'action', name: 'action' },
                 ]
             });
-        });</script>
+        });
+    </script>
 @endpush

@@ -54,7 +54,7 @@ class LoginController extends Controller
                     case 2:
                         return redirect()->route('admin.dashboard');
                     case 3:
-                        return redirect()->route('company.jobs.all-job-post');
+                        return redirect()->route('instructor.dashboard');
                     case 4:
                         return redirect()->route('student.dashboard');
                     default:

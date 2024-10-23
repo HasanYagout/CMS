@@ -19,20 +19,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-4">
-                                <div class="primary-form-group">
-                                    <div class="primary-form-group-wrap">
-                                        <label for="instructor" class="form-label">{{__('Instructor')}} <span class="text-danger">*</span></label>
 
-                                        <select name="instructor_id" id="instructor" class="primary-form-control " id="body" spellcheck="false">
-                                            <option value="" selected></option>
-                                            @foreach($instructors as $instructor)
-                                                <option value="{{$instructor->id}}">{{$instructor->first_name .' '. $instructor->last_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-6">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap">
@@ -56,15 +43,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="primary-form-group">
-                                    <div class="primary-form-group-wrap">
-                                        <label for="availability" class="form-label">{{__('Availability')}} <span class="text-danger">*</span></label>
-                                        <select name="availability_id" class="primary-form-control " id="availability" spellcheck="false">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="col-4">--}}
+{{--                                <div class="primary-form-group">--}}
+{{--                                    <div class="primary-form-group-wrap">--}}
+{{--                                        <label for="availability" class="form-label">{{__('Availability')}} <span class="text-danger">*</span></label>--}}
+{{--                                        <select name="availability_id" class="primary-form-control " id="availability" spellcheck="false">--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
 
                             <div class="col-4">
@@ -88,6 +75,37 @@
                         <button type="submit" class="d-inline-flex py-13 px-26 bd-ra-12 bg-cdef84 fs-15 fw-500 lh-25 text-black mt-30 hover-bg-one border-0">{{__('Publish Now')}}</button>                    </div>
                 </form>
             </div>
+        </div>
+    </div>
+    <div>
+        {{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
+        <input type="hidden" id="course-route" value="{{ route('admin.courses.index') }}">
+        <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
+            {{--                <h4 class="fs-24 fw-500 lh-34 text-black">{{$title}}</h4>--}}
+        </div>
+        <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
+            <!-- Table -->
+            <div class="table-responsive zTable-responsive">
+                <table class="table zTable" id="coursesTable">
+                    <thead>
+                    <tr>
+
+                        <th scope="col"><div>{{ __('Name') }}</div></th>
+                        <th scope="col"><div>{{ __('Status') }}</div></th>
+                        <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 @endsection
@@ -136,4 +154,7 @@
             });
         });
     </script>
+
+        <script src="{{ asset('public/admin/js/courses.js') }}"></script>
+
 @endpush

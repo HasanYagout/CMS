@@ -7,6 +7,7 @@ use App\Models\Availabilities;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Instructor;
+use App\Models\Material;
 use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class CourseController extends Controller
     {
 
         if ($request->ajax()) {
-            $course = Course::with('instructor','availability')->orderBy('id', 'desc')->get();
+            $course = Course::orderBy('id', 'desc')->get();
 
             return datatables($course)
                 ->addIndexColumn()
@@ -27,16 +28,6 @@ class CourseController extends Controller
                 ->addColumn('name', function ($data) {
                     return $data->name;
                 })
-                ->addColumn('instructor', function ($data) {
-                    return $data->instructor->first_name.' '.$data->instructor->last_name;
-                })
-                ->addColumn('days', function ($data) {
-                    $days = json_decode($data->availability->days, true); // Decode as an associative array
-                    $days= implode(', ', $days);
-                    return $days.'( '.$data->availability->start_time.' - '. $data->availability->end_time. ' )';
-
-                })
-
                 ->addColumn('status', function ($data) {
                     $checked = $data->status ? 'checked' : '';
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
@@ -53,7 +44,7 @@ class CourseController extends Controller
                 <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
             </button>';
                 })
-                ->rawColumns(['name','status','images','instructor'])
+                ->rawColumns(['name','status','images'])
                 ->make(true);
         }
         $data['showCourseManagement']='show';
@@ -82,9 +73,9 @@ class CourseController extends Controller
     {
       $course= $request->validate([
           'name' => 'required',
-           'instructor_id' => 'required|exists:instructor,id',
+//           'instructor_id' => 'required|exists:instructor,id',
            'image'=>'required',
-           'availability_id' => 'required|exists:availabilities,id',
+//           'availability_id' => 'required|exists:availabilities,id',
            'semester_id' => 'required|exists:academic_years,id',
            'description' => 'required',
        ]);
@@ -149,7 +140,17 @@ class CourseController extends Controller
                     </li>
                 </ul>';
                 })
-                ->rawColumns(['title','status','course'])
+                ->addColumn('action', function ($data) {
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('admin.courses.materials.index', $data->id) . '\'' . ', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo">
+                        <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="edit" />
+                    </button>
+
+                </li>
+            </ul>';
+                })
+                ->rawColumns(['title','status','course','action'])
                 ->make(true);
         }
 
@@ -175,4 +176,108 @@ class CourseController extends Controller
 
     }
 
+    public function materials(Request $request)
+    {
+        if ($request->ajax()) {
+            $material = Material::with('chapter');
+
+            if ($request->has('chapter_id') && $request->chapter_id) {
+                $material->where('chapter_id', $request->chapter_id);
+            }
+
+            return datatables($material->orderBy('id', 'desc'))
+                ->addIndexColumn()
+                ->addColumn('image', function ($data) {
+                    return '<img width="60" src="' . asset('public/storage/materials/' . $data->url) . '" alt="icon" class="rounded avatar-xs max-h-35">';
+                })
+                ->addColumn('title', function ($data) {
+                    return $data->title;
+                })
+                ->addColumn('status', function ($data) {
+                    $checked = $data->status ? 'checked' : '';
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                    <li class="d-flex gap-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input toggle-status" type="checkbox" data-id="' . $data->id . '" id="toggleStatus' . $data->id . '" ' . $checked . '>
+                            <label class="form-check-label" for="toggleStatus' . $data->id . '"></label>
+                        </div>
+                    </li>
+                </ul>';
+                })
+                ->addColumn('action', function ($data) {
+                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Edit') . '">
+                    <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="edit" />
+                </button>';
+                })
+                ->rawColumns(['title', 'status', 'image', 'action'])
+                ->make(true);
+        }
+
+        $data['showCourseManagement'] = 'show';
+        $data['activeCourseMaterial'] = 'active';
+        $data['courses'] = Course::with('instructor')->get();
+        return view('admin.courses.materials', $data);
+    }    public function getChapterByCourseId($id)
+    {
+       return Chapter::with('course')->where('course_id',$id)->orderBy('created_at','DESC')->get();
+    }
+
+    public function materials_store(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'chapter_id' => 'required|exists:chapters,id',
+            'titles.*' => 'required|string|max:255',
+            'images.*' => 'required|file|max:2048', // Adjust file size as needed
+        ]);
+        foreach ($request->titles as $index => $title) {
+            $material = new Material();
+            $material->chapter_id = $request->chapter_id;
+            $material->title = $title;
+
+
+            // Handle file upload
+            if ($request->hasFile('images.' . $index)) {
+                $date = now()->format('Ymd'); // Get current date in YYYYMMDD format
+                $randomNumber = rand(100000, 999999); // Generate a random number
+                $randomSlug = Str::random(10); // Generate a random string of 10 characters
+
+                $file = $request->file('images.' . $index);
+                $extension = $file->getClientOriginalExtension(); // Get the original file extension
+
+                // Create the new file name
+                $newFileName = "{$date}_{$randomSlug}_{$randomNumber}.{$extension}";
+
+                // Store the file with the new name
+                $path = $file->storeAs('materials', $newFileName, 'public');
+                $material->url = $newFileName; // Store the file path
+                $material->type = $extension; // Store the file extension
+
+            }
+
+            $material->save();
+        }
+
+    }
+
+    public function instructors()
+    {
+        $data['courses']= Course::with('instructor')->get();
+        $data['instructors']= Instructor::get();
+
+        return view('admin.courses.instructors',$data);
+    }
+
+    public function info($id)
+    {
+
+        $course = Course::find($id);
+        return response()->json($course);
+
+    }
+
+    public function store_instructor_course(Request $request)
+    {
+        dd($request->all());
+    }
 }

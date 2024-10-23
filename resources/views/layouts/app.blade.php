@@ -84,6 +84,7 @@
     $(document).ready(function() {
         $('.dropdown-toggle').dropdown();
     });
+
     @if(Session::has('success'))
     toastr.success("{{ session('success') }}");
     @endif

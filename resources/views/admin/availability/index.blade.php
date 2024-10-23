@@ -54,5 +54,5 @@
     </div>
 @endsection
 @push('script')
-    <script src="{{ asset('public/admin/js/availability.js') }}"></script>
+    <script src="{{ asset('public/admin/js/chapter.js') }}"></script>
 @endpush

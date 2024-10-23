@@ -18,9 +18,10 @@
 :root {
   font-size: 62.5%;
     --primary-color: #5f2ded;      /* Blue */
-    --secondary-color: #28A745;    /* Green */
+    --secondary-color: rgb(68 206 169);    /* Green */
+    --third-color: rgb(242 39 126);    /* Green */
     --warning-color: #FFC107;       /* Yellow */
-    --error-color: #FF5733;         /* Orange */
+    --error-color: #FF5733;       /* Orange */
     --light-blue: #D1E7FF;          /* Light Blue */
     --light-green: #C3E6CB;         /* Light Green */
     --light-yellow: #FFECA6;        /* Light Yellow */

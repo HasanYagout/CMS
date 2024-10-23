@@ -15,4 +15,15 @@ class Chapter extends Model
     {
        return $this->belongsTo(Course::class);
     }
+
+    public function material()
+    {
+        return $this->hasMany(Material::class);
+    }
+
+    public function instructor_assignment()
+    {
+        return $this->hasMany(InstructorAssignments::class);
+    }
+
 }
