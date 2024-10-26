@@ -10,9 +10,14 @@ class Instructor extends Model
     use HasFactory;
     protected $table = 'instructor';
 
-    public function availability()
+
+    public function user()
     {
-       return $this->hasMany(Availabilities::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function availabilities()
+    {
+        return $this->hasMany(Availabilities::class, 'instructor_id');
     }
 
     public function course()

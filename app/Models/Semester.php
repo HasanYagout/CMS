@@ -9,4 +9,9 @@ class Semester extends Model
 {
     use HasFactory;
     protected $table = 'academic_years';
+
+    public function course()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

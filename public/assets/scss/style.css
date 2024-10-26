@@ -3746,7 +3746,7 @@ html,
 body {
   height: 100%;
   font-family: "Inter Tight", sans-serif;
-    background-color: rgb(251 251 251);
+    background-color: rgb(245 245 254);
   color: var(--bColor);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

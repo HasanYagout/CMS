@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('student.dashboard');
+        $data['activeHome']='active';
+        return view('student.dashboard',$data);
     }
 }

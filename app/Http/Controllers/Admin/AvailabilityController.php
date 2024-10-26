@@ -8,6 +8,7 @@ use App\Models\Instructor;
 
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AvailabilityController extends Controller
 {
@@ -65,7 +66,7 @@ class AvailabilityController extends Controller
     {
         // Validate the incoming request
         $availability = $request->validate([
-            'instructor_id' => 'required|exists:instructor,id', // Ensure the correct table name
+            'instructor_id' => 'required|exists:instructor,user_id', // Ensure the correct table name
             'days' => 'required|array', // Validate that days is an array
             'days.*' => 'string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday', // Validate each day
             'start_time' => 'required|date_format:H:i', // Validate time format
@@ -91,6 +92,7 @@ class AvailabilityController extends Controller
 
         // Save the availability
         $availability['days'] = json_encode($availability['days']);
+        $availability['course_id'] = $request->course_id;
         Availabilities::create($availability);
 
         session()->flash('success', 'Availability added successfully.');

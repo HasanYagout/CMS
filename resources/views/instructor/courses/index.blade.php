@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<x-wrapper>
-    <input type="hidden" id="availability-route" value="{{ route('instructor.courses.index') }}">
+<x-wrapper title="Courses">
+    <input type="hidden" id="course-route" value="{{ route('instructor.courses.index') }}">
     <x-table id="courseTable">
     <th scope="col"><div>{{ __('Name') }}</div></th>
     <th scope="col"><div>{{ __('Image') }}</div></th>
@@ -13,6 +13,6 @@
 </x-wrapper>
 @endsection
 @push('script')
-    <script src="{{ asset('public/instructor/js/chapter.js') }}"></script>
+    <script src="{{ asset('public/instructor/js/course.js') }}"></script>
 
 @endpush

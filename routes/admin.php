@@ -28,10 +28,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
             Route::get('/chapter/{id}', [CourseController::class, 'getChapterByCourseId'])->name('get');
 
         });
-        Route::group(['prefix'=>'materials','as' => 'materials.'], function () {
-            Route::get('/index', [CourseController::class, 'materials'])->name('index');
-            Route::post('/store', [CourseController::class, 'materials_store'])->name('store');
-        });
+
 
         Route::group(['prefix'=>'assignments','as' => 'assignments.'], function () {
             Route::get('/index', [\App\Http\Controllers\Admin\AssignmentController::class, 'index'])->name('index');

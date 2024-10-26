@@ -46,7 +46,7 @@ body {
   font-weight: 500;
   line-height: 1.5;
   color: $bColor;
-    background-color: rgb(251 251 251);
+    background-color: rgb(245 245 254);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

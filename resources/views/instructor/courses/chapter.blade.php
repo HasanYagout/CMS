@@ -10,12 +10,10 @@
                         <div class="primary-form-group">
                             <div class="primary-form-group-wrap">
                                 <label for="instructor" class="form-label">{{__('Courses')}} <span class="text-danger">*</span></label>
-
-
                                 <select name="course_id" class="primary-form-control " id="body" spellcheck="false">
                                     <option value="" selected></option>
                                     @foreach($courses as $course)
-                                        <option value="{{$course->id}}">{{$course->course->name}}</option>
+                                        <option value="{{$course->course_id}}">{{$course->course->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -25,7 +23,7 @@
                         <div class="primary-form-group">
                             <div class="primary-form-group-wrap">
                                 <label for="chapters" class="form-label">Chapters</label>
-                                <select class="form-control title-select" name="chapters[]" multiple="multiple">
+                                <select class="primary-form-control title-select" name="chapters[]" multiple="multiple">
                                 </select>
                             </div>
                         </div>
@@ -44,7 +42,7 @@
                         <select name="course_id" id="course" class="primary-form-control" spellcheck="false">
                             <option value="" selected></option>
                             @foreach($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->course->name }}</option>
+                                <option value="{{ $course->course_id }}">{{ $course->course->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -99,7 +97,7 @@
         $('.title-select').select2({
             tags: true,
             tokenSeparators: [',', ' '],
-            placeholder: "Add your skills",
+            placeholder: "Add your chapters",
             allowClear: true
         });
     </script>
@@ -121,13 +119,23 @@
             // Initialize the DataTable
             chapterTable.DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: false,
                 ajax: {
                     url: `{{ route('instructor.courses.chapters.index') }}`,
                     data: function (d) {
                         d.course_id = courseSelect.value; // Include selected course ID
                     }
                 },
+                language: {
+                    paginate: {
+                        previous: "<i class='fa-solid fa-angles-left'></i>",
+                        next: "<i class='fa-solid fa-angles-right'></i>",
+                    },
+                    searchPlaceholder: "Search Courses",
+                    search: "<span class='searchIcon'><i class='fa-solid fa-magnifying-glass'></i></span>",
+                },
+                dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
+
                 columns: [
                     // { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'title', name: 'title' },

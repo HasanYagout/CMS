@@ -12,7 +12,7 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="text-secondary-color" for="course">Select Course:</label>
-                                <select id="course" name="course_id" class="form-control form-select" required>
+                                <select id="course_id" name="course_id" class="form-control form-select" required>
                                     <option value="">-- Select Course --</option>
                                     @foreach ($courses as $course)
                                         <option value="{{ $course->id }}" data-lectures="{{ $course->lectures_per_week }}" data-hours="{{ $course->lecture_hours }}">{{ $course->name }}</option>
@@ -35,10 +35,10 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="chapter">Select Instructor:</label>
-                                <select id="instructor" disabled name="instructor_id" class="form-control form-select" required>
+                                <select id="instructor"  name="instructor_id" class="form-control form-select" required>
                                     <option value=""></option>
                                     @foreach($instructors as $instructor)
-                                        <option value="{{$instructor->id}}">{{$instructor->first_name}}</option>
+                                        <option value="{{$instructor->user_id}}">{{$instructor->first_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -108,6 +108,22 @@
             $('#days').select2({
                 placeholder: "Select Days",
                 allowClear: true
+            });
+            $('#course_id').change(function() {
+                const courseId=$('#course_id').val();
+                const lecture_duration=$('#lecture_duration').val();
+                const lectures_per_week=$('#lectures_per_week').val();
+                const instructors=$('#instructor');
+
+                const url=`{{route('admin.courses.info','')}}/${courseId}`;
+                $.ajax({
+                    url:url,
+                    method:'GET',
+                    success:function (data){
+                        $('#lectures_per_week').val(data.lectures);
+                        $('#lecture_duration').val(data.hours);
+                    }
+                })
             });
 
             // Enable instructor dropdown based on course selection

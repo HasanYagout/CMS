@@ -11,6 +11,7 @@
                             <button class="btn bg-primary-color w-75 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChapter{{ $index }}" aria-expanded="false" aria-controls="collapseChapter{{ $index }}">
                                 {{ $chapter->title }}
                             </button>
+                            <a href="{{route('student.courses.chapters.view',$chapter->id)}}">view</a>
                             <div class="collapse multi-collapse mt-2" id="collapseChapter{{ $index }}">
                                 <div class="card card-body">
                                     <div class="row">

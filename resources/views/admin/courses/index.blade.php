@@ -2,10 +2,8 @@
 @section('content')
     <div class="p-30">
         <div>
-{{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
             <input type="hidden" id="course-route" value="{{ route('admin.courses.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
-{{--                <h4 class="fs-24 fw-500 lh-34 text-black">{{$title}}</h4>--}}
             </div>
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
                 <!-- Table -->
@@ -15,8 +13,10 @@
                         <tr>
 
                             <th scope="col"><div>{{ __('Name') }}</div></th>
-                            <th scope="col"><div>{{ __('Instructor') }}</div></th>
-                            <th scope="col"><div>{{ __('Days') }}</div></th>
+                            <th scope="col"><div>{{ __('Image') }}</div></th>
+                            <th scope="col"><div>{{ __('Semester') }}</div></th>
+                            <th scope="col"><div>{{ __('start_date') }}</div></th>
+                            <th scope="col"><div>{{ __('end_date') }}</div></th>
                             <th scope="col"><div>{{ __('Status') }}</div></th>
                             <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                         </tr>

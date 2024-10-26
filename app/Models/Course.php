@@ -9,15 +9,21 @@ class Course extends Model
 {
     use HasFactory;
     protected $table = 'courses';
-    protected $fillable = ['name','image','slug','instructor_id','availability_id','semester_id','description','status'];
+    protected $fillable = ['name','start_date','end_date','image','lectures','hours','slug','instructor_id','availability_id','semester_id','description','status'];
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 
     public function availability()
     {
-        return $this->belongsTo(Availabilities::class);
+        return $this->hasOne(Availabilities::class);
     }
-    public function instructor()
+
+    public function semester()
     {
-        return $this->belongsTo(Instructor::class);
+        return $this->belongsTo(Semester::class);
     }
 
     public function chapter()
@@ -28,4 +34,10 @@ class Course extends Model
     {
         return $this->hasMany(InstructorAssignments::class);
     }
+
+    public function instructor()
+    {
+        return $this->belongsTo(Instructor::class);
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Availabilities;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Material;
@@ -13,17 +14,22 @@ class CourseController extends Controller
 {
     public function index()
     {
-        // Load courses with instructors and chapters
-        $courses = Course::with(['instructor', 'chapter.material','instructor.availability'])->get();
+        $data['availabilities'] = Availabilities::with(['course', 'instructor','course.semester', 'course.chapter.material'])
+            ->get()
+            ->map(function ($availability) {
+                // Count materials for each course
+                $availability->course->material_count = $availability->course->chapter->flatMap(function ($chapter) {
 
-        // Calculate the total count of materials for each course
-        foreach ($courses as $course) {
-            $course->total_materials_count = $course->chapter->sum(function ($chapter) {
-                return $chapter->material->count();
+                    return $chapter->material;
+                })->count();
+
+                return $availability;
             });
-        }
 
-        return view('student.courses.index', ['courses' => $courses]);
+
+        $data['activeCourseALL']='active';
+        $data['showCourseManagement']='show';
+        return view('student.courses.index', $data);
     }
 
     public function store(Request $request)

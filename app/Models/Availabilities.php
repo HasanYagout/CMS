@@ -9,11 +9,11 @@ class Availabilities extends Model
 {
     use HasFactory;
     protected $table='availabilities';
-    protected $fillable=['instructor_id','days','start_time','end_time'];
+    protected $fillable=['instructor_id','days','start_time','end_time','course_id'];
 
     public function instructor()
     {
-       return $this->belongsTo(Instructor::class,'user_id');
+        return $this->belongsTo(Instructor::class, 'instructor_id','user_id');
     }
 
     public function course()
