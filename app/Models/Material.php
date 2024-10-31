@@ -9,10 +9,11 @@ class Material extends Model
 {
     use HasFactory;
     protected $table = 'material';
+    protected $fillable = ['lecture_id','type','url','title'];
 
 
-    public function chapter()
+    public function lecture()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsTo(Lecture::class);
     }
 }

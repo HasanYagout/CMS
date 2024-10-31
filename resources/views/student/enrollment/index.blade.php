@@ -6,9 +6,8 @@
             <div class="row">
 
                 @foreach($courses as $course)
-
                     <div class="col-lg-4">
-                        <a href="{{route('student.courses.enrollment.course',$course->id)}}">
+                        <a href="{{route('student.enrollment.index',$course->slug)}}">
                             <div class="card">
                                 <div class="card-body">
                                     <section class="rounded border">

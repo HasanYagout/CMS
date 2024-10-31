@@ -26,4 +26,5 @@ class Admin
 
         return redirect()->route('login');
     }
+
 }

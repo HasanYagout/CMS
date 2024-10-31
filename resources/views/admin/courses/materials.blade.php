@@ -105,7 +105,7 @@
 
             $('#course').change(function() {
                 const courseId = $(this).val();
-                const chapterSelect = $('#chapter');
+                const chapterSelect = $('#chapters');
                 chapterSelect.empty().append('<option value="">-- Select Chapter --</option>');
 
                 if (courseId) {

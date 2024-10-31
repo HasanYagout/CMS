@@ -14,17 +14,7 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $data['availabilities'] = Availabilities::with(['course', 'instructor','course.semester', 'course.chapter.material'])
-            ->get()
-            ->map(function ($availability) {
-                // Count materials for each course
-                $availability->course->material_count = $availability->course->chapter->flatMap(function ($chapter) {
-
-                    return $chapter->material;
-                })->count();
-
-                return $availability;
-            });
+        $data['courses'] = Course::whereHas('availability')->with('availability')->get();
 
 
         $data['activeCourseALL']='active';
@@ -40,8 +30,9 @@ class CourseController extends Controller
 
     public function info(Request $request, $slug)
     {
+
         $data['course'] = Course::where('slug', $slug)->first();
-        $data['chapters'] = Chapter::with('material')->where('course_id', $data['course']->id)->get();
+        $data['chapters'] = Chapter::with('materials')->where('course_id', $data['course']->id)->get();
         return view('student.courses.info', $data);
     }
 }

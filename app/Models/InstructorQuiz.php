@@ -14,4 +14,18 @@ class InstructorQuiz extends Model
     {
         return $this->hasMany(QuizQuestion::class);
     }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function lecture()
+    {
+        return $this->belongsTo(Lecture::class);
+    }
+
+    public function submittedQuiz()
+    {
+        return $this->hasMany(StudentQuiz::class);
+    }
 }

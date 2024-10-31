@@ -64,7 +64,7 @@
                     <tr>
                         <th scope="col"><div>{{ __('Name') }}</div></th>
                         <th scope="col"><div>{{ __('course') }}</div></th>
-                        <th scope="col"><div>{{ __('chapter') }}</div></th>
+                        <th scope="col"><div>{{ __('chapters') }}</div></th>
                         <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                     </tr>
                     </thead>
@@ -88,7 +88,7 @@
     <script>
         $(document).ready(function() {
             const course = $('#course');
-            const chapter = $('#chapter');
+            const chapter = $('#chapters');
 
             course.on('change', function () {
                 const courseId = $(this).val();

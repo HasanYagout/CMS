@@ -19,6 +19,9 @@
 .text-secondary-color {
   color: var(--secondary-color) !important;
 }
+.text-third-color {
+    color: var(--third-color) !important;
+}
 .text-707070 {
   color: var(--bColor) !important;
 }
@@ -151,6 +154,9 @@
 }
 .bg-third-color{
     background-color: var(--third-color) !important;
+}
+.bg-light-blue{
+    background-color: var(--light-blue) !important;
 }
 .bg-primary-light{
     background-color: var(--primary-light) !important;

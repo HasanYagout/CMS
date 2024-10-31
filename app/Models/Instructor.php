@@ -20,8 +20,9 @@ class Instructor extends Model
         return $this->hasMany(Availabilities::class, 'instructor_id');
     }
 
-    public function course()
+    public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsToMany(Course::class, 'course_instructor')
+            ->withPivot('days', 'start_time', 'end_time');
     }
 }

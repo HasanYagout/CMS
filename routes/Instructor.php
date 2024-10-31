@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Instructor\ActivityController;
+use App\Http\Controllers\Instructor\AnnouncementController;
 use App\Http\Controllers\Instructor\AssignmentController;
 use App\Http\Controllers\Instructor\DashboardController;
 use App\Http\Controllers\Instructor\CourseController;
 use App\Http\Controllers\Instructor\ChapterController;
+use App\Http\Controllers\Instructor\LectureController;
 use App\Http\Controllers\Instructor\MaterialController;
 use App\Http\Controllers\Instructor\QuizController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +34,21 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::get('/get/{id}', 'getChapterByCourseId')->name('get');
             });
         });
+        Route::group(['prefix' => 'lectures', 'as' => 'lectures.'], function () {
+            Route::controller(LectureController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/get/{id}', 'getLecturesByCourseId')->name('get');
+
+            });
+            Route::group(['prefix'=>'activities','as' => 'activities.'], function () {
+                Route::controller(ActivityController::class)->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::post('/store', 'store')->name('store');
+
+                });
+            });
+        });
 
         // Materials routes within courses
         Route::group(['prefix' => 'materials', 'as' => 'materials.'], function () {
@@ -50,6 +68,15 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
         });
         Route::group(['prefix' => 'quiz', 'as' => 'quiz.'], function () {
             Route::controller(QuizController::class)->group(function () {
+                Route::get('/index', 'index')->name('index');
+                Route::post('/store', 'store')->name('store');
+
+            });
+        });
+
+
+        Route::group(['prefix' => 'announcement', 'as' => 'announcement.'], function () {
+            Route::controller(AnnouncementController::class)->group(function () {
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\InstructorAssignments;
 use App\Models\InstructorQuiz;
 use Illuminate\Http\Request;
@@ -10,15 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ChapterController extends Controller
 {
-    public function index(Request $request,$id)
+    public function index(Request $request,$slug)
     {
-
-       $data['assignments']=InstructorAssignments::where('chapter_id',$id)->get();
-       $data['quizzes']=InstructorQuiz::with('questions')
-           ->where('instructor_id',Auth::id())
-           ->where('chapter_id',$id)
-           ->get();
-
-        return view('student.chapter.index',$data);
+           $data['course']= Course::with('chapters')->where('slug',$slug)->firstOrFail();
+            $data['activeChapters']='active';
+        return view('student.courses.chapters.index',$data);
     }
 }

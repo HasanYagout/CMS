@@ -11,14 +11,19 @@ class InstructorAssignments extends Model
     protected $table = 'instructor_assignments';
     protected $fillable=['course_id','instructor_id','chapter_id','title','description','marks','due_date'];
 
-    public function course()
+    public function lecture()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Lecture::class);
 
     }
 
     public function chapter()
     {
         return $this->belongsTo(Chapter::class);
+    }
+
+    public function submittedAssignments()
+    {
+        return $this->hasMany(StudentAssignment::class);
     }
 }

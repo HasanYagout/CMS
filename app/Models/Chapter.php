@@ -16,7 +16,7 @@ class Chapter extends Model
        return $this->belongsTo(Course::class);
     }
 
-    public function material()
+    public function materials()
     {
         return $this->hasMany(Material::class);
     }
@@ -24,6 +24,11 @@ class Chapter extends Model
     public function instructor_assignment()
     {
         return $this->hasMany(InstructorAssignments::class);
+    }
+
+    public function lectures()
+    {
+        return $this->hasMany(Lecture::class);
     }
 
 }

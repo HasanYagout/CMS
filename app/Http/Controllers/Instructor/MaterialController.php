@@ -15,7 +15,7 @@ class MaterialController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $material = Material::with('chapter');
+            $material = Material::with('chapters');
 
             if ($request->has('chapter_id') && $request->chapter_id) {
                 $material->where('chapter_id', $request->chapter_id);

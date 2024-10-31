@@ -44,8 +44,8 @@
                 "orderable": true
             },
             {
-                "data": "chapter",
-                "name": "chapter",
+                "data": "chapters",
+                "name": "chapters",
                 "responsivePriority": 1,
                 "searchable": true,
                 "orderable": true

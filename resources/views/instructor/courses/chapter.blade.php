@@ -72,7 +72,7 @@
 @push('script')
     <script>
         $(document).on('change', '.toggle-status', function() {
-            var chapterId = $(this).data('id'); // Get the chapter ID
+            var chapterId = $(this).data('id'); // Get the chapters ID
             var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
             const url=`{{route('instructor.courses.chapters.status','')}}/${chapterId}`
             $.ajax({

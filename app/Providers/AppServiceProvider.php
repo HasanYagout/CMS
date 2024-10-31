@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Announcement;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('layouts.course_sidebar', function ($view) {
+            $courseId = session('course_id');
+            $courseSlug = session('course_slug');
+            $view->with(compact('courseId', 'courseSlug'));
+        });
     }
 }

@@ -18,9 +18,9 @@
     --secondary-color: rgb(68 206 169);    /* Green */
     --third-color: rgb(242 39 126);
     --warning-color: #FFC107;       /* Yellow */
-    --error-color: #FF5733;         /* Orange */
+    --error-color: #fc7c7c;       /* Orange */
     --light-blue: #D1E7FF;          /* Light Blue */
-    --light-green: #C3E6CB;         /* Light Green */
+    --light-green: #c2fb95;         /* Light Green */
     --light-yellow: #FFECA6;        /* Light Yellow */
     --light-orange: #FFB3A0;        /* Light Orange */
     --dark-blue: #004085;           /* Dark Blue */
@@ -331,7 +331,9 @@
 }
 .text-secondary-color{
     color: var(--secondary-color) !important;
-
+}
+.text-third-color{
+    color: var(--third-color) !important;
 }
 .text-f5b40a {
   color: var(--secondary-color) !important;
@@ -451,6 +453,18 @@
 }
 .bg-third-color{
     background-color: var(--third-color) !important;
+}
+.bg-light-blue{
+    background-color: var(--light-blue) !important;
+}
+.bg-light-orange{
+    background-color: var(--light-orange) !important;
+}
+.bg-light-green{
+    background-color: var(--light-green) !important;
+}
+.bg-error{
+    background-color: var(--error-color) !important;
 }
 .bg-secondary-color {
   background-color: var(--secondary-color) !important;
@@ -638,12 +652,14 @@
 .bd-c-ebedf0 {
   border-color: var(--colorTwo) !important;
 }
-bg-custom-primary{
+.bg-custom-primary{
     background-color:var(--primary-color) !important; ;
 }
-bg-custom-secondary{
+.bg-custom-primary-light{
+    background-color:rgba(35, 55, 255, 0.09) !important; ;
+}
+.bg-custom-secondary{
     background-color:var(--secondary-color) !important; ;
-
 }
 
 .bd-c-fafafa {
@@ -781,7 +797,9 @@ bg-custom-secondary{
 .bd-c-fbf9f1 {
   border-color: var(--body-bg) !important;
 }
-
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    color: var(--third-color);
+}
 /* Fil color */
 .fill-green svg path {
   fill: var(--green);
@@ -4074,6 +4092,26 @@ scrollUp
     left: -240px;
   }
 }
+.zSidebar-small {
+    position: fixed;
+    top: 44px;
+    left: 240px;
+    width: 240px;
+    height: 90%;
+    background-color: var(--white);
+    z-index: 1001;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.zSidebar[data-background] {
+    background-position: center top;
+}
+@media screen and (max-width: 1023px) {
+    .zSidebar {
+        left: -240px;
+    }
+}
 
 .zMainContent {
   position: relative;
@@ -5310,9 +5348,9 @@ input[type=number] {
   color: #000;
 }
 
-.summernoteOne ~ .note-editor {
-  border: none !important;
-}
+/*.summernoteOne ~ .note-editor {*/
+/*  border: none !important;*/
+/*}*/
 .summernoteOne ~ .note-editor .note-toolbar {
   padding: 0 5px;
   background-color: var(--colorNine);

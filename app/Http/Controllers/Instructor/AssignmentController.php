@@ -14,7 +14,7 @@ class AssignmentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()){
-            $assignments = InstructorAssignments::with('course','chapter')->get();
+            $assignments = InstructorAssignments::with('course','chapters')->get();
             return datatables($assignments)
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
@@ -24,7 +24,7 @@ class AssignmentController extends Controller
                 ->addColumn('course', function ($data) {
                     return $data->course->name;
                 })
-                ->addColumn('chapter', function ($data) {
+                ->addColumn('chapters', function ($data) {
                     return $data->chapter->title;
                 })
                 ->addColumn('end_time', function ($data) {
@@ -46,7 +46,7 @@ class AssignmentController extends Controller
                             <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
                         </button>';
                 })
-                ->rawColumns(['name','course','chapter','days','status','images'])
+                ->rawColumns(['name','course','chapters','days','status','images'])
                 ->make(true);
         }
         $data['courses']=Availabilities::with('course')->where('instructor_id',Auth::id())->get();
@@ -55,7 +55,7 @@ class AssignmentController extends Controller
     public function store(Request $request){
         $validated = $request->validate([
             'course_id' => 'required|integer|exists:courses,id', // Validate course existence
-            'chapter_id' => 'required|integer|exists:chapters,id', // Validate chapter existence
+            'chapter_id' => 'required|integer|exists:chapters,id', // Validate chapters existence
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'marks' => 'required|integer',

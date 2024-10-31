@@ -169,7 +169,7 @@ class CourseController extends Controller
         }
 
         $data['courses'] = Course::with('instructor')->get();
-        return view('admin.courses.chapter', $data);
+        return view('admin.courses.chapters', $data);
     }
 
     public function store_chapter(Request $request)

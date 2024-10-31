@@ -4,9 +4,9 @@
     --secondary-color: rgb(68 206 169);    /* Green */
     --third-color: rgb(242 39 126);
     --warning-color: #FFC107;       /* Yellow */
-    --error-color: #FF5733;         /* Orange */
+    --error-color: #fc7c7c;       /* Orange */
     --light-blue: #D1E7FF;          /* Light Blue */
-    --light-green: #C3E6CB;         /* Light Green */
+    --light-green: #c2fb95;         /* Light Green */
     --light-yellow: #FFECA6;        /* Light Yellow */
     --light-orange: #FFB3A0;        /* Light Orange */
     --dark-blue: #004085;           /* Dark Blue */
@@ -480,6 +480,26 @@ scrollUp
         left: -240px;
     }
 }
+.zSidebar-small {
+    position: fixed;
+    top: 0;
+    left: 100px;
+    height: 100%;
+    width: 240px;
+    background-color: $primary-color;
+    // padding: toRem(23) 0 toRem(30);
+    z-index: 1001;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    &[data-background] {
+        background-position: center top;
+    }
+    @media screen and (max-width: 1023px) {
+        left: -240px;
+    }
+}
+
 .zMainContent {
     position: relative;
     width: 85%;

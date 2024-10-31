@@ -26,7 +26,7 @@
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
                         <label for="category_id" for="BatchName" class="form-label">{{ __('Category') }} <span
-                                class="text-danger">*</span></label></label>
+                                class="text-danger">*</span></label>
 
                         <select class="primary-form-control sf-select-without-search" id="category_id"
                             name="category_id">

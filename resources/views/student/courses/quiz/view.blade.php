@@ -2,24 +2,24 @@
 @section('content')
     <x-wrapper title="Take Exam">
         <div class="container mt-5">
-            <h3>Exam: {{ $quiz->title }}</h3>
-            <h4 id="timer" class="alert alert-info">Time Remaining: <span id="time"></span></h4>
+            <h3 class="text-black">{{ $quiz->title }}</h3>
+            <h4 id="timer" class="alert alert-info my-4">Time Remaining: <span id="time"></span></h4>
 
-            <form action="{{route('student.courses')}}" id="examForm" method="post">
+            <form  id="examForm" method="post">
                 @csrf
-                <p>Please read the following instructions carefully:</p>
-                <ul>
+                <h3 class="text-black">Please read the following instructions carefully:</h3>
+                <ol class="mt-4">
                     <li>Make sure you have a stable internet connection.</li>
                     <li>Once you start the exam, you cannot leave the page.</li>
                     <li>You will be automatically submitted when time is up.</li>
-                </ul>
-
-                @foreach ($quiz->questions as $question)
+                </ol>
+                <hr>
+                @foreach ($quiz->questions as $index=> $question)
                     <div class="mb-4">
-                        <h5>{{ $question->text }}</h5>
+                        <h5 class="text-secondary-color mb-2"><span class="me-2">{{$index+1}} -</span>{{ $question->text }}</h5>
                         @if ($question->type == 'mcq')
                             @foreach (explode(',', $question->options) as $option)
-                                <div>
+                                <div class="text-black">
                                     <input type="radio" name="questions[{{ $question->id }}]" value="{{ trim($option) }}">
                                     <label>{{ trim($option) }}</label>
                                 </div>
@@ -28,8 +28,9 @@
                             <textarea name="questions[{{ $question->id }}]" class="form-control" rows="3"></textarea>
                         @endif
                     </div>
+                    <hr>
                 @endforeach
-                <button type="submit" class="btn btn-primary">Submit Exam</button>
+                <button type="submit" class=" bg-secondary-color btn btn-primary text-white ">Submit Exam</button>
             </form>
         </div>
 

@@ -26,7 +26,7 @@ class Course extends Model
         return $this->belongsTo(Semester::class);
     }
 
-    public function chapter()
+    public function chapters()
     {
         return $this->hasMany(Chapter::class);
     }
@@ -35,9 +35,25 @@ class Course extends Model
         return $this->hasMany(InstructorAssignments::class);
     }
 
-    public function instructor()
+    public function instructors()
     {
-        return $this->belongsTo(Instructor::class);
+        return $this->belongsToMany(Instructor::class, 'course_instructor')
+            ->withPivot('days', 'start_time', 'end_time');
     }
+    public function quizzes()
+    {
+        return $this->hasMany(InstructorQuiz::class);
+    }
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'enrollments');
+    }
+
+    public function announcement()
+    {
+        return $this->hasMany(Announcement::class);
+    }
+
+
 
 }

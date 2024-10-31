@@ -58,7 +58,7 @@ class ChapterController extends Controller
         $data['activeCourseChapter']='active';
 
         $data['courses'] = Availabilities::with('course')->where('instructor_id', Auth::id())->get();
-        return view('instructor.courses.chapter', $data);
+        return view('instructor.courses.chapters', $data);
     }
 
     public function store(Request $request)

@@ -59,6 +59,59 @@
 
 
                 @if($role == 'admin'||$role=='student'||$role=='instructor')
+                    @if($role=='admin')
+                        <li>
+                            <a href="{{ route($role.'.semesters.index') }}"
+                               class="{{ $activeSemester ?? '' }} d-flex align-items-center cg-10">
+                                <div class="d-flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
+                                         fill="none">
+                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <span class="">{{ __('Semester') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route($role.'.college.index') }}"
+                               class="{{ $activeSemester ?? '' }} d-flex align-items-center cg-10">
+                                <div class="d-flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
+                                         fill="none">
+                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <span class="">{{ __('College') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route($role.'.news.index') }}"
+                               class="{{ $activeSemester ?? '' }} d-flex align-items-center cg-10">
+                                <div class="d-flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
+                                         fill="none">
+                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <span class="">{{ __('News') }}</span>
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="#coursesMenu" data-bs-toggle="collapse" role="button"
                            aria-expanded="{{ isset($showCourseManagement) ? 'true' : 'collapsed' }}"
@@ -104,6 +157,7 @@
                                         <a class="{{ $activeCourseMaterial ?? '' }}"
                                            href="{{ route('admin.courses.instructors.index') }}">{{ __('Instructor') }}</a>
                                     </li>
+
                                 @endif
                                 @if($role=='instructor')
 
@@ -111,6 +165,10 @@
                                         <a class="{{ $activeCourseChapter ?? '' }}"
                                            href="{{ route('instructor.courses.chapters.index') }}">{{ __('Course Chapter') }}</a>
                                     </li>
+                                        <li>
+                                            <a class="{{ $activeCourseChapter ?? '' }}"
+                                               href="{{ route('instructor.courses.lectures.index') }}">{{ __('Chapter Lecture') }}</a>
+                                        </li>
                                     <li>
                                         <a class="{{ $activeCourseMaterial ?? '' }}"
                                            href="{{ route('instructor.courses.materials.index') }}">{{ __('Material') }}</a>
@@ -124,6 +182,14 @@
                                         <a class="{{ $activeCourseMaterial ?? '' }}"
                                            href="{{ route('instructor.courses.quiz.index') }}">{{ __('Quiz') }}</a>
                                     </li>
+                                        <li>
+                                            <a class="{{ $activeCourseMaterial ?? '' }}"
+                                               href="{{ route('instructor.courses.announcement.index') }}">{{ __('Announcement') }}</a>
+                                        </li>
+                                        <li>
+                                            <a class="{{ $activeCourseMaterial ?? '' }}"
+                                               href="{{ route('instructor.courses.lectures.activities.index') }}">{{ __('Activities') }}</a>
+                                        </li>
 
                                 @endif
 
@@ -131,10 +197,11 @@
                             </ul>
                         </div>
                     </li>
+
                 @if($role=='student')
                         <li>
-                            <a href="{{ route($role.'.courses.enrollment.index') }}"
-                               class="{{ $activeHome ?? '' }} d-flex align-items-center cg-10">
+                            <a href="{{ route($role.'.enrollment.courses') }}"
+                               class="{{ $activeEnrolled ?? '' }} d-flex align-items-center cg-10">
                                 <div class="d-flex">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
                                          fill="none">
