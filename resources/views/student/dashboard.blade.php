@@ -3,8 +3,8 @@
 @section('content')
 
     <x-wrapper title="">
-        <h1 class="text-black text-center">welcome</h1>
-        <span class="d-block fs-2 text-center"> {{$student->first_name.' '.$student->last_name}}</span>
+        <h1 class="text-black text-center text-secondary-color">welcome</h1>
+        <span class="d-block fs-2 text-black text-center"> {{$student->first_name.' '.$student->last_name}}</span>
     </x-wrapper>
     <div class="row">
         <div class="col-lg-4">

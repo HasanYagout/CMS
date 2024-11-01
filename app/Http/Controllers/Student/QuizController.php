@@ -12,8 +12,7 @@ class QuizController extends Controller
     {
         $data['quizzes'] = InstructorQuiz::whereHas('lecture.chapters.course', function($query) use ($courseId) {
             $query->where('id', $courseId);
-        })->with(['lecture','submittedQuiz'])->get();
-
+        })->with(['lecture.chapters.course','submittedQuiz'])->get();
         $data['activeQuizzes']='active';
         return view('student.courses.quiz.index',$data);
     }

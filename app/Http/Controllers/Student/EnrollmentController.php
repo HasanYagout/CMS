@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\Chapter;
+use App\Models\Chat;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\InstructorAssignments;
@@ -19,7 +20,6 @@ class EnrollmentController extends Controller
 {
     public function index($slug)
     {
-
         $data['activeHome'] = 'active';
         $courseId = Course::where('slug', $slug)->value('id');
         $studentId = Auth::id(); // Assuming the student is logged in
@@ -78,8 +78,11 @@ class EnrollmentController extends Controller
             })
             ->get();
 
+        $data['chats'] = Chat::where('course_id', $courseId)->with('user.instructor','user.student')->get();
+
         return view('student.enrollment.dashboard', $data);
     }
+
 
     public function courses()
     {

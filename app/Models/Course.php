@@ -11,6 +11,10 @@ class Course extends Model
     protected $table = 'courses';
     protected $fillable = ['name','start_date','end_date','image','lectures','hours','slug','instructor_id','availability_id','semester_id','description','status'];
 
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);

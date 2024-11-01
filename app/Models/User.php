@@ -41,6 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
     public function enrolledCourses()
     {
         return $this->belongsToMany(Course::class, 'enrollments');
@@ -54,5 +58,9 @@ class User extends Authenticatable
     public function student()
     {
         return $this->hasOne(Student::class);
+    }
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
     }
 }
