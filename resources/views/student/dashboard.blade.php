@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-lg-4">
             <x-wrapper title="">
-                <h1>news</h1>
+                <h1 class="text-black">news</h1>
                 <ul>
                     @foreach($news as $new)
                     <li class="border border-black d-flex justify-content-between p-2 rounded">
@@ -30,7 +30,7 @@
         </div>
         <div class="col-lg-4">
             <x-wrapper title="">
-                <h1>notifications</h1>
+                <h1 class="text-black">notifications</h1>
 
                     <ul>
 {{--                        <li><a href="{{route('student.courses.announcements',$courseId)}}">Announcements{{$announcements}}</a></li>--}}

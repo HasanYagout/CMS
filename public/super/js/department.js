@@ -11,7 +11,7 @@
         responsive: true,
         searching: true,
         ajax: {
-            url: $('#college-route').val(),
+            url: $('#department-route').val(),
             data: function (d) {
                 d.selectedDepartment = $('#department :selected').val();
                 d.selectedPassingYear = $('#passing-year :selected').val();
@@ -121,14 +121,19 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        Swal.fire({
-                            title: 'Deleted',
-                            html: '<span style="color:red">Item has been deleted</span>',
-                            timer: 2000,
-                            icon: 'success'
-                        });
-                        toastr.success('Instructor deleted successfully.');
-                        table.ajax.reload();
+                        if (response.success){
+                            Swal.fire({
+                                title: 'Deleted',
+                                html: '<span style="color:red">Item has been deleted</span>',
+                                timer: 2000,
+                                icon: 'success'
+                            });
+                            toastr.success('Department deleted successfully.');
+                            table.ajax.reload();
+                        }
+                        else{
+                            toastr.error(response.error)
+                        }
                     },
                     error: function (error) {
                         toastr.error(error.responseJSON.message);

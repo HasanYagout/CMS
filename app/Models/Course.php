@@ -39,10 +39,9 @@ class Course extends Model
         return $this->hasMany(InstructorAssignments::class);
     }
 
-    public function instructors()
+    public function instructor()
     {
-        return $this->belongsToMany(Instructor::class, 'course_instructor')
-            ->withPivot('days', 'start_time', 'end_time');
+        return $this->belongsToMany(Instructor::class);
     }
     public function quizzes()
     {

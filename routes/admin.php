@@ -1,11 +1,10 @@
 <?php
 
 
-use App\Http\Controllers\Admin\CollegeController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\NewsController;
-use App\Http\Controllers\Admin\SemesterController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,14 +46,12 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/availability', [\App\Http\Controllers\Admin\AvailabilityController::class, 'getAvailabilityByInstructor'])->name('getAvailabilityByInstructor');
         Route::get('/availability/{id}', [\App\Http\Controllers\Admin\AvailabilityController::class, 'getInstructorAvailability'])->name('get');
     });
-    Route::group(['prefix'=>'semesters','as' => 'semesters.'], function () {
-        Route::get('/', [SemesterController::class, 'index'])->name('index');
-        Route::post('/store', [SemesterController::class, 'store'])->name('store');
+
+    Route::group(['prefix'=>'instructors','as' => 'instructors.'], function () {
+        Route::get('/', [InstructorController::class, 'index'])->name('index');
+        Route::post('/store', [InstructorController::class, 'store'])->name('store');
     });
-    Route::group(['prefix'=>'college','as' => 'college.'], function () {
-        Route::get('/', [CollegeController::class, 'index'])->name('index');
-        Route::post('/store', [CollegeController::class, 'store'])->name('store');
-    });
+
     Route::group(['prefix'=>'news','as' => 'news.'], function () {
         Route::get('/', [NewsController::class, 'index'])->name('index');
         Route::post('/store', [NewsController::class, 'store'])->name('store');

@@ -50,13 +50,14 @@ class LoginController extends Controller
                 // Redirect based on user role
                 switch ($user->role_id) {
                     case 1:
-                        return redirect()->route('user.home');
-                    case 2:
                         return redirect()->route('admin.dashboard');
-                    case 3:
+                    case 2:
                         return redirect()->route('instructor.dashboard');
-                    case 4:
+                    case 3:
                         return redirect()->route('student.dashboard');
+                    case 4:
+                        return redirect()->route('superAdmin.dashboard');
+
                     default:
                         Auth::logout(); // Log out if role is not recognized
                         return redirect()->route('auth.login')->withErrors([

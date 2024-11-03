@@ -57,6 +57,14 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/store', 'store')->name('store');
             });
         });
+        Route::group(['prefix' => 'forums', 'as' => 'forums.'], function () {
+            Route::controller(\App\Http\Controllers\Instructor\ForumController::class)->group(function () {
+                Route::get('/index', 'index')->name('index');
+                Route::post('/store', 'store')->name('store');
+            });
+        });
+
+
 
         // Assignments routes within courses
         Route::group(['prefix' => 'assignments', 'as' => 'assignments.'], function () {
@@ -81,6 +89,14 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/store', 'store')->name('store');
 
             });
+        });
+    });
+
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::controller(\App\Http\Controllers\Instructor\ReportController::class)->group(function () {
+            Route::get('/index', 'index')->name('courses');
+            Route::get('/students/{course_id}', 'students')->name('students');
+            Route::get('/grades/{course_id}', 'grades')->name('grades');
         });
     });
 });

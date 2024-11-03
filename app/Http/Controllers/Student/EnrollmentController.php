@@ -8,6 +8,7 @@ use App\Models\Chapter;
 use App\Models\Chat;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Forum;
 use App\Models\InstructorAssignments;
 use App\Models\InstructorQuiz;
 use App\Models\Lecture;
@@ -21,13 +22,14 @@ class EnrollmentController extends Controller
     public function index($slug)
     {
         $data['activeHome'] = 'active';
-        $courseId = Course::where('slug', $slug)->value('id');
+        $data['course'] = Course::where('slug', $slug)->first();
+
         $studentId = Auth::id(); // Assuming the student is logged in
 
         // Get assignments for the logged-in student within the next 3 days
         $data['assignments'] = InstructorAssignments::with('lecture')
-            ->whereHas('lecture.chapters.course', function ($query) use ($courseId) {
-                $query->where('id', $courseId);
+            ->whereHas('lecture.chapters.course', function ($query) use ($data) {
+                $query->where('id', $data['course']->id);
             })
             ->whereIn('lecture_id', function ($query) use ($studentId) {
                 $query->select('lecture_id')
@@ -42,8 +44,8 @@ class EnrollmentController extends Controller
 
         // Get quizzes for the logged-in student within the next 3 days
         $data['quizzes'] = InstructorQuiz::with('course')
-            ->whereHas('lecture.chapters.course', function ($query) use ($courseId) {
-                $query->where('id', $courseId);
+            ->whereHas('lecture.chapters.course', function ($query) use ($data) {
+                $query->where('id', $data['course']->id);
             })
             ->whereIn('lecture_id', function ($query) use ($studentId) {
                 $query->select('lecture_id')
@@ -65,12 +67,12 @@ class EnrollmentController extends Controller
             $data['hours'][$index] = $difference->h;
         }
 
-        $data['lectures'] = Lecture::whereHas('chapters.course', function ($query) use ($courseId) {
-            $query->where('id', $courseId);
+        $data['lectures'] = Lecture::whereHas('chapters.course', function ($query) use ($data) {
+            $query->where('id', $data['course']->id);
         })->with('chapters.course')->get();
 
         $data['announcements'] = Announcement::with('course')
-            ->where('course_id', $courseId)
+            ->where('course_id', $data['course']->id)
             ->whereIn('course_id', function ($query) use ($studentId) {
                 $query->select('course_id')
                     ->from('enrollment')
@@ -78,7 +80,7 @@ class EnrollmentController extends Controller
             })
             ->get();
 
-        $data['chats'] = Chat::where('course_id', $courseId)->with('user.instructor','user.student')->get();
+        $data['forum'] = Forum::where('course_id', $data['course']->id)->get();
 
         return view('student.enrollment.dashboard', $data);
     }

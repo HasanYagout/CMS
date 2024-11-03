@@ -20,6 +20,7 @@
                                         <h1 class="fs-20 text-primary-color ">{{$course->name}}</h1>
                                     </section>
                                 </div>
+
                                 <div class="card-footer bg-transparent text-secondary-color">
                                     {{$course->availability->instructor->first_name.' '.$course->availability->instructor->last_name}}
                                 </div>

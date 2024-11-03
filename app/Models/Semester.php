@@ -9,7 +9,7 @@ class Semester extends Model
 {
     use HasFactory;
     protected $table = 'academic_years';
-    protected $fillable=['name'];
+    protected $fillable=['name','status'];
 
     public function course()
     {

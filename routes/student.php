@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\Student\AnnouncementController;
 use App\Http\Controllers\Student\ChapterController;
-use App\Http\Controllers\Student\ChatController;
+use App\Http\Controllers\Student\ForumController;
 use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\Student\DashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
@@ -27,8 +27,9 @@ Route::group(['middleware' => ['student'], 'prefix' => 'student', 'as' => 'stude
             Route::get('/{course_id}', [AssignmentController::class, 'index'])->name('index');
             Route::post('store/{id}', [AssignmentController::class, 'store'])->name('store');
         });
-        Route::group(['prefix' => 'chat', 'as' => 'chat.'], function () {
-            Route::post('store', [ChatController::class, 'store'])->name('store');
+        Route::group(['prefix' => 'forum', 'as' => 'forum.'], function () {
+            Route::get('/', [ForumController::class, 'index'])->name('index');
+            Route::post('store', [ForumController::class, 'store'])->name('store');
         });
 
         Route::group(['prefix' => 'quizzes', 'as' => 'quizzes.'], function () {
@@ -65,4 +66,6 @@ Route::group(['middleware' => ['student'], 'prefix' => 'student', 'as' => 'stude
         Route::get('/course/view/{id}', [EnrollmentController::class, 'view'])->name('view');
         Route::post('register/{id}', [EnrollmentController::class, 'register'])->name('register');
     });
+    Route::get('/profile', [\App\Http\Controllers\Student\ProfileController::class, 'index'])->name('profile');
+
 });

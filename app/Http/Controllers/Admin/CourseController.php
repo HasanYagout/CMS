@@ -196,8 +196,9 @@ class CourseController extends Controller
 
     public function instructors()
     {
-        $data['courses']= Course::with('instructor')->get();
+//        $data['courses']= Course::with('instructor')->get();
         $data['instructors']= Instructor::get();
+
 
         return view('admin.courses.instructors',$data);
     }

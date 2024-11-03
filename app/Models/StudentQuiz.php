@@ -14,4 +14,10 @@ class StudentQuiz extends Model
     {
         return $this->belongsTo(InstructorQuiz::class);
     }
+
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

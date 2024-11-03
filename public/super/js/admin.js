@@ -1,9 +1,9 @@
 (function ($) {
     "use strict";
-    if ($.fn.dataTable.isDataTable('#semesterTable')) {
-        $('#semesterTable').DataTable().clear().destroy();
+    if ($.fn.dataTable.isDataTable('#adminTable')) {
+        $('#adminTable').DataTable().clear().destroy();
     }
-    var table = $("#semesterTable").DataTable({
+    var table = $("#adminTable").DataTable({
         pageLength: 10,
         ordering: true,
         serverSide: true,
@@ -11,7 +11,7 @@
         responsive: true,
         searching: true,
         ajax: {
-            url: $('#semesters-route').val(),
+            url: $('#admin-route').val(),
             data: function (d) {
                 d.selectedDepartment = $('#department :selected').val();
                 d.selectedPassingYear = $('#passing-year :selected').val();
@@ -35,7 +35,13 @@
                 "searchable": true,
                 "orderable": true
             },
-
+            {
+                "data": "department",
+                "name": "department",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
             {
                 "data": "status",
                 "name": "status",

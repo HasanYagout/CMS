@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Instructor extends Model
 {
     use HasFactory;
     protected $table = 'instructor';
+     protected $fillable=['first_name','last_name','user_id','department_id'];
 
 
     public function user()
@@ -18,6 +20,10 @@ class Instructor extends Model
     public function availabilities()
     {
         return $this->hasMany(Availabilities::class, 'instructor_id');
+    }
+    public function college()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function courses()

@@ -66,7 +66,7 @@
                                     // Redirect to login page if logout is true
 {{--                                    window.location.href = {{route('auth.login')}}; // Change to your login URL--}}
                                 } else {
-                                    // Optionally handle success for other admins
+                                    // Optionally handle success for other instructors
                                     window.location.reload(); // Reload the current page
                                 }
                             });

@@ -18,6 +18,6 @@ class News extends Model
     }
     public function college()
     {
-        return $this->belongsTo(College::class);
+        return $this->belongsTo(Department::class);
     }
 }

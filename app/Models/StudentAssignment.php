@@ -16,6 +16,11 @@ class StudentAssignment extends Model
         return $this->belongsTo(InstructorAssignments::class);
     }
 
+    public function assignment()
+    {
+        return $this->belongsTo(InstructorAssignments::class, 'instructor_assignments_id');
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class);

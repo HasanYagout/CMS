@@ -12,14 +12,16 @@ class Enrollment extends Model
     protected $fillable = ['student_id','course_id'];
 
 
-
-
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
+    public function student()
+    {
+        return $this->belongsTo(Student::class,'student_id','user_id');
+    }
 
-    public function payment()
+        public function payment()
     {
         return $this->hasOne(Payment::class);
     }

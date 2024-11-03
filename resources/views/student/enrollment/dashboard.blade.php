@@ -1,10 +1,14 @@
 @extends('layouts.app_course')
 @section('content')
-
+    <x-breadcrumbs :items="[
+    ['name' => 'Home', 'url' => route('student.courses.index')],
+    ['name' => 'Courses', 'url' => route('student.courses.index')],
+    ['name' => $course->name, 'url' => '']
+       ]" />
     <div class="row">
         <div class="col-lg-6">
             <x-wrapper title="">
-                <h3>Notifications</h3>
+                <h3 class="text-black mb-3">Notifications</h3>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="assignments-tab" data-bs-toggle="tab" href="#assignments" role="tab" aria-controls="assignments" aria-selected="true">Assignments</a>
@@ -37,27 +41,28 @@
                         <ul class="d-flex flex-column gap-3">
                             <div class="chat-section p-3" style="background-color:rgba(35, 55, 255, 0.09);">
                                 <div class="chat-messages  rounded" style="max-height: 350px; overflow-y: auto;">
-                                    @foreach($chats as $chat)
-                                        <div class=" d-flex flex-column mb-3 {{ Auth::id() == $chat->user_id ? 'align-items-end' : 'align-items-start' }}">
-                                            <strong class="{{ Auth::id() == $chat->user_id ? 'text-third-color' : 'text-secondary-color' }}">
-                                                @if(Auth::id() == $chat->user_id)
-                                                    {{-- Don't display name for the user sending the message --}}
-                                                @elseif($chat->user->role_id == 3)
-                                                    {{ $chat->user->instructor->first_name.' '.$chat->user->instructor->last_name }}
-                                                @else
-                                                    {{ $chat->user->student->first_name.' '.$chat->user->student->last_name }}
-                                                @endif
-                                            </strong>
-                                            <div style="overflow-wrap: anywhere;width: fit-content;{{ Auth::id() == $chat->user_id ? 'background-color:#c2fb95;' : 'background-color:rgba(35, 55, 255, 0.09);' }}" class="d-inline-block p-2 fw-400 rounded ">
-                                                {{ $chat->message }}
-                                            </div>
-                                            <small class="text-muted">
-                                                {{ $chat->created_at->format('F j, Y, g:i a') }}
-                                            </small>
-                                        </div>
-                                    @endforeach
+{{--                                    @foreach($chats as $chat)--}}
+{{--                                        <div class=" d-flex flex-column mb-3 {{ Auth::id() == $chat->user_id ? 'align-items-end' : 'align-items-start' }}">--}}
+{{--                                            <strong class="{{ Auth::id() == $chat->user_id ? 'text-third-color' : 'text-secondary-color' }}">--}}
+{{--                                                @if(Auth::id() == $chat->user_id)--}}
+{{--                                                    --}}{{-- Don't display name for the user sending the message --}}
+
+{{--                                                @elseif($chat->user->role_id == 3)--}}
+{{--                                                    {{ $chat->user->student->first_name.' '.$chat->user->student->last_name }}--}}
+{{--                                                @else--}}
+{{--                                                    {{ $chat->user->instructor->first_name.' '.$chat->user->instructor->last_name }}--}}
+{{--                                                @endif--}}
+{{--                                            </strong>--}}
+{{--                                            <div style="overflow-wrap: anywhere;width: fit-content;{{ Auth::id() == $chat->user_id ? 'background-color:#c2fb95;' : 'background-color:rgba(35, 55, 255, 0.09);' }}" class="d-inline-block p-2 fw-400 rounded ">--}}
+{{--                                                {{ $chat->message }}--}}
+{{--                                            </div>--}}
+{{--                                            <small class="text-muted">--}}
+{{--                                                {{ $chat->created_at->format('F j, Y, g:i a') }}--}}
+{{--                                            </small>--}}
+{{--                                        </div>--}}
+{{--                                    @endforeach--}}
                                 </div>
-                                <form action="{{ route('student.courses.chat.store') }}" class="d-flex gap-3" method="POST">
+                                <form action="{{ route('student.courses.forum.store') }}" class="d-flex gap-3" method="POST">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $course_id}}">
                                     <textarea name="message" style="width: 60%" class="form-control" placeholder="Type your message..."></textarea>
