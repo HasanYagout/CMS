@@ -9,7 +9,9 @@ use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\Material;
 use App\Models\Semester;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class CourseController extends Controller
@@ -196,18 +198,36 @@ class CourseController extends Controller
 
     public function instructors()
     {
-//        $data['courses']= Course::with('instructor')->get();
-        $data['instructors']= Instructor::get();
+        $data['courses']= Course::where('status',1)
+            ->where('department_id',Auth::user()->admin->department_id)
+            ->get();
 
-
+        $data['instructors'] = User::where('role_id', 2)
+            ->where('status', 1)
+            ->whereHas('instructor', function ($query) {
+                $query->where('department_id', Auth::user()->admin->department_id);
+            })
+            ->get();
+        $data['showCourseManagement']='show';
+        $data['activeCourseInstructor']='active';
         return view('admin.courses.instructors',$data);
     }
 
     public function info($id)
     {
         $course = Course::find($id);
-        return response()->json($course);
 
+        $instructors = User::where('role_id', 2)
+            ->where('status', 1)
+            ->whereHas('instructor', function ($query) {
+                $query->where('department_id', Auth::user()->admin->department_id);
+            })->with('instructor')
+            ->get();
+
+        return response()->json([
+            'course' => $course,
+            'instructors' => $instructors,
+        ]);
     }
 
 

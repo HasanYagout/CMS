@@ -56,5 +56,10 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/', [NewsController::class, 'index'])->name('index');
         Route::post('/store', [NewsController::class, 'store'])->name('store');
     });
+    Route::controller(\App\Http\Controllers\Admin\ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('profile');
+        Route::post('/profile_update', 'update')->name('profile.update');
+        Route::post('/profile_password', 'password')->name('profile.password');
+    });
 
 });

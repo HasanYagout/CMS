@@ -93,14 +93,9 @@
                             <a href="{{ route($role.'.instructors.index') }}"
                                class="{{ $activeInstructor ?? '' }} d-flex align-items-center cg-10">
                                 <div class="d-flex">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
-                                         fill="none">
-                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
-                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
-                                              stroke-linejoin="round"/>
-                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
-                                              stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
-                                              stroke-linejoin="round"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                        <path stroke="rgb(95, 108, 118)" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                        <path stroke="rgb(95, 108, 118)" fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
                                     </svg>
                                 </div>
                                 <span class="">{{ __('Instructors') }}</span>
@@ -150,7 +145,7 @@
                                            href="{{ route('admin.courses.create') }}">{{ __('Create Course') }}</a>
                                     </li>
                                     <li>
-                                        <a class="{{ $activeCourseMaterial ?? '' }}"
+                                        <a class="{{ $activeCourseInstructor ?? '' }}"
                                            href="{{ route('admin.courses.instructors.index') }}">{{ __('Course & Instructor') }}</a>
                                     </li>
 
@@ -200,9 +195,9 @@
                     </li>
                         <li>
                             <a href="#reportsMenu" data-bs-toggle="collapse" role="button"
-                               aria-expanded="{{ isset($showCourseManagement) ? 'true' : 'collapsed' }}"
+                               aria-expanded="{{ isset($showReportsManagement) ? 'true' : 'collapsed' }}"
                                aria-controls="storyMenu"
-                               class="d-flex align-items-center cg-10 {{ isset($showCourseManagement) ? 'active' : 'collapsed' }}">
+                               class="d-flex align-items-center cg-10 {{ isset($showReportsManagement) ? 'active' : 'collapsed' }}">
                                 <div class="d-flex">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26"
                                          fill="none">
@@ -224,7 +219,7 @@
                                 </div>
                                 <span class="">{{__('Manage Reports')}}</span>
                             </a>
-                            <div class="collapse {{ $showCourseManagement ?? '' }}" id="reportsMenu"
+                            <div class="collapse {{ $showReportsManagement ?? '' }}" id="reportsMenu"
                                  data-bs-parent="#sidebarMenu">
                                 <ul class="zSidebar-submenu">
                                         <li>

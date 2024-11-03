@@ -55,22 +55,38 @@
                                 <input type="time" id="end_time" name="end_time" class="form-control" required>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="col-lg-4 mb-3">
-                        <div class="form-group">
-                            <label class="form-label" for="days">Select Days:</label>
-                            <select id="days" name="days[]" class="form-control select2" multiple="multiple" required>
-                                <option value="Monday">Monday</option>
-                                <option value="Tuesday">Tuesday</option>
-                                <option value="Wednesday">Wednesday</option>
-                                <option value="Thursday">Thursday</option>
-                                <option value="Friday">Friday</option>
-                                <option value="Saturday">Saturday</option>
-                                <option value="Sunday">Sunday</option>
-                            </select>
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-group">
+                                <label class="form-label" for="days">Select Days:</label>
+                                <select id="days" name="days[]" class="form-control select2" multiple="multiple" required>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="availability-section mt-3">
+                                <h5 class="text-third-color">Instructor Availability</h5>
+                                <table id="availability-table" class="table table-bordered" style="display: none;">
+                                    <thead>
+                                    <tr>
+                                        <th class="bg-third-color text-white">Day</th>
+                                        <th class="bg-secondary-color text-white">Available Times</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Availability data will be appended here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                     <section>
                         <button type="submit" class="zBtn-one">Submit</button>
                     </section>
@@ -80,20 +96,16 @@
     </div>
 
     <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-
-
-
-
         <div class="table-responsive zTable-responsive">
-            <table class="table zTable" id="materialTable">
+            <table class="table zTable" id="AvailabilityTable">
                 <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">days</th>
-                    <th scope="col">start_time</th>
-                    <th scope="col">end_time</th>
-                    <th scope="col">status</th>
-                    <th class="w-110 text-center" scope="col">Action</th>
+                    <th scope="col"><div>{{ __('Name') }}</div></th>
+                    <th scope="col"><div>{{ __('days') }}</div></th>
+                    <th scope="col"><div>{{ __('start_time') }}</div></th>
+                    <th scope="col"><div>{{ __('end_time') }}</div></th>
+                    <th scope="col"><div>{{ __('status') }}</div></th>
+                    <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                 </tr>
                 </thead>
             </table>
@@ -109,36 +121,49 @@
                 placeholder: "Select Days",
                 allowClear: true
             });
+
+            // Initially disable the instructor select
+            $('#instructor').prop('disabled', true);
+
             $('#course_id').change(function() {
-                const courseId=$('#course_id').val();
-                const lecture_duration=$('#lecture_duration').val();
-                const lectures_per_week=$('#lectures_per_week').val();
-                const instructors=$('#instructor');
+                const courseId = $(this).val();
+                const lectureDuration = $('#lecture_duration');
+                const lecturesPerWeek = $('#lectures_per_week');
+                const instructors = $('#instructor');
 
-                const url=`{{route('admin.courses.info','')}}/${courseId}`;
-                $.ajax({
-                    url:url,
-                    method:'GET',
-                    success:function (data){
-                        $('#lectures_per_week').val(data.lectures);
-                        $('#lecture_duration').val(data.hours);
-                    }
-                })
-            });
+                if (courseId) {
+                    // Enable the instructor select
+                    instructors.prop('disabled', false);
 
-            // Enable instructor dropdown based on course selection
-            $('#course').change(function() {
-                const selectedOption = $(this).find('option:selected');
-                const lecturesPerWeek = selectedOption.data('lectures');
-                const lectureHours = selectedOption.data('hours');
+                    // Fetch course details and instructors
+                    const url = `{{ route('admin.courses.info', '') }}/${courseId}`;
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(data) {
+                            // Update course details
+                            lecturesPerWeek.val(data.course.lectures);
+                            lectureDuration.val(data.course.hours);
+                            // Update instructor options
+                            instructors.empty();
+                            instructors.append(`<option value="">-- Select Instructor --</option>`);
 
-                // Set the values in the respective fields
-                $('#lectures_per_week').val(lecturesPerWeek || '');
-                $('#lecture_duration').val(lectureHours || '');
+                            data.instructors.forEach(function(instructor) {
 
-                // Enable instructor dropdown
-                const instructorSelect = $('#instructor');
-                instructorSelect.prop('disabled', false);
+                                instructors.append(`<option value="${instructor.instructor.user_id}">${instructor.instructor.first_name} ${instructor.instructor.last_name}</option>`);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching course info:', error);
+                        }
+                    });
+                } else {
+                    // Disable the instructor select if no course is selected
+                    instructors.prop('disabled', true);
+                    instructors.empty();
+                    lecturesPerWeek.val('');
+                    lectureDuration.val('');
+                }
             });
 
             // Fetch and disable the already booked days and times for the selected instructor
@@ -155,19 +180,32 @@
                             $('#days').find('option').prop('disabled', false).trigger('change');
                             $('#start_time, #end_time').prop('disabled', false);
 
-                            // Disable the days and times that are already booked
-                            data.forEach(function(availability) {
-                                let bookedDays = JSON.parse(availability.days);
-                                bookedDays.forEach(function(day) {
-                                    $('#days option[value="' + day + '"]').prop('disabled', true).trigger('change');
-                                });
+                            // Clear previous availability
+                            $('#availability-table tbody').empty();
 
-                                // Check and disable conflicting times
-                                // Add your logic to disable conflicting time slots
-                                if (availability.start_time && availability.end_time) {
-                                    // Example logic can be added here
+                            // Process the availability data
+                            Object.keys(data).forEach(day => {
+                                const times = data[day];
+                                const timeSlots = Array.isArray(times) ? times.join(', ') : Object.values(times).join(', ');
+
+                                // Append row to table
+                                let row = `<tr><td>${day}</td><td>${timeSlots}</td></tr>`;
+                                $('#availability-table tbody').append(row);
+
+                                // Disable the booked times
+                                if (Array.isArray(times)) {
+                                    times.forEach(time => {
+                                        $(`#start_time option[value="${time}"], #end_time option[value="${time}"]`).prop('disabled', true).trigger('change');
+                                    });
+                                } else {
+                                    Object.values(times).forEach(time => {
+                                        $(`#start_time option[value="${time}"], #end_time option[value="${time}"]`).prop('disabled', true).trigger('change');
+                                    });
                                 }
                             });
+
+                            // Show the availability table
+                            $('#availability-table').show();
                         },
                         error: function(xhr, status, error) {
                             console.error('Error fetching availabilities:', error);
@@ -176,13 +214,21 @@
                 } else {
                     $('#days').find('option').prop('disabled', false).trigger('change');
                     $('#start_time, #end_time').prop('disabled', false);
+                    $('#availability-table').hide(); // Hide the table if no instructor is selected
                 }
             });
 
-            // DataTable initialization
-            const materialTable = $('#materialTable').DataTable({
-                processing: true,
+
+            if ($.fn.dataTable.isDataTable('#AvailabilityTable')) {
+                $('#AvailabilityTable').DataTable().clear().destroy();
+            }
+            const AvailabilityTable = $('#AvailabilityTable').DataTable({
+                pageLength: 10,
+                ordering: true,
                 serverSide: true,
+                processing: true,
+                responsive: true,
+                searching: true,
                 ajax: {
                     url: `{{ route('admin.availability.index') }}`,
                     data: function(d) {
@@ -190,6 +236,16 @@
                         d.instructor_id = $('#chapter_filter').val();
                     }
                 },
+                language: {
+                    paginate: {
+                        previous: "<i class='fa-solid fa-angles-left'></i>",
+                        next: "<i class='fa-solid fa-angles-right'></i>",
+                    },
+                    searchPlaceholder: "Search Instructors",
+                    search: "<span class='searchIcon'><i class='fa-solid fa-magnifying-glass'></i></span>",
+                },
+                dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
+
                 columns: [
                     { data: 'name', name: 'name' },
                     { data: 'days', name: 'days', orderable: false, searchable: false },
@@ -202,7 +258,7 @@
 
             // Reload DataTable on filter change
             $('#course_filter, #chapter_filter').change(function() {
-                materialTable.draw();
+                AvailabilityTable.draw();
             });
         });
     </script>

@@ -16,13 +16,13 @@ class AvailabilityController extends Controller
     {
         if ($request->ajax()) {
             $availability = Availabilities::with('instructor')->orderBy('id', 'desc')->get();
-
             return datatables($availability)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
                     return $data->instructor->first_name . ' ' . $data->instructor->last_name;
                 })
                 ->addColumn('days', function ($data) {
+
                     return json_decode($data->days);
                 })
                 ->addColumn('start_time', function ($data) {
@@ -42,12 +42,12 @@ class AvailabilityController extends Controller
                 </li>
             </ul>';
                 })
-                ->addColumn('images', function ($data) {
+                ->addColumn('action', function ($data) {
                     return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo" title="' . __('Upload') . '">
                             <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
                         </button>';
                 })
-                ->rawColumns(['name','start_time','end_time','days','status','images'])
+                ->rawColumns(['name','start_time','end_time','days','status','action'])
                 ->make(true);
         }
 
@@ -101,21 +101,17 @@ class AvailabilityController extends Controller
     }
     public function getInstructorAvailability($instructorId)
     {
-        // Define all possible days and time slots
-        $allDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $allDays = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'];
         $allTimeSlots = [
-            '09:00:00', '10:00:00', '11:00:00', '12:00:00',
-            '13:00:00', '14:00:00', '15:00:00', '16:00:00',
-            '17:00:00', '18:00:00'
+            '08:00:00','09:00:00', '10:00:00', '11:00:00', '12:00:00',
+            '13:00:00', '14:00:00', '15:00:00', '16:00:00'
         ];
 
-        // Fetch existing availabilities for the selected instructor
         $existingAvailabilities = Availabilities::where('instructor_id', $instructorId)->get();
 
-        // Create an array to hold unavailable days and times
         $unavailableDays = [];
         foreach ($existingAvailabilities as $availability) {
-            $days = json_decode($availability->days); // Assuming days are stored as a JSON array
+            $days = json_decode($availability->days);
             foreach ($days as $day) {
                 if (!isset($unavailableDays[$day])) {
                     $unavailableDays[$day] = [];
@@ -127,21 +123,18 @@ class AvailabilityController extends Controller
             }
         }
 
-        // Prepare available days and times
         $availableDaysAndTimes = [];
         foreach ($allDays as $day) {
             if (!isset($unavailableDays[$day])) {
-                // If the day is not booked, add all time slots
                 $availableDaysAndTimes[$day] = $allTimeSlots;
             } else {
-                // If the day is booked, find available time slots
                 $availableDaysAndTimes[$day] = array_filter($allTimeSlots, function ($time) use ($unavailableDays, $day) {
                     foreach ($unavailableDays[$day] as $unavailable) {
                         if ($time >= $unavailable['start_time'] && $time < $unavailable['end_time']) {
-                            return false; // Time is unavailable
+                            return false;
                         }
                     }
-                    return true; // Time is available
+                    return true;
                 });
             }
         }
