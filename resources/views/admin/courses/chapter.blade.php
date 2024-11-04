@@ -3,7 +3,7 @@
     <div class="p-30" >
 
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-                <form method="POST" action="{{route('admin.courses.chapters.store')}}" enctype="multipart/form-data" >
+                <form method="POST" action="{{route('Admin.courses.chapters.store')}}" enctype="multipart/form-data" >
                     @csrf
                     <div>
                         <div class="pb-30"></div>
@@ -40,7 +40,7 @@
             </div>
 
         <div>
-            <input type="hidden" id="chapter-route" value="{{ route('admin.courses.chapters.index') }}">
+            <input type="hidden" id="chapter-route" value="{{ route('Admin.courses.chapters.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
             </div>
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
@@ -98,7 +98,7 @@
                 const courseId = this.value;
 
                 // Reload DataTable with the selected course ID
-                chapterTable.DataTable().ajax.url(`{{ route('admin.courses.chapters.index') }}?course_id=${courseId}`).load();
+                chapterTable.DataTable().ajax.url(`{{ route('Admin.courses.chapters.index') }}?course_id=${courseId}`).load();
             });
 
             // Initialize the DataTable
@@ -106,7 +106,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('admin.courses.chapters.index') }}`,
+                    url: `{{ route('Admin.courses.chapters.index') }}`,
                     data: function (d) {
                         d.course_id = courseSelect.value; // Include selected course ID
                     }

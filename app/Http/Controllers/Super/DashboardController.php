@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
             $admins = User::where('role_id', 1)
-                ->with('admin.department')
+                ->with('Admin.department')
                 ->get();
 
             return datatables($admins)
@@ -82,12 +82,12 @@ class DashboardController extends Controller
 
 
 
-        return redirect()->route('admin.instructors.index')->with('success', 'Admin added successfully.');
+        return redirect()->route('Admin.instructors.index')->with('success', 'Admin added successfully.');
     }
 
     public function edit($id)
     {
-       $data['admin']= Admin::where('user_id', $id)->first();
+       $data['Admin']= Admin::where('user_id', $id)->first();
        $data['departments']= Department::all();
         return view('super.edit-form', $data);
     }
@@ -101,16 +101,16 @@ class DashboardController extends Controller
             'department_id' => 'required|exists:department,id',
         ]);
 
-        // Check if admin has associated courses
+        // Check if Admin has associated courses
         $admin = Admin::where('user_id',$id)->first();
 
         $hasCourses = Availabilities::where('instructor_id', $admin->user_id)->exists();
 
         if ($hasCourses && $admin->department_id != $request->department_id) {
-            return back()->with('error', 'Cannot change department as admin has associated courses.');
+            return back()->with('error', 'Cannot change department as Admin has associated courses.');
         }
 
-        // Update admin details
+        // Update Admin details
         $admin->first_name = $request->first_name;
         $admin->last_name = $request->last_name;
         $admin->department_id = $request->department_id;

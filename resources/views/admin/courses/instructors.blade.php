@@ -5,7 +5,7 @@
         <div class="container bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
             <h2 class="text-primary-color">Link Course with Instructor</h2>
 
-            <form action="{{ route('admin.courses.instructors.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('Admin.courses.instructors.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="container my-4 row gap-5">
                     <div class="row">
@@ -136,7 +136,7 @@
                     instructors.prop('disabled', false);
 
                     // Fetch course details and instructors
-                    const url = `{{ route('admin.courses.info', '') }}/${courseId}`;
+                    const url = `{{ route('Admin.courses.info', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -171,7 +171,7 @@
                 const instructorId = $(this).val();
 
                 if (instructorId) {
-                    const url = `{{ route('admin.availability.get', '') }}/${instructorId}`;
+                    const url = `{{ route('Admin.availability.get', '') }}/${instructorId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -230,7 +230,7 @@
                 responsive: true,
                 searching: true,
                 ajax: {
-                    url: `{{ route('admin.availability.index') }}`,
+                    url: `{{ route('Admin.availability.index') }}`,
                     data: function(d) {
                         d.course_id = $('#course_filter').val();
                         d.instructor_id = $('#chapter_filter').val();

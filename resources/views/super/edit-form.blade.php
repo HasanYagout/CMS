@@ -10,7 +10,7 @@
                 </button>
             </div>
         </div>
-{{--        <input type="hidden" name="id" value="{{ $admin->id }}">--}}
+{{--        <input type="hidden" name="id" value="{{ $Admin->id }}">--}}
         <div class="row">
             <div class="col-12">
                 <div class="primary-form-group mt-2">

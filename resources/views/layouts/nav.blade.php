@@ -10,7 +10,7 @@
             <i class="fa-solid fa-bars"></i></button>
     </div>
     @if(Auth::check() && Auth::user()->role_id == USER_ROLE_ADMIN)
-        <a href="{{ route('admin.alumni.list') }}" class="d-none  d-sm-inline-block fs-15 fw-500 lh-25 text-white  py-10 px-26 bg-primary-color bd-ra-12 hover-bg-#002a5c">{{
+        <a href="{{ route('Admin.alumni.list') }}" class="d-none  d-sm-inline-block fs-15 fw-500 lh-25 text-white  py-10 px-26 bg-primary-color bd-ra-12 hover-bg-#002a5c">{{
             __('Find an Alumni') }}</a>
     @endif
 </div>
@@ -26,7 +26,7 @@
             switch ($authenticatedUser->role_id) {
         case 1:
             $userInfo = $authenticatedUser->admin;
-            $role = 'admin';
+            $role = 'Admin';
             break;
         case 2:
             $userInfo = $authenticatedUser->alumni;
@@ -97,7 +97,7 @@
         </div>
 
 
-        @if (request()->route()->getName() == 'admin.home')
+        @if (request()->route()->getName() == 'Admin.home')
             <!-- Home Right side for Mobile view -->
             <button
                 class="d-md-none bd-one bd-c-ededed bd-ra-12 w-30 h-30 d-flex justify-content-center align-items-center text-707070 p-0 bg-transparent"

@@ -56,10 +56,10 @@ class CourseController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
-                    <button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    <button onclick="getEditModal(\'' . route('Admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('admin.courses.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('Admin.courses.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
@@ -156,7 +156,7 @@ class CourseController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
-                    <button onclick="getEditModal(\'' . route('admin.courses.materials.index', $data->id) . '\'' . ', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo">
+                    <button onclick="getEditModal(\'' . route('Admin.courses.materials.index', $data->id) . '\'' . ', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo">
                         <img src="' . asset('assets/images/icon/edit.svg') . '" alt="edit" />
                     </button>
 
@@ -168,7 +168,7 @@ class CourseController extends Controller
         }
 
         $data['courses'] = Course::with('instructor')->get();
-        return view('admin.courses.chapters', $data);
+        return view('Admin.courses.chapters', $data);
     }
 
     public function store_chapter(Request $request)
@@ -246,16 +246,16 @@ class CourseController extends Controller
             'last_name' => 'required|string|max:255',
         ]);
 
-        // Check if admin has associated courses
+        // Check if Admin has associated courses
         $instructor = Instructor::where('user_id',$id)->first();
 
 
-        // Update admin details
+        // Update Admin details
         $instructor->first_name = $request->first_name;
         $instructor->last_name = $request->last_name;
         $instructor->save();
 
-        return redirect()->route('admin.instructors.index')->with('success','Instructor updated successfully');
+        return redirect()->route('Admin.instructors.index')->with('success','Instructor updated successfully');
     }
 
     public function delete(Request $request, $id)
@@ -273,7 +273,7 @@ class CourseController extends Controller
         }
         User::find($id)->delete();
         Instructor::where('user_id',$id)->delete();
-        return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted successfully.');
+        return redirect()->route('Admin.instructors.index')->with('success', 'Instructor deleted successfully.');
 
     }
 

@@ -12,7 +12,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $news=News::with('admin')->get();
+            $news=News::with('Admin')->get();
 
             return datatables($news)
                 ->addIndexColumn()
@@ -35,7 +35,7 @@ class NewsController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    return '<button onclick="getEditModal(\'' . route('Admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>';
                 })

@@ -5,7 +5,7 @@
         <div class="container bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
             <h2 class="text-primary-color">Add Materials</h2>
 
-            <form action="{{ route('admin.courses.materials.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('Admin.courses.materials.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="container my-4 row gap-5">
                     <div class="row">
@@ -109,7 +109,7 @@
                 chapterSelect.empty().append('<option value="">-- Select Chapter --</option>');
 
                 if (courseId) {
-                    const url = `{{ route('admin.courses.chapters.get', '') }}/${courseId}`;
+                    const url = `{{ route('Admin.courses.chapters.get', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -156,7 +156,7 @@
                 chapterSelect.empty().append('<option value="">-- Filter by Chapter --</option>');
 
                 if (courseId) {
-                    const url = `{{ route('admin.courses.chapters.get', '') }}/${courseId}`;
+                    const url = `{{ route('Admin.courses.chapters.get', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -182,7 +182,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('admin.courses.materials.index') }}`,
+                    url: `{{ route('Admin.courses.materials.index') }}`,
                     data: function(d) {
                         d.course_id = $('#course_filter').val();
                         d.chapter_id = $('#chapter_filter').val();

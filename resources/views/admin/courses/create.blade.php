@@ -5,7 +5,7 @@
     <div class="p-30" >
         <div class="">
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-                <form method="POST" action="{{route('admin.courses.store')}}" enctype="multipart/form-data" >
+                <form method="POST" action="{{route('Admin.courses.store')}}" enctype="multipart/form-data" >
                     @csrf
                     <div>
                         <div class="pb-30"></div>
@@ -99,8 +99,8 @@
         </div>
     </div>
     <div>
-        {{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
-        <input type="hidden" id="course-route" value="{{ route('admin.courses.index') }}">
+        {{--            <input type="hidden" id="job-post-update-route" value="{{ route('Admin.jobs.update.status',':id') }}">--}}
+        <input type="hidden" id="course-route" value="{{ route('Admin.courses.index') }}">
         <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
             {{--                <h4 class="fs-24 fw-500 lh-34 text-black">{{$title}}</h4>--}}
         </div>
@@ -142,7 +142,7 @@
             var status = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
-                url: '{{ route("admin.courses.updateStatus") }}',
+                url: '{{ route("Admin.courses.updateStatus") }}',
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -163,5 +163,5 @@
             });
         });
     </script>
-        <script src="{{ asset('admin/js/courses.js') }}"></script>
+        <script src="{{ asset('assets/Admin/js/courses.js') }}"></script>
 @endpush

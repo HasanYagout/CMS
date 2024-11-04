@@ -39,7 +39,7 @@
     function resetPassword(url, id) {
         Swal.fire({
             title: 'Reset Password',
-            text: 'Are you sure you want to reset this admin\'s password?',
+            text: 'Are you sure you want to reset this Admin\'s password?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

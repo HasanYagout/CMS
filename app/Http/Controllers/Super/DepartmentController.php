@@ -72,11 +72,11 @@ class DepartmentController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        // Check if admin has associated courses
+        // Check if Admin has associated courses
         $department = Department::where('id',$id)->first();
 
 
-        // Update admin details
+        // Update Admin details
         $department->name = $request->name;
         $department->save();
 

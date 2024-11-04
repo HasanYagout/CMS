@@ -94,5 +94,5 @@
             });
         });
     </script>
-    <script src="{{asset('instructor/js/announcement.js')}}"></script>
+    <script src="{{asset('assets/instructor/js/announcement.js')}}"></script>
 @endpush

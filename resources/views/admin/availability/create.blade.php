@@ -4,7 +4,7 @@
     <div class="p-30">
         <div class="">
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-                <form action="{{ route('admin.availability.store') }}" method="POST" id="availability-form">
+                <form action="{{ route('Admin.availability.store') }}" method="POST" id="availability-form">
                     @csrf
                     <div class="container">
                         <div class="row">
@@ -62,7 +62,7 @@
                 $('#end_time').prop('disabled', true);
 
                 if (instructorId) {
-                    const url = `{{ route('admin.availability.get', '') }}/${instructorId}`;
+                    const url = `{{ route('Admin.availability.get', '') }}/${instructorId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',

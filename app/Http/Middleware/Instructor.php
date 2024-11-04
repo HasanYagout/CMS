@@ -19,7 +19,7 @@ class Instructor
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role_id == 2) { // Check if the user is an admin
+            if ($user->role_id == 2) { // Check if the user is an Admin
                 return $next($request); // Allow access
             }
         }

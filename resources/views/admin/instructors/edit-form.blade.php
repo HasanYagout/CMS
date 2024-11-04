@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{route('admin.instructors.update',$instructor->user_id)}}" method="post" data-handler="commonResponseForModal">
+<form class="ajax reset" action="{{route('Admin.instructors.update',$instructor->user_id)}}" method="post" data-handler="commonResponseForModal">
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
         <!-- Header -->

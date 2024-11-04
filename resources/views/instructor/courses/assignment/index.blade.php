@@ -53,7 +53,7 @@
             </form>
         </section>
         <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
+            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('Admin.jobs.update.status',':id') }}">--}}
             <input type="hidden" id="assignments-route" value="{{ route('instructor.courses.assignments.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
             </div>
@@ -111,6 +111,6 @@
             });
         });
     </script>
-    <script src="{{ asset('instructor/js/instructorassignments.js') }}"></script>
+    <script src="{{ asset('assets/instructor/js/instructorassignments.js') }}"></script>
 
 @endpush

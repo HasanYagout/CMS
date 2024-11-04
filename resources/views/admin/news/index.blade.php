@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="">
-        <form method="POST" action="{{route('admin.news.store')}}">
+        <form method="POST" action="{{route('Admin.news.store')}}">
             @csrf
             <label for="" class="form-label">News Title</label>
             <input name="title" class="form-control w-25" type="text">
@@ -11,7 +11,7 @@
         </form>
     </x-wrapper>
     <x-wrapper title="">
-        <input type="hidden" id="news-route" value="{{ route('admin.news.index') }}">
+        <input type="hidden" id="news-route" value="{{ route('Admin.news.index') }}">
         <div class="table-responsive zTable-responsive">
             <table class="table zTable" id="newsTable">
                 <thead>
@@ -27,6 +27,6 @@
     </x-wrapper>
 @endsection
 @push('script')
-    <script src="{{ asset('admin/js/news.js') }}"></script>
+    <script src="{{ asset('assets/Admin/js/news.js') }}"></script>
 
 @endpush

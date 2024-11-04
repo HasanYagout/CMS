@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="Add Instructor">
-        <form method="POST" action="{{route('admin.instructors.store')}}">
+        <form method="POST" action="{{route('Admin.instructors.store')}}">
             @csrf
             <label class="form-label"  for="">First Name</label>
             <input class="form-control" name="first_name" type="text">
@@ -13,7 +13,7 @@
         </form>
     </x-wrapper>
     <x-wrapper title="">
-        <input type="hidden" id="admin-route" value="{{ route('admin.instructors.index') }}">
+        <input type="hidden" id="admin-route" value="{{ route('Admin.instructors.index') }}">
         <div class="table-responsive zTable-responsive">
             <table class="table zTable" id="adminTable">
                 <thead>
@@ -43,7 +43,7 @@
             var status = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
-                url: '{{ route("admin.instructors.updateStatus") }}',
+                url: '{{ route("Admin.instructors.updateStatus") }}',
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -64,5 +64,5 @@
             });
         });
     </script>
-    <script src="{{ asset('admin/js/admin.js') }}"></script>
+    <script src="{{ asset('assets/Admin/js/Admin.js') }}"></script>
 @endpush

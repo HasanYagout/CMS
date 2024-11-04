@@ -136,6 +136,6 @@
             });
         });
     </script>
-    <script src="{{ asset('instructor/js/course.js') }}"></script>
+    <script src="{{ asset('assets/instructor/js/course.js') }}"></script>
 
 @endpush

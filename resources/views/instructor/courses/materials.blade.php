@@ -176,7 +176,7 @@
                 chapterSelect.empty().append('<option value="">-- Filter by Chapter --</option>');
 
                 if (courseId) {
-                    const url = `{{ route('admin.courses.chapters.get', '') }}/${courseId}`;
+                    const url = `{{ route('Admin.courses.chapters.get', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',

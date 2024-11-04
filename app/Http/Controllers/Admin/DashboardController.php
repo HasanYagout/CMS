@@ -13,7 +13,6 @@ class DashboardController extends Controller
     public function index()
     {
         $data['courses']=Availabilities::where('instructor_id',Auth::id())->get();
-//        dd($data);
         return view('admin.dashboard');
     }
 }

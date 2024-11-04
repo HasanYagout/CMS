@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{ route('admin.courses.update',$course->id) }}" method="post"
+<form class="ajax reset" action="{{ route('Admin.courses.update',$course->id) }}" method="post"
       enctype="multipart/form-data"
     data-handler="commonResponseForModal">
     @csrf
@@ -89,7 +89,7 @@
                         </div>
                         <label for="zImageUpload" class="form-label">{{__('Upload Image')}} <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
                         <div class="upload-img-box">
-                            <img src="{{ asset('storage/admin/course'.'/'.$course->image) }}">
+                            <img src="{{ asset('storage/Admin/course'.'/'.$course->image) }}">
                             <input type="file" name="thumbnail" accept="image/*" onchange="previewFile(this)">
                         </div>
                     </div>

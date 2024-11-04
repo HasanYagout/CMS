@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['middleware' => ['admin'],'prefix'=>'admin','as' => 'admin.'], function () {
+Route::group(['middleware' => ['Admin'],'prefix'=>'Admin','as' => 'Admin.'], function () {
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group(['prefix'=>'courses','as' => 'courses.'], function () {

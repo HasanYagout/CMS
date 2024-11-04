@@ -22,9 +22,9 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 switch ($guard) {
-                    case 'admin':
+                    case 'Admin':
                         if (Auth::guard($guard)->check()) {
-                            return redirect()->route('admin.dashboard');
+                            return redirect()->route('Admin.dashboard');
                         }
                         break;
                     case 'alumni':
