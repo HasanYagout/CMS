@@ -43,7 +43,7 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Expose port 80
 EXPOSE 80
 
-RUN php artisan migrate --force
+# RUN php artisan migrate --force
 RUN chmod -R 775 storage bootstrap/cache
 
 # Start supervisor
