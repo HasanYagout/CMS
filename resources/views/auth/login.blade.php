@@ -1,7 +1,7 @@
 @extends('web.layouts.app')
 @section('content')
 
-    <div style="background-image: url('{{ asset('public/frontend/images/community-bg-1.png') }}')">
+    <div style="background-image: url('{{ asset('frontend/images/community-bg-1.png') }}')">
 
     <div class=" bg-white container pd register-right rounded-5 s shadow-lg" style="padding: 50px; margin-top: 12%">
                 <div class="primary-form">

@@ -1,15 +1,15 @@
 <!-- js file  -->
-<script src="{{ asset('public/assets/js/jquery-3.7.0.min.js')}}"></script>
-<script src="{{ asset('public/assets/js/bootstrap.min.js')}}"></script>
-<script src="{{ asset('public/assets/js/plugins.js')}}"></script>
-<script src="{{ asset('public/assets/js/dataTables.js')}}"></script>
-<script src="{{ asset('public/assets/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{ asset('public/assets/css/summernote/summernote-lite.min.js') }}"></script>
-<script src="{{ asset('public/assets/js/lc_select.min.js') }}"></script>
-<script src="{{ asset('public/assets/js/main.js')}}?ver={{ env('VERSION', 0) }}"></script>
-<script src="{{ asset('public/common/js/common.js')}}?ver={{ env('VERSION' ,0) }}"></script>
-<script src="{{ asset('public/assets/lightbox/js/lightbox.js')}}"></script>
-{{--<script src="{{ asset('public/assets/select2/js/select2.js')}}"></script>--}}
+<script src="{{ asset('assets/js/jquery-3.7.0.min.js')}}"></script>
+<script src="{{ asset('assets/js/bootstrap.min.js')}}"></script>
+<script src="{{ asset('assets/js/plugins.js')}}"></script>
+<script src="{{ asset('assets/js/dataTables.js')}}"></script>
+<script src="{{ asset('assets/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{ asset('assets/css/summernote/summernote-lite.min.js') }}"></script>
+<script src="{{ asset('assets/js/lc_select.min.js') }}"></script>
+<script src="{{ asset('assets/js/main.js')}}?ver={{ env('VERSION', 0) }}"></script>
+<script src="{{ asset('common/js/common.js')}}?ver={{ env('VERSION' ,0) }}"></script>
+<script src="{{ asset('assets/lightbox/js/lightbox.js')}}"></script>
+{{--<script src="{{ asset('assets/select2/js/select2.js')}}"></script>--}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 @stack('script')

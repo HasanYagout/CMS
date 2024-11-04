@@ -58,7 +58,7 @@
             });
         });
     </script>
-    <script src="{{ asset('public/super/js/semester.js') }}"></script>
+    <script src="{{ asset('super/js/semester.js') }}"></script>
 
 
 @endpush

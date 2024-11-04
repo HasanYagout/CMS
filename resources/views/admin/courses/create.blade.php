@@ -77,7 +77,7 @@
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap zImage-upload-details">
                                         <div class="zImage-inside">
-                                            <div class="d-flex pb-12"><img src="{{asset('public/assets/images/icon/upload-img-1.svg')}}" alt="" /></div>
+                                            <div class="d-flex pb-12"><img src="{{asset('assets/images/icon/upload-img-1.svg')}}" alt="" /></div>
                                             <p class="fs-15 fw-500 lh-16 text-1b1c17">{{__('Drag & drop files here')}}</p>
                                         </div>
                                         <label for="zImageUpload" class="form-label">{{__('Upload Image')}} <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
@@ -112,8 +112,12 @@
                     <tr>
 
                         <th scope="col"><div>{{ __('Name') }}</div></th>
+                        <th scope="col"><div>{{ __('Image') }}</div></th>
+                        <th scope="col"><div>{{ __('Semester') }}</div></th>
+                        <th scope="col"><div>{{ __('Start Date') }}</div></th>
+                        <th scope="col"><div>{{ __('End Date') }}</div></th>
                         <th scope="col"><div>{{ __('Status') }}</div></th>
-                        <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                        <th scope="col"><div>{{ __('Action') }}</div></th>
                     </tr>
                     </thead>
                 </table>
@@ -133,49 +137,31 @@
 
 @push('script')
     <script>
-        $(document).ready(function() {
-            $('#instructor').on('change', function() {
-                var instructorId = $(this).val(); // Get selected instructor ID
-                console.log(instructorId);
-                if (instructorId) {
-                    var url = "{{ route('admin.availability.getAvailabilityByInstructor')}}";
-                    $.ajax({
-                        url: url, // Adjust the URL as necessary
-                        type: 'GET',
-                        data: {
-                            instructorId: instructorId
-                        },
-                        success: function(data) {
-                            $('#availability').empty(); // Clear the availability dropdown
+        $(document).on('change', '.toggle-status', function() {
+            var adminId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
 
-                            if (data.length > 0) {
-                                // Populate availability dropdown with options
-                                $.each(data, function(index, availability) {
-                                    // Decode the JSON days
-                                    var days = JSON.parse(availability.days);
-                                    // Format the days as a string
-                                    var daysString = days.join(', '); // Join days with a comma, adjust as necessary
-
-                                    $('#availability').append($('<option></option>')
-                                        .attr('value', availability.id)
-                                        .text(daysString + ' ( ' + availability.start_time + ' - ' + availability.end_time + ' )')
-                                    );
-                                });
-                            } else {
-                                $('#availability').append('<option value="">No availability found</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ', status, error);
-                        }
-                    });
-                } else {
-                    $('#availability').empty().append('<option value="">Select availability</option>'); // Reset the dropdown if no instructor is selected
+            $.ajax({
+                url: '{{ route("admin.courses.updateStatus") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: adminId,
+                    status: status
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        toastr.success('Status updated successfully.');
+                    } else {
+                        toastr.error('Failed to update status.');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error updating status.');
                 }
             });
         });
     </script>
-
-        <script src="{{ asset('public/admin/js/courses.js') }}"></script>
-
+        <script src="{{ asset('admin/js/courses.js') }}"></script>
 @endpush

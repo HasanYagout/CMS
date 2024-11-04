@@ -1555,6 +1555,7 @@
 }
 .hover-bg-one:hover {
   background-color: var(--primary-color) !important;
+    color: white!important;
 }
 .hover-bg-two:hover {
   background-color: var(--primary-color) !important;

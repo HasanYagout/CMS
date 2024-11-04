@@ -57,15 +57,15 @@
                                                 <p class="fs-16 lh-18 fw-500 text-707070">{{ __('Add to your post') }}:</p>
                                                 <div class="align-items-center cg-10 d-flex flex-shrink-0">
                                                     <label for="mAttachment1"><img
-                                                            onerror="this.src='{{asset('public/assets/images/no-image.jpg')}}'"
-                                                            src="{{ asset('public/assets/images/icon/post-photo.svg') }}"
+                                                            onerror="this.src='{{asset('assets/images/no-image.jpg')}}'"
+                                                            src="{{ asset('assets/images/icon/post-photo.svg') }}"
                                                             alt="" /></label>
                                                     <input type="file" name="images[]"
                                                            accept=".png,.jpg,.svg,.jpeg,.gif,.mp4,.mov,.avi,.mkv,.webm,.flv"
                                                            id="mAttachment1" class="d-none" multiple />
                                                     <label for="mAttachment1"><img
-                                                            onerror="this.src='{{asset('public/assets/images/no-image.jpg')}}'"
-                                                            src="{{ asset('public/assets/images/icon/post-video.svg') }}"
+                                                            onerror="this.src='{{asset('assets/images/no-image.jpg')}}'"
+                                                            src="{{ asset('assets/images/icon/post-video.svg') }}"
                                                             alt="" /></label>
                                                 </div>
                                             </div>
@@ -123,7 +123,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            const path = "{{ asset('public/assets/images/icon/upload-img-1.svg') }}";
+            const path = "{{ asset('assets/images/icon/upload-img-1.svg') }}";
 
             $('#course').off('change').on('change', function() {
                 const courseId = $(this).val();
@@ -148,7 +148,7 @@
             });
 
             $('#add-material').off('click').on('click', function() {
-                const url=`{{ asset('public/assets/images/icon/upload-img-1.svg') }}`;
+                const url=`{{ asset('assets/images/icon/upload-img-1.svg') }}`;
                 const newMaterial = `
                     <div class="col-lg-6">
                     <div class="primary-form-group my-4">

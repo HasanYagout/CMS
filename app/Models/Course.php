@@ -20,9 +20,9 @@ class Course extends Model
         return $this->hasMany(Enrollment::class);
     }
 
-    public function availability()
+    public function availabilities()
     {
-        return $this->hasOne(Availabilities::class);
+        return $this->hasMany(Availabilities::class);
     }
 
     public function semester()

@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{ route('admin.courses.update') }}" method="post"
+<form class="ajax reset" action="{{ route('admin.courses.update',$course->id) }}" method="post"
       enctype="multipart/form-data"
     data-handler="commonResponseForModal">
     @csrf
@@ -7,7 +7,7 @@
             <h4 class="fs-20 fw-500 lh-38 text-1b1c17">{{__('Update New')}}</h4>
             <div class="mClose">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
-                        src="{{asset('public/assets/images/icon/delete.svg')}}" alt="" /></button>
+                        src="{{asset('assets/images/icon/delete.svg')}}" alt="" /></button>
             </div>
         </div>
         <div class="row rg-25">
@@ -30,7 +30,9 @@
 
                         <select class="primary-form-control sf-select-without-search" id="category_id"
                             name="category_id">
+
                             @foreach ($instructors as $instructor)
+
                             <option {{$instructor->id==$course->instructor_id?'selected':''}}>{{ $instructor->first_name }}</option>
                             @endforeach
                         </select>
@@ -82,12 +84,12 @@
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap zImage-upload-details">
                         <div class="zImage-inside">
-                            <div class="d-flex pb-12"><img src="{{asset('public/assets/images/icon/upload-img-1.svg')}}" alt="" /></div>
+                            <div class="d-flex pb-12"><img src="{{asset('assets/images/icon/upload-img-1.svg')}}" alt="" /></div>
                             <p class="fs-15 fw-500 lh-16 text-1b1c17">{{__('Drag & drop files here')}}</p>
                         </div>
                         <label for="zImageUpload" class="form-label">{{__('Upload Image')}} <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
                         <div class="upload-img-box">
-                            <img src="{{ asset('public/storage/admin/course'.'/'.$course->image) }}">
+                            <img src="{{ asset('storage/admin/course'.'/'.$course->image) }}">
                             <input type="file" name="thumbnail" accept="image/*" onchange="previewFile(this)">
                         </div>
                     </div>

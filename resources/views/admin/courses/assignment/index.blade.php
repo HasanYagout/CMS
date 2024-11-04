@@ -111,6 +111,6 @@
             });
         });
     </script>
-    <script src="{{ asset('public/admin/js/instructorassignments.js') }}"></script>
+    <script src="{{ asset('admin/js/instructorassignments.js') }}"></script>
 
 @endpush

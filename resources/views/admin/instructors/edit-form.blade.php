@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{route('superAdmin.semesters.update',$department->id)}}" method="post" data-handler="commonResponseForModal">
+<form class="ajax reset" action="{{route('admin.instructors.update',$instructor->user_id)}}" method="post" data-handler="commonResponseForModal">
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
         <!-- Header -->
@@ -14,8 +14,16 @@
             <div class="col-12">
                 <div class="primary-form-group mt-2">
                     <div class="primary-form-group-wrap">
-                        <label for="firstName" class="form-label">{{ __('Name') }} <span class="text-danger">*</span></label>
-                        <input type="text" class="primary-form-control" name="name" value="{{ $department->name }}">
+                        <label for="firstName" class="form-label">{{ __('First Name') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="primary-form-control" name="first_name" value="{{ $instructor->first_name }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="primary-form-group mt-2">
+                    <div class="primary-form-group-wrap">
+                        <label for="firstName" class="form-label">{{ __('Last Name') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="primary-form-control" name="last_name" value="{{ $instructor->last_name }}">
                     </div>
                 </div>
             </div>

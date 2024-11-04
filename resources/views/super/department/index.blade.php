@@ -59,6 +59,6 @@
             });
         });
     </script>
-    <script src="{{ asset('public/super/js/department.js') }}"></script>
+    <script src="{{ asset('super/js/department.js') }}"></script>
 
 @endpush

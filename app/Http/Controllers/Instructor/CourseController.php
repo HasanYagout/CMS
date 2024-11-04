@@ -20,7 +20,7 @@ class CourseController extends Controller
                     return $data->course->name;
                 })
                 ->addColumn('image', function ($data) {
-                    return '<img src="' . asset('public/storage/courses') .'/'.$data->course->image. '" alt="upload" />';
+                    return '<img src="' . asset('storage/courses') .'/'.$data->course->image. '" alt="upload" />';
 
                 })
                 ->addColumn('lectures', function ($data) {

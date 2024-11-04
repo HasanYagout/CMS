@@ -1,6 +1,6 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
 <div
-    class="main-header border shadow-sm py-10 px-30 bg-white d-flex justify-content-between align-items-center" style="background: url("{{asset('public/frontend/images/community-bg.png')}}")" data-background="{{asset('public/frontend/images/community-bg.png')}}">
+    class="main-header border shadow-sm py-10 px-30 bg-white d-flex justify-content-between align-items-center" style="background: url("{{asset('frontend/images/community-bg.png')}}")" data-background="{{asset('frontend/images/community-bg.png')}}">
 
 <div class="d-flex align-items-center cg-15" >
     <!-- Mobile Menu Button -->
@@ -48,8 +48,8 @@
                     data-bs-toggle="dropdown" aria-expanded="false">
                 @if ($authenticatedUser)
 {{--                    <div class="w-42 h-42 rounded-circle overflow-hidden bd-one bd-c-primary-color">--}}
-{{--                        <img class="h-100 object-fit-cover ratio" onerror="this.src='{{ asset('public/assets/images/no-image.jpg') }}'"--}}
-{{--                             src="{{ asset('public/storage') . '/' . $role . '/'.'image'.'/' . $userInfo->image }}"--}}
+{{--                        <img class="h-100 object-fit-cover ratio" onerror="this.src='{{ asset('assets/images/no-image.jpg') }}'"--}}
+{{--                             src="{{ asset('storage') . '/' . $role . '/'.'image'.'/' . $userInfo->image }}"--}}
 {{--                             alt="{{ $userInfo->first_name . ' ' . $userInfo->last_name }}" />--}}
 {{--                    </div>--}}
                     <div class="text-start d-none d-sm-block">
@@ -103,7 +103,7 @@
                 class="d-md-none bd-one bd-c-ededed bd-ra-12 w-30 h-30 d-flex justify-content-center align-items-center text-707070 p-0 bg-transparent"
                 type="button" data-bs-toggle="offcanvas" data-bs-target="#homeRightSideView"
                 aria-controls="homeRightSideView">
-                <img src="{{ asset('public/assets/images/icon/nav-right-menu.svg') }}" alt="" />
+                <img src="{{ asset('assets/images/icon/nav-right-menu.svg') }}" alt="" />
             </button>
         @endif
     </div>

@@ -10,7 +10,7 @@
 
     <div id="preloader">
         <div id="preloader_status">
-            <img src="{{ asset('public/frontend/images/liu-logo.png') }}" alt="{{ getOption('app_name') }}" />
+            <img src="{{ asset('frontend/images/liu-logo.png') }}" alt="{{ getOption('app_name') }}" />
         </div>
     </div>
     <!-- Main Content -->

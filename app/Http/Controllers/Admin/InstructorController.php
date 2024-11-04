@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Availabilities;
 use App\Models\Department;
 use App\Models\Instructor;
+use App\Models\InstructorActivity;
+use App\Models\InstructorAssignments;
+use App\Models\InstructorQuiz;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +21,8 @@ class InstructorController extends Controller
     {
         if ($request->ajax()) {
             $departmentId = Auth::user()->admin->department_id;
-            $admins = User::where('role_id', 1)
-                ->orWhere('role_id', 2) // Assuming you also want to include Instructors
-                ->whereHas('admin', function ($query) use ($departmentId) {
+            $admins = User::where('role_id', 2)
+                ->whereHas('instructor', function ($query) use ($departmentId) {
                     $query->where('department_id', $departmentId);
                 })
                 ->with('admin.department', 'instructor')
@@ -28,7 +31,11 @@ class InstructorController extends Controller
             return datatables($admins)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-                    return $data->admin->first_name.' '.$data->admin->last_name;
+                    return $data->instructor->first_name.' '.$data->instructor->last_name;
+
+                })
+                ->addColumn('email', function ($data) {
+                    return $data->email;
 
                 })
                 ->addColumn('status', function ($data) {
@@ -43,9 +50,16 @@ class InstructorController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
-                <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
-            </button>';
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('admin.instructors.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                    <button onclick="deleteItem(\'' . route('admin.instructors.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
                 ->rawColumns(['name','action','status'])
                 ->make(true);
@@ -81,5 +95,55 @@ class InstructorController extends Controller
 
 
         return redirect()->route('admin.instructors.index')->with('success', 'Admin added successfully.');
+    }
+    public function updateStatus(Request $request)
+    {
+
+        User::find($request->id)->update(['status' => $request->status]);
+        return response()->json(['success' => true]);
+    }
+
+    public function edit($id)
+    {
+        $data['instructor']= Instructor::where('user_id', $id)->first();
+        return view('admin.instructors.edit-form', $data);
+    }
+    public function update(Request $request, $id)
+    {
+        // Validate the form inputs
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        // Check if admin has associated courses
+        $instructor = Instructor::where('user_id',$id)->first();
+
+
+        // Update admin details
+        $instructor->first_name = $request->first_name;
+        $instructor->last_name = $request->last_name;
+        $instructor->save();
+
+        return redirect()->route('admin.instructors.index')->with('success','Instructor updated successfully');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        // Check if the instructor has associated courses
+        $hasCourses = Availabilities::where('instructor_id', $id)->exists();
+
+        // Check if the instructor has associated assignments, quizzes, or activities
+        $hasAssignments = InstructorAssignments::where('instructor_id', $id)->exists();
+        $hasQuizzes = InstructorQuiz::where('instructor_id', $id)->exists();
+        $hasActivities = InstructorActivity::where('instructor_id', $id)->exists();
+
+        if ($hasCourses || $hasAssignments || $hasQuizzes || $hasActivities) {
+            return back()->with('error', 'Cannot delete instructor as there are associated courses, assignments, quizzes, or activities.');
+        }
+        User::find($id)->delete();
+        Instructor::where('user_id',$id)->delete();
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted successfully.');
+
     }
 }

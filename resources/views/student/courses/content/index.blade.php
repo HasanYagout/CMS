@@ -20,7 +20,7 @@
                                   @if($lecture->materials)
                                       @foreach($lecture->materials as $material)
                                           <div class="col-lg-4">
-                                              <a href="{{ asset('public/storage/' . $material->url) }}" class="bg-secondary-color p-2 rounded my-3 text-white" download>
+                                              <a href="{{ asset('storage/' . $material->url) }}" class="bg-secondary-color p-2 rounded my-3 text-white" download>
                                                   @if($material->type == 'image')
                                                       <i class="fa fa-image"></i> <!-- Font Awesome Image Icon -->
                                                   @elseif($material->type == 'video')

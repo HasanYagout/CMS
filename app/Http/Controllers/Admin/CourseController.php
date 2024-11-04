@@ -20,7 +20,7 @@ class CourseController extends Controller
     {
 
         if ($request->ajax()) {
-            $course = Course::with('semester')->orderBy('id', 'desc')->get();
+            $course = Course::with('semester')->where('department_id',Auth::user()->admin->department_id)->orderBy('id', 'desc')->get();
             return datatables($course)
                 ->addIndexColumn()
                 ->addColumn('id', function ($data) {
@@ -30,7 +30,7 @@ class CourseController extends Controller
                     return $data->name;
                 })
                 ->addColumn('image', function ($data) {
-                    return $data->image;
+                    return '<img src='.asset('storage/courses').'/'.$data->image.'>';
                 })
                 ->addColumn('semester', function ($data) {
 
@@ -54,9 +54,16 @@ class CourseController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
-                <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
-            </button>';
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                    <button onclick="deleteItem(\'' . route('admin.courses.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
                 ->rawColumns(['name','semester','image','action','status'])
                 ->make(true);
@@ -66,20 +73,13 @@ class CourseController extends Controller
         return view('admin.courses.index',$data);
     }
 
-    public function edit($id)
-    {
-        $course=Course::with('instructor')->find($id);
-        $instructors=Instructor::all();
-        $availabilities=Availabilities::all();
-        $semesters=Semester::all();
-        return view('admin.courses.edit-form',compact('course','instructors','availabilities','semesters'));
-    }
+
 
     public function create()
     {
-        $data['availabilities']=Availabilities::with('instructor')->get();
-        $data['instructors']=Instructor::all();
-        $data['semesters']=Semester::all();
+        $data['semesters']=Semester::where('status',1)->get();
+        $data['showCourseManagement']='show';
+        $data['activeCourseCreate']='active';
         return view('admin.courses.create',$data);
     }
 
@@ -117,10 +117,7 @@ class CourseController extends Controller
 
     }
 
-    public function update()
-    {
 
-    }
 
     public function chapter(Request $request)
     {
@@ -160,7 +157,7 @@ class CourseController extends Controller
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
                     <button onclick="getEditModal(\'' . route('admin.courses.materials.index', $data->id) . '\'' . ', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo">
-                        <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="edit" />
+                        <img src="' . asset('assets/images/icon/edit.svg') . '" alt="edit" />
                     </button>
 
                 </li>
@@ -191,10 +188,6 @@ class CourseController extends Controller
         }
 
     }
-
-
-
-
 
     public function instructors()
     {
@@ -231,6 +224,57 @@ class CourseController extends Controller
     }
 
 
+    public function updateStatus(Request $request)
+    {
+        Course::find($request->id)->update(['status' => $request->status]);
+        return response()->json(['success' => true]);
+    }
 
+    public function edit($id)
+    {
+        $data['course']= Course::find($id);
+        $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
+            ->get();
+
+        return view('admin.courses.edit-form', $data);
+    }
+    public function update(Request $request, $id)
+    {
+        // Validate the form inputs
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        // Check if admin has associated courses
+        $instructor = Instructor::where('user_id',$id)->first();
+
+
+        // Update admin details
+        $instructor->first_name = $request->first_name;
+        $instructor->last_name = $request->last_name;
+        $instructor->save();
+
+        return redirect()->route('admin.instructors.index')->with('success','Instructor updated successfully');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        // Check if the instructor has associated courses
+        $hasCourses = Availabilities::where('instructor_id', $id)->exists();
+
+        // Check if the instructor has associated assignments, quizzes, or activities
+        $hasAssignments = InstructorAssignments::where('instructor_id', $id)->exists();
+        $hasQuizzes = InstructorQuiz::where('instructor_id', $id)->exists();
+        $hasActivities = InstructorActivity::where('instructor_id', $id)->exists();
+
+        if ($hasCourses || $hasAssignments || $hasQuizzes || $hasActivities) {
+            return back()->with('error', 'Cannot delete instructor as there are associated courses, assignments, quizzes, or activities.');
+        }
+        User::find($id)->delete();
+        Instructor::where('user_id',$id)->delete();
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted successfully.');
+
+    }
 
 }

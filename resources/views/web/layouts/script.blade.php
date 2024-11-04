@@ -1,9 +1,9 @@
 <!-- js file  -->
-<script src="{{ asset('public/frontend/js/jquery-3.7.0.min.js') }}"></script>
-<script src="{{ asset('public/frontend/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('public/frontend/js/plugins.js') }}"></script>
-<script src="{{ asset('public/frontend/js/main.js') }}"></script>
-<script src="{{ asset('public/common/js/common.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery-3.7.0.min.js') }}"></script>
+<script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('frontend/js/plugins.js') }}"></script>
+<script src="{{ asset('frontend/js/main.js') }}"></script>
+<script src="{{ asset('common/js/common.js') }}"></script>
 
 @stack('script')
 

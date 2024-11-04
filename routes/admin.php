@@ -16,8 +16,10 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/edit/{id}', [CourseController::class, 'edit'])->name('edit');
         Route::get('/create', [CourseController::class, 'create'])->name('create');
         Route::post('/store', [CourseController::class, 'store'])->name('store');
-        Route::post('/update', [CourseController::class, 'update'])->name('update');
+        Route::post('/update/{id}', [CourseController::class,'update'])->name('update');
         Route::get('/info/{id}', [CourseController::class, 'info'])->name('info');
+        Route::post('/updateStatus', [CourseController::class,'updateStatus'])->name('updateStatus');
+        Route::post('/delete/{id}', [CourseController::class,'delete'])->name('delete');
 
         Route::group(['prefix'=>'instructors','as' => 'instructors.'], function () {
             Route::get('/', [CourseController::class, 'instructors'])->name('index');
@@ -50,6 +52,10 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::group(['prefix'=>'instructors','as' => 'instructors.'], function () {
         Route::get('/', [InstructorController::class, 'index'])->name('index');
         Route::post('/store', [InstructorController::class, 'store'])->name('store');
+        Route::post('/updateStatus', [InstructorController::class,'updateStatus'])->name('updateStatus');
+        Route::get('/edit/{id}', [InstructorController::class,'edit'])->name('edit');
+        Route::post('/update/{id}', [InstructorController::class,'update'])->name('update');
+        Route::post('/delete/{id}', [InstructorController::class,'delete'])->name('delete');
     });
 
     Route::group(['prefix'=>'news','as' => 'news.'], function () {

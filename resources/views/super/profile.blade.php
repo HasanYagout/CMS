@@ -5,7 +5,7 @@
         <div class="col-lg-4">
             <x-wrapper title="Profile">
                 <section>
-                    <img onerror="this.src='{{ asset('public/assets/images/no-image.webp') }}'" style="height: 200px; width: 200px" src="{{ asset('public/storage/profile/' . $user->image) }}" alt="">
+                    <img onerror="this.src='{{ asset('assets/images/no-image.webp') }}'" style="height: 200px; width: 200px" src="{{ asset('storage/profile/' . $user->image) }}" alt="">
                 </section>
             </x-wrapper>
         </div>

@@ -75,10 +75,10 @@
                             @foreach($activeLecture->materials as $material)
                                 <div class="col-lg-4">
                                     @if($material->type == 'image')
-                                        <img src="{{ asset('public/storage/' . $material->file_path) }}" alt="" style="max-width: 100%;">
+                                        <img src="{{ asset('storage/' . $material->file_path) }}" alt="" style="max-width: 100%;">
                                     @elseif($material->type == 'video')
                                         <video controls style="max-width: 100%;">
-                                            <source src="{{ asset('public/storage/' . $material->file_path) }}" type="video/{{ pathinfo($material->file_path, PATHINFO_EXTENSION) }}">
+                                            <source src="{{ asset('storage/' . $material->file_path) }}" type="video/{{ pathinfo($material->file_path, PATHINFO_EXTENSION) }}">
                                             Your browser does not support the video tag.
                                         </video>
                                     @endif

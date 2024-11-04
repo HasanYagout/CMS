@@ -8,7 +8,7 @@
                 <!-- Left / Logo -->
                 <div class="col-lg-1 col-6">
 {{--                    <a href="{{ route('index') }}" class="d-flex justify-content-center align-items-center max-w-146">--}}
-{{--                        <img height="100" width="100" src="{{ asset('public/frontend/images/liu-logo.png') }}" alt="LIU Logo" /></a>--}}
+{{--                        <img height="100" width="100" src="{{ asset('frontend/images/liu-logo.png') }}" alt="LIU Logo" /></a>--}}
                 </div>
                 <!-- Middle / Menu -->
                 <div class="col-lg-6 col-6">

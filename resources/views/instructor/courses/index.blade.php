@@ -13,6 +13,6 @@
 </x-wrapper>
 @endsection
 @push('script')
-    <script src="{{ asset('public/instructor/js/course.js') }}"></script>
+    <script src="{{ asset('instructor/js/course.js') }}"></script>
 
 @endpush

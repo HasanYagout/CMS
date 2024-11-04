@@ -1,7 +1,7 @@
 <!-- Start Header -->
 <style>
     .menu-dropdown-toggle::after {
-        background-image: url({{asset('public/frontend/images/icon/angle-down.svg')}});
+        background-image: url({{asset('frontend/images/icon/angle-down.svg')}});
         border: none;
         background-size: 0.75rem;
         width: 0.75rem;
@@ -23,7 +23,7 @@
                 <!-- Left / Logo -->
                 <div class="col-lg-1 col-6">
                     <a href="{{ route('index') }}" class="d-flex justify-content-center align-items-center max-w-146">
-                        <img height="100" width="100" src="{{ asset('public/frontend/images/liu-logo.png') }}" alt="LIU Logo" /></a>
+                        <img height="100" width="100" src="{{ asset('frontend/images/liu-logo.png') }}" alt="LIU Logo" /></a>
                 </div>
                 <!-- Middle / Menu -->
                 <div class="col-lg-6 col-6">

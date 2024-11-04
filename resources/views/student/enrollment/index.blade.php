@@ -13,7 +13,7 @@
                                     <section class="rounded border">
                                         <section class="bg-third-color m-2 position-absolute px-10 rounded w-25">
                                         </section>
-                                        <img class="w-100" style="height: 240px" src="{{asset('public/storage/courses').'/'.$course->image}}">
+                                        <img class="w-100" style="height: 240px" src="{{asset('storage/courses').'/'.$course->image}}">
                                     </section>
 
                                     <section >

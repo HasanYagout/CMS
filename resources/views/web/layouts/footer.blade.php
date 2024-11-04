@@ -1,7 +1,7 @@
 <!-- Start Join Community -->
 <section>
     <div class="continer">
-        <div class="join-community bg-secondary-color" data-background="{{ asset('public/assets/images/community-bg.png') }}">
+        <div class="join-community bg-secondary-color" data-background="{{ asset('assets/images/community-bg.png') }}">
             <div class="left max-w-498">
                 <h4 class="fs-36 fw-600 lh-36 text-black-color pb-15">{{ __(getOption('join_our_community_title')) }}
                 </h4>
@@ -24,22 +24,22 @@
                             <li>
                                 <a target="__blank" href="{{ getOption('facebook_url') }}"
                                     class="d-flex justify-content-center align-items-center w-50 h-50 rounded-circle bg-white hover-bg-color-primary"><img
-                                        src="{{ asset('public/assets/images/icon/facebook.svg') }}" alt="" /></a>
+                                        src="{{ asset('assets/images/icon/facebook.svg') }}" alt="" /></a>
                             </li>
                             <li>
                                 <a target="__blank" href="{{ getOption('twitter_url') }}"
                                     class="d-flex justify-content-center align-items-center w-50 h-50 rounded-circle bg-white hover-bg-color-primary"><img
-                                        src="{{ asset('public/assets/images/icon/twitter.svg') }}" alt="" /></a>
+                                        src="{{ asset('assets/images/icon/twitter.svg') }}" alt="" /></a>
                             </li>
                             <li>
                                 <a target="__blank" href="{{ getOption('linkedin_url') }}"
                                     class="d-flex justify-content-center align-items-center w-50 h-50 rounded-circle bg-white hover-bg-color-primary"><img
-                                        src="{{ asset('public/assets/images/icon/linkedin.svg') }}" alt="" /></a>
+                                        src="{{ asset('assets/images/icon/linkedin.svg') }}" alt="" /></a>
                             </li>
                             <li>
                                 <a target="__blank" href="{{ getOption('instagram_url') }}"
                                     class="d-flex justify-content-center align-items-center w-50 h-50 rounded-circle bg-white hover-bg-color-primary"><img
-                                        src="{{ asset('public/assets/images/icon/instagram.svg') }}" alt="" /></a>
+                                        src="{{ asset('assets/images/icon/instagram.svg') }}" alt="" /></a>
                             </li>
                         </ul>
                     </div>

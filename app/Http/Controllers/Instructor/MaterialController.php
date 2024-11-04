@@ -24,7 +24,7 @@ class MaterialController extends Controller
             return datatables($material->orderBy('id', 'desc'))
                 ->addIndexColumn()
                 ->addColumn('image', function ($data) {
-                    return '<img width="60" src="' . asset('public/storage/materials/' . $data->url) . '" alt="icon" class="rounded avatar-xs max-h-35">';
+                    return '<img width="60" src="' . asset('storage/materials/' . $data->url) . '" alt="icon" class="rounded avatar-xs max-h-35">';
                 })
                 ->addColumn('title', function ($data) {
                     return $data->title;
@@ -42,7 +42,7 @@ class MaterialController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Edit') . '">
-                    <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="edit" />
+                    <img src="' . asset('assets/images/icon/edit.svg') . '" alt="edit" />
                 </button>';
                 })
                 ->rawColumns(['title', 'status', 'image', 'action'])

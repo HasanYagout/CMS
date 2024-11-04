@@ -20,14 +20,49 @@
                 <tr>
 
                     <th scope="col"><div>{{ __('Name') }}</div></th>
+                    <th scope="col"><div>{{ __('Email') }}</div></th>
                     <th scope="col"><div>{{ __('Status') }}</div></th>
                     <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                 </tr>
                 </thead>
             </table>
         </div>
+        <div class="modal fade zModalTwo" id="edit-modal" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content zModalTwo-content">
+
+                </div>
+            </div>
+        </div>
     </x-wrapper>
 @endsection
 @push('script')
-    <script src="{{ asset('public/admin/js/admin.js') }}"></script>
+    <script>
+        $(document).on('change', '.toggle-status', function() {
+            var adminId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: '{{ route("admin.instructors.updateStatus") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: adminId,
+                    status: status
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        toastr.success('Status updated successfully.');
+                    } else {
+                        toastr.error('Failed to update status.');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error updating status.');
+                }
+            });
+        });
+    </script>
+    <script src="{{ asset('admin/js/admin.js') }}"></script>
 @endpush

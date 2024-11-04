@@ -33,7 +33,7 @@
         <div class="zSidebar-overlay"></div>
         <!-- Logo -->
 {{--        <a href="{{ route('index') }}" class="d-block mx-26">--}}
-{{--            <img class="max-h-69 d-block m-auto" src="{{ asset('public/frontend/images/liu-logo.png') }}"--}}
+{{--            <img class="max-h-69 d-block m-auto" src="{{ asset('frontend/images/liu-logo.png') }}"--}}
 {{--                 alt="LIU Logo"/>--}}
 {{--        </a>--}}
         <!-- Menu & Logout -->

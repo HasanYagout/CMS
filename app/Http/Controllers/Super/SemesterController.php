@@ -34,10 +34,10 @@ class SemesterController extends Controller
                         return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
                     <button onclick="getEditModal(\'' . route('superAdmin.semesters.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
-                <img src="' . asset('public/assets/images/icon/edit.svg') . '" alt="upload" />
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
                     <button onclick="deleteItem(\'' . route('superAdmin.semesters.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
-                        <img src="' . asset('public/assets/images/icon/delete-1.svg') . '" alt="delete">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
             </ul>';

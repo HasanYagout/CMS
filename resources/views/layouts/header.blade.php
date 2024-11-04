@@ -25,18 +25,18 @@
         href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900;1000&display=swap"
         rel="stylesheet" />
     <!-- css file  -->
-    <link rel="stylesheet" href="{{ asset('public/assets/lightbox/css/lightbox.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/plugins.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/dataTables.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/dataTables.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/dataTables.responsive.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/scss/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/responsive.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/assets/css/summernote/summernote-lite.min.css') }}" />
-{{--    <link rel="stylesheet" href="{{ asset('public/assets/select2/css/select2.css') }}" />--}}
+    <link rel="stylesheet" href="{{ asset('assets/lightbox/css/lightbox.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.responsive.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/scss/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/summernote/summernote-lite.min.css') }}" />
+{{--    <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.css') }}" />--}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="{{ asset('public/assets/js/modernizr-3.11.2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/modernizr-3.11.2.min.js') }}"></script>
     @stack('style')
 
     @if(getOption('google_analytics_status', 0))
