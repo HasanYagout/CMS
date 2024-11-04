@@ -2,8 +2,8 @@
 @section('content')
     <div class="p-30">
         <div>
-            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('Admin.jobs.update.status',':id') }}">--}}
-            <input type="hidden" id="availability-route" value="{{ route('Admin.availability.index') }}">
+            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
+            <input type="hidden" id="availability-route" value="{{ route('admin.availability.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
                 {{--                <h4 class="fs-24 fw-500 lh-34 text-black">{{$title}}</h4>--}}
             </div>
@@ -54,5 +54,5 @@
     </div>
 @endsection
 @push('script')
-    <script src="{{ asset('assets/Admin/js/course.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/course.js') }}"></script>
 @endpush

@@ -612,8 +612,8 @@ if(!function_exists("getRoleName")){
     function getRoleName($input = null)
     {
         $output = [
-            USER_ROLE_SUPER_ADMIN => __('Super Admin'),
-            USER_ROLE_ADMIN => __('Admin'),
+            USER_ROLE_SUPER_ADMIN => __('Super admin'),
+            USER_ROLE_ADMIN => __('admin'),
             USER_ROLE_ALUMNI => __('User'),
         ];
 

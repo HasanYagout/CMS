@@ -1,9 +1,9 @@
-<form class="ajax reset" action="{{route('Admin.instructors.update',$instructor->user_id)}}" method="post" data-handler="commonResponseForModal">
+<form class="ajax reset" action="{{route('admin.instructors.update',$instructor->user_id)}}" method="post" data-handler="commonResponseForModal">
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center pb-30">
-            <h4 class="fs-20 fw-500 lh-38 text-1b1c17">{{ __('Update Admin') }}</h4>
+            <h4 class="fs-20 fw-500 lh-38 text-1b1c17">{{ __('Update admin') }}</h4>
             <div class="mClose">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <img src="{{ asset('assets/images/icon/delete.svg') }}" alt="" />

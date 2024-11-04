@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{ route('Admin.courses.update') }}" method="post"
+<form class="ajax reset" action="{{ route('admin.courses.update') }}" method="post"
       enctype="multipart/form-data"
     data-handler="commonResponseForModal">
     @csrf

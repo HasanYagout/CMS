@@ -1,4 +1,4 @@
-<form class="ajax reset" action="{{ route('Admin.courses.update', $course->id) }}" method="post" enctype="multipart/form-data" data-handler="commonResponseForModal">
+<form class="ajax reset" action="{{ route('admin.courses.update', $course->id) }}" method="post" enctype="multipart/form-data" data-handler="commonResponseForModal">
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
         <div class="d-flex justify-content-between align-items-center pb-30">

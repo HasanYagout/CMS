@@ -72,5 +72,5 @@
         });
 
     </script>
-    <script src="{{ asset('assets/super/js/Admin.js') }}"></script>
+    <script src="{{ asset('assets/super/js/admin.js') }}"></script>
 @endpush

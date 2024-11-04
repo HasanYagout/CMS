@@ -36,7 +36,7 @@
             </div>
         </form>
         <div>
-            <input type="hidden" id="chapter-route" value="{{ route('Admin.courses.chapters.index') }}">
+            <input type="hidden" id="chapter-route" value="{{ route('admin.courses.chapters.index') }}">
                 <div class="primary-form-group mb-3">
                     <div class="primary-form-group-wrap col-3">
                         <select name="course_id" id="course" class="primary-form-control" spellcheck="false">

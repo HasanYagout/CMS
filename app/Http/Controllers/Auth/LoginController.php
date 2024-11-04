@@ -18,7 +18,7 @@ class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest:Admin', ['except' => ['logout']]);
+        $this->middleware('guest:admin', ['except' => ['logout']]);
     }
 
 
@@ -50,7 +50,7 @@ class LoginController extends Controller
                 // Redirect based on user role
                 switch ($user->role_id) {
                     case 1:
-                        return redirect()->route('Admin.dashboard');
+                        return redirect()->route('admin.dashboard');
                     case 2:
                         return redirect()->route('instructor.dashboard');
                     case 3:
@@ -71,7 +71,7 @@ class LoginController extends Controller
             }
         } else {
             return back()->withErrors([
-                'email' => 'You are blocked. Contact Admin.',
+                'email' => 'You are blocked. Contact admin.',
             ]);
         }
 

@@ -25,7 +25,7 @@ class InstructorController extends Controller
                 ->whereHas('instructor', function ($query) use ($departmentId) {
                     $query->where('department_id', $departmentId);
                 })
-                ->with('Admin.department', 'instructor')
+                ->with('admin.department', 'instructor')
                 ->get();
 
             return datatables($admins)
@@ -52,10 +52,10 @@ class InstructorController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
-                    <button onclick="getEditModal(\'' . route('Admin.instructors.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    <button onclick="getEditModal(\'' . route('admin.instructors.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('Admin.instructors.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('admin.instructors.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
@@ -94,7 +94,7 @@ class InstructorController extends Controller
            ]);
 
 
-        return redirect()->route('Admin.instructors.index')->with('success', 'Admin added successfully.');
+        return redirect()->route('admin.instructors.index')->with('success', 'admin added successfully.');
     }
     public function updateStatus(Request $request)
     {
@@ -116,16 +116,16 @@ class InstructorController extends Controller
             'last_name' => 'required|string|max:255',
         ]);
 
-        // Check if Admin has associated courses
+        // Check if admin has associated courses
         $instructor = Instructor::where('user_id',$id)->first();
 
 
-        // Update Admin details
+        // Update admin details
         $instructor->first_name = $request->first_name;
         $instructor->last_name = $request->last_name;
         $instructor->save();
 
-        return redirect()->route('Admin.instructors.index')->with('success','Instructor updated successfully');
+        return redirect()->route('admin.instructors.index')->with('success','Instructor updated successfully');
     }
 
     public function delete(Request $request, $id)
@@ -143,7 +143,7 @@ class InstructorController extends Controller
         }
         User::find($id)->delete();
         Instructor::where('user_id',$id)->delete();
-        return redirect()->route('Admin.instructors.index')->with('success', 'Instructor deleted successfully.');
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted successfully.');
 
     }
 }

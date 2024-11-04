@@ -5,7 +5,7 @@
     <div class="p-30" >
         <div class="">
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-                <form action="{{route('Admin.courses.store')}}" >
+                <form action="{{route('admin.courses.store')}}" >
                     @csrf
                     <div class="max-w-840">
                         <div class="pb-30"></div>
@@ -84,7 +84,7 @@
                 var instructorId = $(this).val(); // Get selected instructor ID
                 console.log(instructorId);
                 if (instructorId) {
-                    var url = "{{ route('Admin.availability.getAvailabilityByInstructor')}}";
+                    var url = "{{ route('admin.availability.getAvailabilityByInstructor')}}";
                     $.ajax({
                         url: url, // Adjust the URL as necessary
                         type: 'GET',

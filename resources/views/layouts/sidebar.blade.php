@@ -8,7 +8,7 @@
         switch ($authenticatedUser->role_id) {
             case 1:
                 $userInfo = $authenticatedUser->super_admin;
-                $role = 'Admin';
+                $role = 'admin';
                 break;
             case 2:
                 $userInfo = $authenticatedUser->admin;
@@ -86,8 +86,8 @@
                     </li>
                 @endif
 
-                @if($role == 'Admin'||$role=='student'||$role=='instructor')
-                    @if($role=='Admin')
+                @if($role == 'admin'||$role=='student'||$role=='instructor')
+                    @if($role=='admin')
 
                         <li>
                             <a href="{{ route($role.'.instructors.index') }}"
@@ -139,14 +139,14 @@
                                     </li>
                                 @endif
 
-                                @if($role=='Admin')
+                                @if($role=='admin')
                                     <li>
                                         <a class="{{ $activeCourseCreate ?? '' }}"
-                                           href="{{ route('Admin.courses.create') }}">{{ __('Create Course') }}</a>
+                                           href="{{ route('admin.courses.create') }}">{{ __('Create Course') }}</a>
                                     </li>
                                     <li>
                                         <a class="{{ $activeCourseInstructor ?? '' }}"
-                                           href="{{ route('Admin.courses.instructors.index') }}">{{ __('Course & Instructor') }}</a>
+                                           href="{{ route('admin.courses.instructors.index') }}">{{ __('Course & Instructor') }}</a>
                                     </li>
 
 

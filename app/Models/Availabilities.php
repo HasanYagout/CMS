@@ -9,7 +9,7 @@ class Availabilities extends Model
 {
     use HasFactory;
     protected $table='availabilities';
-    protected $fillable=['instructor_id','days','start_time','end_time','course_id'];
+    protected $fillable=['instructor_id','days','start_time','end_time','course_id','status'];
 
     public function instructor()
     {

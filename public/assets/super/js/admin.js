@@ -11,7 +11,7 @@
         responsive: true,
         searching: true,
         ajax: {
-            url: $('#Admin-route').val(),
+            url: $('#admin-route').val(),
             data: function (d) {
                 d.selectedDepartment = $('#department :selected').val();
                 d.selectedPassingYear = $('#passing-year :selected').val();

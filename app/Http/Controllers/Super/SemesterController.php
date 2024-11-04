@@ -75,11 +75,11 @@ class SemesterController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        // Check if Admin has associated courses
+        // Check if admin has associated courses
         $semester = Semester::where('id',$id)->first();
 
 
-        // Update Admin details
+        // Update admin details
         $semester->name = $request->name;
         $semester->save();
 

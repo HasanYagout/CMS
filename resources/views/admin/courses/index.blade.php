@@ -2,7 +2,7 @@
 @section('content')
     <div class="p-30">
         <div>
-            <input type="hidden" id="course-route" value="{{ route('Admin.courses.index') }}">
+            <input type="hidden" id="course-route" value="{{ route('admin.courses.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
             </div>
             <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
@@ -37,5 +37,5 @@
     </div>
 @endsection
 @push('script')
-    <script src="{{ asset('assets/Admin/js/courses.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/courses.js') }}"></script>
 @endpush

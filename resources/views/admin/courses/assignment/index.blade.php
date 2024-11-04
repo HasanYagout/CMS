@@ -3,7 +3,7 @@
     <div class="p-30">
         <section class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
             <h1 class="text-primary-color">Add Assignments</h1>
-            <form method="POST" action="{{route('Admin.courses.assignments.store')}}">
+            <form method="POST" action="{{route('admin.courses.assignments.store')}}">
                 @csrf
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
@@ -52,8 +52,8 @@
             </form>
         </section>
         <div class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
-            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('Admin.jobs.update.status',':id') }}">--}}
-            <input type="hidden" id="assignments-route" value="{{ route('Admin.courses.assignments.index') }}">
+            {{--            <input type="hidden" id="job-post-update-route" value="{{ route('admin.jobs.update.status',':id') }}">--}}
+            <input type="hidden" id="assignments-route" value="{{ route('admin.courses.assignments.index') }}">
             <div class="d-flex flex-wrap justify-content-between align-items-center pb-16">
                 {{--                <h4 class="fs-24 fw-500 lh-34 text-black">{{$title}}</h4>--}}
             </div>
@@ -93,7 +93,7 @@
             course.on('change', function () {
                 const courseId = $(this).val();
                 console.log(courseId);
-                const url = `{{ route('Admin.courses.chapters.get', '') }}/${courseId}`;
+                const url = `{{ route('admin.courses.chapters.get', '') }}/${courseId}`;
                 $.ajax({
                     url: url,
                     method: 'GET',
@@ -111,6 +111,6 @@
             });
         });
     </script>
-    <script src="{{ asset('assets/Admin/js/instructorassignments.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/instructorassignments.js') }}"></script>
 
 @endpush

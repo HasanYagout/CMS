@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     use HasFactory;
-    protected $table = 'Admin';
+    protected $table = 'admin';
     protected $fillable = ['first_name','last_name','department_id','user_id'];
 
     public function news()

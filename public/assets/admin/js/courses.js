@@ -1,9 +1,9 @@
 (function ($) {
     "use strict";
-    if ($.fn.dataTable.isDataTable('#adminTable')) {
-        $('#adminTable').DataTable().clear().destroy();
+    if ($.fn.dataTable.isDataTable('#coursesTable')) {
+        $('#coursesTable').DataTable().clear().destroy();
     }
-    var table = $("#adminTable").DataTable({
+    var table = $("#coursesTable").DataTable({
         pageLength: 10,
         ordering: true,
         serverSide: true,
@@ -11,7 +11,7 @@
         responsive: true,
         searching: true,
         ajax: {
-            url: $('#Admin-route').val(),
+            url: $('#course-route').val(),
             data: function (d) {
                 d.selectedDepartment = $('#department :selected').val();
                 d.selectedPassingYear = $('#passing-year :selected').val();
@@ -35,9 +35,32 @@
                 "searchable": true,
                 "orderable": true
             },
+
+
             {
-                "data": "email",
-                "name": "email",
+                "data": "image",
+                "name": "image",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
+            {
+                "data": "semester",
+                "name": "semester",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
+            {
+                "data": "start_date",
+                "name": "start_date",
+                "responsivePriority": 1,
+                "searchable": true,
+                "orderable": true
+            },
+            {
+                "data": "end_date",
+                "name": "end_date",
                 "responsivePriority": 1,
                 "searchable": true,
                 "orderable": true
@@ -111,7 +134,7 @@
 
     window.deleteItem = function (url, id) {
         Swal.fire({
-            title: 'Sure! You want to delete?',
+            title: 'Are you sure you want to delete?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -121,7 +144,7 @@
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    type: 'POST',
+                    type: 'DELETE',
                     url: url,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -133,15 +156,14 @@
                             timer: 2000,
                             icon: 'success'
                         });
-                        toastr.success('Instructor deleted successfully.');
+                        toastr.success('Course deleted successfully.');
                         table.ajax.reload();
                     },
                     error: function (error) {
-                        toastr.error(error.responseJSON.message);
+                        toastr.error(error.responseJSON.message || 'An error occurred while deleting.');
                     }
                 });
             }
         });
     };
-
 })(jQuery);

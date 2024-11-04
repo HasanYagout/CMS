@@ -28,6 +28,6 @@
 
 @push('script')
     <script src="{{ asset('common/js/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/Admin/js/charts.js') }}"></script>
-    <script src="{{ asset('assets/Admin/js/Admin-dashboard.js') }}?ver={{ env('VERSION' ,0) }}"></script>
+    <script src="{{ asset('assets/admin/js/charts.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/admin-dashboard.js') }}?ver={{ env('VERSION' ,0) }}"></script>
 @endpush

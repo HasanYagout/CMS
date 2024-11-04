@@ -19,7 +19,7 @@ class Admin
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role_id == 1) { // Check if the user is an Admin
+            if ($user->role_id == 1) { // Check if the user is an admin
                 return $next($request); // Allow access
             }
         }

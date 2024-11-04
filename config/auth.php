@@ -44,9 +44,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'Admin' => [
+        'admin' => [
             'driver' => 'session',
-            'provider' => 'Admin',
+            'provider' => 'admin',
         ],
         'instructor' => [
             'driver' => 'session',
@@ -80,7 +80,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'Admin' => [
+        'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],

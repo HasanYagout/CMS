@@ -15,10 +15,13 @@ class AvailabilityController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $availability = Availabilities::with('instructor')->orderBy('id', 'desc')->get();
+            $availability = Availabilities::with('instructor','course')->orderBy('id', 'desc')->get();
             return datatables($availability)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
+                    return $data->course->name;
+                })
+                ->addColumn('instructor', function ($data) {
                     return $data->instructor->first_name . ' ' . $data->instructor->last_name;
                 })
                 ->addColumn('days', function ($data) {
@@ -43,11 +46,11 @@ class AvailabilityController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('Admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo" title="' . __('Upload') . '">
+                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo" title="' . __('Upload') . '">
                             <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
                         </button>';
                 })
-                ->rawColumns(['name','start_time','end_time','days','status','action'])
+                ->rawColumns(['name','instructor','start_time','end_time','days','status','action'])
                 ->make(true);
         }
 
@@ -146,5 +149,76 @@ class AvailabilityController extends Controller
     {
       return Availabilities::with('instructor')->where('instructor_id',$request->instructorId)->get();
     }
+    public function updateStatus(Request $request)
+    {
+        Availabilities::find($request->id)->update(['status' => $request->status]);
+        return response()->json(['success' => true]);
+    }
 
+    public function edit($id)
+    {
+        $data['course']= Course::find($id);
+        $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
+            ->get();
+        $data['availabilities']=Availabilities::where('course_id',$id)->get();
+        $data['semesters']=Semester::where('status',1)->get();
+        return view('admin.courses.edit-form', $data);
+    }
+    public function update(Request $request, $id) {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'semester_id' => 'required|exists:academic_years,id',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+        $course = Course::find($id);
+        $course->name = $request->title;
+        $course->start_date = $request->start_date;
+        $course->end_date = $request->end_date;
+        $course->semester_id = $request->semester_id;
+        $course->description = $request->description;
+        if ($request->hasFile('thumbnail'))
+        {
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailPath = $thumbnail->store('courses', 'public');
+            $course->image = $thumbnailPath;
+        }
+        $course->save();
+        return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $hasAvailabilities = Availabilities::where('course_id', $id)->exists();
+            $hasAssignments = InstructorAssignments::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasQuizzes = InstructorQuiz::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasActivities = InstructorActivity::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasChapters = Chapter::where('course_id',$id)->exists();
+
+            if ($hasAvailabilities || $hasAssignments || $hasQuizzes || $hasActivities ||$hasChapters) {
+                return response()->json(['message' => 'Cannot delete course as there are associated records.'], 400);
+            }
+
+            $course = Course::find($id);
+            if (!$course) {
+                return response()->json(['message' => 'Course not found.'], 404);
+            }
+
+            $course->delete();
+
+            return response()->json(['message' => 'Course deleted successfully.'], 200);
+        } catch (\Exception $e) {
+
+            return response()->json(['message' => 'An error occurred while deleting the course.'], 500);
+        }
+    }
 }

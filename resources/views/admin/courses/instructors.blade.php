@@ -5,7 +5,7 @@
         <div class="container bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
             <h2 class="text-primary-color">Link Course with Instructor</h2>
 
-            <form action="{{ route('Admin.courses.instructors.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.courses.instructors.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="container my-4 row gap-5">
                     <div class="row">
@@ -35,10 +35,10 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="chapter">Select Instructor:</label>
-                                <select id="instructor"  name="instructor_id" class="form-control form-select" required>
+                                <select id="instructor" name="instructor_id" class="form-control form-select" required>
                                     <option value=""></option>
                                     @foreach($instructors as $instructor)
-                                        <option value="{{$instructor->user_id}}">{{$instructor->first_name}}</option>
+                                        <option value="{{ $instructor->user_id }}">{{ $instructor->first_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -101,6 +101,7 @@
                 <thead>
                 <tr>
                     <th scope="col"><div>{{ __('Name') }}</div></th>
+                    <th scope="col"><div>{{ __('Instructor') }}</div></th>
                     <th scope="col"><div>{{ __('days') }}</div></th>
                     <th scope="col"><div>{{ __('start_time') }}</div></th>
                     <th scope="col"><div>{{ __('end_time') }}</div></th>
@@ -128,7 +129,6 @@
                     status: status
                 },
                 success: function(response) {
-                    console.log(response);
                     if (response.success) {
                         toastr.success('Status updated successfully.');
                     } else {
@@ -141,8 +141,6 @@
             });
         });
 
-    </script>
-    <script>
         $(document).ready(function() {
             // Initialize Select2 for days
             $('#days').select2({
@@ -164,7 +162,7 @@
                     instructors.prop('disabled', false);
 
                     // Fetch course details and instructors
-                    const url = `{{ route('Admin.courses.info', '') }}/${courseId}`;
+                    const url = `{{ route('admin.courses.info', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -177,7 +175,6 @@
                             instructors.append(`<option value="">-- Select Instructor --</option>`);
 
                             data.instructors.forEach(function(instructor) {
-
                                 instructors.append(`<option value="${instructor.instructor.user_id}">${instructor.instructor.first_name} ${instructor.instructor.last_name}</option>`);
                             });
                         },
@@ -199,7 +196,7 @@
                 const instructorId = $(this).val();
 
                 if (instructorId) {
-                    const url = `{{ route('Admin.availability.get', '') }}/${instructorId}`;
+                    const url = `{{ route('admin.availability.get', '') }}/${instructorId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -246,7 +243,6 @@
                 }
             });
 
-
             if ($.fn.dataTable.isDataTable('#AvailabilityTable')) {
                 $('#AvailabilityTable').DataTable().clear().destroy();
             }
@@ -258,7 +254,7 @@
                 responsive: true,
                 searching: true,
                 ajax: {
-                    url: `{{ route('Admin.availability.index') }}`,
+                    url: `{{ route('admin.availability.index') }}`,
                     data: function(d) {
                         d.course_id = $('#course_filter').val();
                         d.instructor_id = $('#chapter_filter').val();
@@ -276,6 +272,7 @@
 
                 columns: [
                     { data: 'name', name: 'name' },
+                    { data: 'instructor', name: 'instructor' },
                     { data: 'days', name: 'days', orderable: false, searchable: false },
                     { data: 'start_time', name: 'start_time', orderable: false, searchable: false },
                     { data: 'end_time', name: 'end_time', orderable: false, searchable: false },
