@@ -133,7 +133,7 @@
 
     window.deleteItem = function (url, id) {
         Swal.fire({
-            title: 'Sure! You want to delete?',
+            title: 'Are you sure you want to delete?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -143,7 +143,7 @@
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    type: 'POST',
+                    type: 'DELETE',
                     url: url,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -155,15 +155,14 @@
                             timer: 2000,
                             icon: 'success'
                         });
-                        toastr.success('Instructor deleted successfully.');
+                        toastr.success('Course deleted successfully.');
                         table.ajax.reload();
                     },
                     error: function (error) {
-                        toastr.error(error.responseJSON.message);
+                        toastr.error(error.responseJSON.message || 'An error occurred while deleting.');
                     }
                 });
             }
         });
     };
-
 })(jQuery);

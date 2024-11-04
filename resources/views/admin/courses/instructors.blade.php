@@ -115,6 +115,34 @@
 
 @push('script')
     <script>
+        $(document).on('change', '.toggle-status', function() {
+            var adminId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: '{{ route("admin.courses.instructors.updateStatus") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: adminId,
+                    status: status
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        toastr.success('Status updated successfully.');
+                    } else {
+                        toastr.error('Failed to update status.');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error updating status.');
+                }
+            });
+        });
+
+    </script>
+    <script>
         $(document).ready(function() {
             // Initialize Select2 for days
             $('#days').select2({

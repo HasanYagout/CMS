@@ -146,4 +146,5 @@ class AvailabilityController extends Controller
     {
       return Availabilities::with('instructor')->where('instructor_id',$request->instructorId)->get();
     }
+
 }

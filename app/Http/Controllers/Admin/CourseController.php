@@ -7,11 +7,15 @@ use App\Models\Availabilities;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Instructor;
+use App\Models\InstructorActivity;
+use App\Models\InstructorAssignments;
+use App\Models\InstructorQuiz;
 use App\Models\Material;
 use App\Models\Semester;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CourseController extends Controller
@@ -235,46 +239,64 @@ class CourseController extends Controller
         $data['course']= Course::find($id);
         $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
             ->get();
-
+        $data['availabilities']=Availabilities::where('course_id',$id)->get();
+        $data['semesters']=Semester::where('status',1)->get();
         return view('admin.courses.edit-form', $data);
     }
-    public function update(Request $request, $id)
-    {
-        // Validate the form inputs
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+ public function update(Request $request, $id) {
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after:start_date',
+        'semester_id' => 'required|exists:academic_years,id',
+        'description' => 'required|string',
+        'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        // Check if Admin has associated courses
-        $instructor = Instructor::where('user_id',$id)->first();
-
-
-        // Update Admin details
-        $instructor->first_name = $request->first_name;
-        $instructor->last_name = $request->last_name;
-        $instructor->save();
-
-        return redirect()->route('Admin.instructors.index')->with('success','Instructor updated successfully');
-    }
-
-    public function delete(Request $request, $id)
+    $course = Course::find($id);
+    $course->name = $request->title;
+    $course->start_date = $request->start_date;
+    $course->end_date = $request->end_date;
+    $course->semester_id = $request->semester_id;
+    $course->description = $request->description;
+    if ($request->hasFile('thumbnail'))
     {
-        // Check if the instructor has associated courses
-        $hasCourses = Availabilities::where('instructor_id', $id)->exists();
-
-        // Check if the instructor has associated assignments, quizzes, or activities
-        $hasAssignments = InstructorAssignments::where('instructor_id', $id)->exists();
-        $hasQuizzes = InstructorQuiz::where('instructor_id', $id)->exists();
-        $hasActivities = InstructorActivity::where('instructor_id', $id)->exists();
-
-        if ($hasCourses || $hasAssignments || $hasQuizzes || $hasActivities) {
-            return back()->with('error', 'Cannot delete instructor as there are associated courses, assignments, quizzes, or activities.');
-        }
-        User::find($id)->delete();
-        Instructor::where('user_id',$id)->delete();
-        return redirect()->route('Admin.instructors.index')->with('success', 'Instructor deleted successfully.');
-
+        $thumbnail = $request->file('thumbnail');
+        $thumbnailPath = $thumbnail->store('courses', 'public');
+        $course->image = $thumbnailPath;
     }
-
+    $course->save();
+    return redirect()->route('Admin.courses.index')->with('success', 'Course updated successfully.');
 }
+
+    public function destroy($id)
+    {
+        try {
+            $hasAvailabilities = Availabilities::where('course_id', $id)->exists();
+            $hasAssignments = InstructorAssignments::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasQuizzes = InstructorQuiz::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasActivities = InstructorActivity::whereHas('lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->exists();
+            $hasChapters = Chapter::where('course_id',$id)->exists();
+
+            if ($hasAvailabilities || $hasAssignments || $hasQuizzes || $hasActivities ||$hasChapters) {
+                return response()->json(['message' => 'Cannot delete course as there are associated records.'], 400);
+            }
+
+            $course = Course::find($id);
+            if (!$course) {
+                return response()->json(['message' => 'Course not found.'], 404);
+            }
+
+            $course->delete();
+
+            return response()->json(['message' => 'Course deleted successfully.'], 200);
+        } catch (\Exception $e) {
+
+            return response()->json(['message' => 'An error occurred while deleting the course.'], 500);
+        }
+    }}

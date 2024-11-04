@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InstructorController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['middleware' => ['Admin'],'prefix'=>'Admin','as' => 'Admin.'], function () {
+Route::group(['middleware' => ['admin'],'prefix'=>'admin','as' => 'admin.'], function () {
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group(['prefix'=>'courses','as' => 'courses.'], function () {
@@ -19,11 +20,15 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/update/{id}', [CourseController::class,'update'])->name('update');
         Route::get('/info/{id}', [CourseController::class, 'info'])->name('info');
         Route::post('/updateStatus', [CourseController::class,'updateStatus'])->name('updateStatus');
-        Route::post('/delete/{id}', [CourseController::class,'delete'])->name('delete');
+        Route::delete('/delete/{id}', [CourseController::class,'destroy'])->name('delete');
 
         Route::group(['prefix'=>'instructors','as' => 'instructors.'], function () {
             Route::get('/', [CourseController::class, 'instructors'])->name('index');
-            Route::post('/store', [\App\Http\Controllers\Admin\AvailabilityController::class, 'store'])->name('store');
+            Route::post('/store', [AvailabilityController::class, 'store'])->name('store');
+            Route::post('/update/{id}', [AvailabilityController::class,'update'])->name('update');
+            Route::get('/info/{id}', [AvailabilityController::class, 'info'])->name('info');
+            Route::post('/updateStatus', [AvailabilityController::class,'updateStatus'])->name('updateStatus');
+            Route::delete('/delete/{id}', [AvailabilityController::class,'destroy'])->name('delete');
 
         });
         Route::group(['prefix'=>'chapters','as' => 'chapters.'], function () {
