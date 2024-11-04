@@ -103,14 +103,21 @@
                     <th scope="col"><div>{{ __('Name') }}</div></th>
                     <th scope="col"><div>{{ __('Instructor') }}</div></th>
                     <th scope="col"><div>{{ __('days') }}</div></th>
-                    <th scope="col"><div>{{ __('start_time') }}</div></th>
-                    <th scope="col"><div>{{ __('end_time') }}</div></th>
+                    <th scope="col"><div>{{ __('start time') }}</div></th>
+                    <th scope="col"><div>{{ __('end time') }}</div></th>
                     <th scope="col"><div>{{ __('status') }}</div></th>
                     <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
                 </tr>
                 </thead>
             </table>
         </div>
+    <div class="modal fade zModalTwo" id="edit-modal" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content zModalTwo-content">
+
+            </div>
+        </div>
+    </div>
     </div>
 @endsection
 
