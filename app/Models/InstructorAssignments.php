@@ -9,7 +9,7 @@ class InstructorAssignments extends Model
 {
     use HasFactory;
     protected $table = 'instructor_assignments';
-    protected $fillable=['course_id','instructor_id','chapter_id','title','description','marks','due_date'];
+    protected $fillable=['course_id','status','instructor_id','lecture_id','title','description','grade','due_date'];
 
     public function lecture()
     {

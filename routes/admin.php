@@ -47,11 +47,14 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group(['prefix'=>'availability','as' => 'availability.'], function () {
         Route::get('/', [\App\Http\Controllers\Admin\AvailabilityController::class, 'index'])->name('index');
-        Route::get('/edit/{id}', [CourseController::class, 'edit'])->name('edit');
+        Route::get('/edit/{id}', [AvailabilityController::class, 'edit'])->name('edit');
         Route::get('/create', [\App\Http\Controllers\Admin\AvailabilityController::class, 'create'])->name('create');
         Route::post('/store', [\App\Http\Controllers\Admin\AvailabilityController::class, 'store'])->name('store');
         Route::get('/availability', [\App\Http\Controllers\Admin\AvailabilityController::class, 'getAvailabilityByInstructor'])->name('getAvailabilityByInstructor');
         Route::get('/availability/{id}', [\App\Http\Controllers\Admin\AvailabilityController::class, 'getInstructorAvailability'])->name('get');
+        Route::post('/update/{id}', [AvailabilityController::class,'update'])->name('update');
+        Route::post('/delete/{id}', [AvailabilityController::class,'destroy'])->name('delete');
+
     });
 
     Route::group(['prefix'=>'instructors','as' => 'instructors.'], function () {
@@ -71,6 +74,13 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', 'index')->name('profile');
         Route::post('/profile_update', 'update')->name('profile.update');
         Route::post('/profile_password', 'password')->name('profile.password');
+    });
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::controller(\App\Http\Controllers\Admin\ReportController::class)->group(function () {
+            Route::get('/index', 'index')->name('courses');
+            Route::get('/students/{course_id}', 'students')->name('students');
+            Route::get('/grades/{course_id}', 'grades')->name('grades');
+        });
     });
 
 });

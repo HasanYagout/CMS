@@ -1,33 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        svg{
-            filter: saturate(200%);
-
-
-        }
-        .zNews-item-one {
-            transition: transform 0.3s ease;
-        }
-
-        .zNews-item-one:hover {
-            transform: translateY(-10px);
-        }
-    </style>
-    <div class="p-30">
-        <div class="">
-            <h4 class="fs-24 fw-500 lh-34 text-black pb-16"></h4>
-
-            <div class="row rg-30">
-
-            </div>
+    <div class="row">
+        <x-wrapper title="">
+            <h1 class=" text-center text-primary-color"><span
+                    class=" text-third-color">Welcome </span>{{\Illuminate\Support\Facades\Auth::user()->admin->first_name.' '. \Illuminate\Support\Facades\Auth::user()->admin->last_name}}
+            </h1>
+        </x-wrapper>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <x-wrapper title="Courses">
+                <h1 class=" text-third-color"> {{$courses}}</h1>
+            </x-wrapper>
+        </div>
+        <div class="col-lg-4">
+            <x-wrapper title="Instructors">
+                <h1 class=" text-third-color"> {{$instructors}}</h1>
+            </x-wrapper>
+        </div>
+        <div class="col-lg-4">
+            <x-wrapper title="Students">
+                <h1 class=" text-third-color"> {{$students}}</h1>
+            </x-wrapper>
         </div>
     </div>
+
 @endsection
 
-@push('script')
-    <script src="{{ asset('common/js/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/charts.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/admin-dashboard.js') }}?ver={{ env('VERSION' ,0) }}"></script>
-@endpush

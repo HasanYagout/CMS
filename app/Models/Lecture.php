@@ -6,11 +6,11 @@ use App\Http\Controllers\Student\AssignmentController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lecture extends Model
+class   Lecture extends Model
 {
     use HasFactory;
     protected $table = 'lectures';
-    protected $fillable = ['chapter_id','title','description','zoom_link','start_date','end_date'];
+    protected $fillable = ['chapter_id','title','description','zoom_link','start_date','end_date','status'];
 
 
 

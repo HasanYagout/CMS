@@ -31,11 +31,9 @@
 @include('layouts.script')
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-
-@stack('script')
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+@stack('script')
 <script>
     function resetPassword(url, id) {
         Swal.fire({
@@ -104,5 +102,7 @@
     @endforeach
     @endif
 </script>
+
+
 </body>
 </html>

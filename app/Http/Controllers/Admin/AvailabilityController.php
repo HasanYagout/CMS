@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Availabilities;
+use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\Instructor;
 
+use App\Models\Semester;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,16 +50,33 @@ class AvailabilityController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo" title="' . __('Upload') . '">
-                            <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
-                        </button>';
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('admin.availability.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                    <button onclick="deleteItem(\'' . route('admin.availability.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
                 ->rawColumns(['name','instructor','start_time','end_time','days','status','action'])
                 ->make(true);
         }
+        $data['courses']= Course::where('status',1)
+            ->where('department_id',Auth::user()->admin->department_id)
+            ->get();
 
-
-        return view('admin.availability.index');
+        $data['instructors'] = User::where('role_id', 2)
+            ->where('status', 1)
+            ->whereHas('instructor', function ($query) {
+                $query->where('department_id', Auth::user()->admin->department_id);
+            })
+            ->get();
+        $data['showCourseManagement']='show';
+        $data['activeCourseInstructor']='active';
+        return view('admin.availability.index',$data);
 
     }
 
@@ -157,68 +178,46 @@ class AvailabilityController extends Controller
 
     public function edit($id)
     {
-        $data['course']= Course::find($id);
+        $data['availability']=Availabilities::with('instructor','course')->findOrFail($id);
+        $data['courses']= Course::where('department_id',Auth::user()->admin->department_id)->get();
+
         $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
             ->get();
-        $data['availabilities']=Availabilities::where('course_id',$id)->get();
         $data['semesters']=Semester::where('status',1)->get();
-        return view('admin.courses.edit-form', $data);
+        return view('admin.availability.edit-form', $data);
     }
     public function update(Request $request, $id) {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'semester_id' => 'required|exists:academic_years,id',
-            'description' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'course_id' => 'required|exists:courses,id',
+            'instructor_id' => 'required|exists:users,id',
+            'days' => 'required|array',
+            'days.*' => 'string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
-        $course = Course::find($id);
-        $course->name = $request->title;
-        $course->start_date = $request->start_date;
-        $course->end_date = $request->end_date;
-        $course->semester_id = $request->semester_id;
-        $course->description = $request->description;
-        if ($request->hasFile('thumbnail'))
-        {
-            $thumbnail = $request->file('thumbnail');
-            $thumbnailPath = $thumbnail->store('courses', 'public');
-            $course->image = $thumbnailPath;
-        }
-        $course->save();
-        return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
+
+        $availability = Availabilities::find($id);
+        $availability->instructor_id = $request->instructor_id;
+        $availability->days = json_encode($request->days);
+        $availability->start_time = $request->start_time;
+        $availability->end_time = $request->end_time;
+        $availability->course_id = $request->course_id;
+        $availability->save();
+
+        return redirect()->route('admin.availability.index')->with('success', 'Availability updated successfully.');
     }
 
     public function destroy($id)
     {
-        try {
-            $hasAvailabilities = Availabilities::where('course_id', $id)->exists();
-            $hasAssignments = InstructorAssignments::whereHas('lecture.chapter.course', function ($query) use ($id) {
-                $query->where('id', $id);
-            })->exists();
-            $hasQuizzes = InstructorQuiz::whereHas('lecture.chapter.course', function ($query) use ($id) {
-                $query->where('id', $id);
-            })->exists();
-            $hasActivities = InstructorActivity::whereHas('lecture.chapter.course', function ($query) use ($id) {
-                $query->where('id', $id);
-            })->exists();
-            $hasChapters = Chapter::where('course_id',$id)->exists();
 
-            if ($hasAvailabilities || $hasAssignments || $hasQuizzes || $hasActivities ||$hasChapters) {
-                return response()->json(['message' => 'Cannot delete course as there are associated records.'], 400);
+            $availability = Availabilities::find($id);
+            $hasEnrollments = Enrollment::where('course_id', $availability->course_id)->exists();
+            if ($hasEnrollments) {
+                return response()->json(['message' => 'Cannot delete availability as there are associated records.'], 400);
             }
 
-            $course = Course::find($id);
-            if (!$course) {
-                return response()->json(['message' => 'Course not found.'], 404);
-            }
+            $availability->delete();
+        return response()->json(['message' => 'Availability deleted successfully.'], 200);
 
-            $course->delete();
-
-            return response()->json(['message' => 'Course deleted successfully.'], 200);
-        } catch (\Exception $e) {
-
-            return response()->json(['message' => 'An error occurred while deleting the course.'], 500);
-        }
     }
 }

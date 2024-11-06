@@ -32,31 +32,31 @@
     <div class="zSidebar border border-1 shadow-sm zSidebar">
         <div class="zSidebar-overlay"></div>
         <!-- Logo -->
-{{--        <a href="{{ route('index') }}" class="d-block mx-26">--}}
-{{--            <img class="max-h-69 d-block m-auto" src="{{ asset('frontend/images/liu-logo.png') }}"--}}
-{{--                 alt="LIU Logo"/>--}}
-{{--        </a>--}}
+        {{--        <a href="{{ route('index') }}" class="d-block mx-26">--}}
+        {{--            <img class="max-h-69 d-block m-auto" src="{{ asset('frontend/images/liu-logo.png') }}"--}}
+        {{--                 alt="LIU Logo"/>--}}
+        {{--        </a>--}}
         <!-- Menu & Logout -->
         <div class="zSidebar-fixed">
             <ul class="zSidebar-menu" id="sidebarMenu">
 
-                    <li>
-                        <a href="{{ route($role.'.dashboard') }}"
-                           class="{{ $activeHome ?? '' }} d-flex align-items-center cg-10">
-                            <div class="d-flex">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
-                                     fill="none">
-                                    <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
-                                          stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
-                                          stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <span class="">{{ __('Home') }}</span>
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ route($role.'.dashboard') }}"
+                       class="{{ $activeHome ?? '' }} d-flex align-items-center cg-10">
+                        <div class="d-flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
+                                 fill="none">
+                                <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
+                                      stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                                <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
+                                      stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="">{{ __('Home') }}</span>
+                    </a>
+                </li>
                 @if($role=='superAdmin')
                     <li>
                         <a href="{{ route($role.'.semesters.index') }}"
@@ -64,7 +64,8 @@
                             <div class="d-flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
                                      fill="none">
-                                    <path stroke="rgb(95, 108, 118)" d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                                    <path stroke="rgb(95, 108, 118)"
+                                          d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
 
                                 </svg>
                             </div>
@@ -77,7 +78,8 @@
                             <div class="d-flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
                                      fill="none">
-                                    <path stroke="rgb(95, 108, 118)" d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                                    <path stroke="rgb(95, 108, 118)"
+                                          d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
 
                                 </svg>
                             </div>
@@ -93,9 +95,12 @@
                             <a href="{{ route($role.'.instructors.index') }}"
                                class="{{ $activeInstructor ?? '' }} d-flex align-items-center cg-10">
                                 <div class="d-flex">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                                        <path stroke="rgb(95, 108, 118)" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                        <path stroke="rgb(95, 108, 118)" fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                         class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                        <path stroke="rgb(95, 108, 118)"
+                                              d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                        <path stroke="rgb(95, 108, 118)" fill-rule="evenodd"
+                                              d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
                                     </svg>
                                 </div>
                                 <span class="">{{ __('Instructors') }}</span>
@@ -116,15 +121,19 @@
                                         fill="white" fill-opacity="0.7"/>
                                     <path d="M12.4531 6.68213V21" stroke="rgb(95 108 118)" stroke-opacity="0.7"
                                           stroke-width="1.5"/>
-                                    <path d="M5.83594 9.65613L9.61725 10.6015" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                    <path d="M5.83594 9.65613L9.61725 10.6015" stroke="rgb(95 108 118)"
+                                          stroke-opacity="0.7"
                                           stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M5.83594 13.4375L9.61725 14.3828" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                    <path d="M5.83594 13.4375L9.61725 14.3828" stroke="rgb(95 108 118)"
+                                          stroke-opacity="0.7"
                                           stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M19.0703 13.4375L15.289 14.3828" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                    <path d="M19.0703 13.4375L15.289 14.3828" stroke="rgb(95 108 118)"
+                                          stroke-opacity="0.7"
                                           stroke-width="1.5" stroke-linecap="round"/>
                                     <path
                                         d="M19.0704 6.34753V10.1386C19.0704 10.3991 19.0704 10.5293 18.9807 10.582C18.891 10.6346 18.7684 10.5764 18.5231 10.4599L17.3488 9.90207C17.2658 9.86265 17.2243 9.84294 17.1797 9.84294C17.1351 9.84294 17.0936 9.86265 17.0106 9.90207L15.8363 10.4599C15.591 10.5764 15.4684 10.6346 15.3787 10.582C15.2891 10.5293 15.2891 10.3991 15.2891 10.1386V7.71828"
-                                        stroke="rgb(95 108 118)" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"/>
+                                        stroke="rgb(95 108 118)" stroke-opacity="0.7" stroke-width="1.5"
+                                        stroke-linecap="round"/>
                                 </svg>
                             </div>
                             <span class="">{{__('Manage Courses')}}</span>
@@ -146,9 +155,8 @@
                                     </li>
                                     <li>
                                         <a class="{{ $activeCourseInstructor ?? '' }}"
-                                           href="{{ route('admin.courses.instructors.index') }}">{{ __('Course & Instructor') }}</a>
+                                           href="{{ route('admin.availability.index') }}">{{ __('Course & Instructor') }}</a>
                                     </li>
-
 
                                 @endif
                                 @if($role=='instructor')
@@ -157,35 +165,35 @@
                                         <a class="{{ $activeCourseChapter ?? '' }}"
                                            href="{{ route('instructor.courses.chapters.index') }}">{{ __('Course Chapter') }}</a>
                                     </li>
-                                        <li>
-                                            <a class="{{ $activeCourseChapter ?? '' }}"
-                                               href="{{ route('instructor.courses.lectures.index') }}">{{ __('Chapter Lecture') }}</a>
-                                        </li>
                                     <li>
-                                        <a class="{{ $activeCourseMaterial ?? '' }}"
-                                           href="{{ route('instructor.courses.materials.index') }}">{{ __('Material') }}</a>
+                                        <a class="{{ $activeCourseLecture ?? '' }}"
+                                           href="{{ route('instructor.courses.lectures.index') }}">{{ __('Chapter Lecture') }}</a>
                                     </li>
+                                    {{--                                    <li>--}}
+                                    {{--                                        <a class="{{ $activeCourseMaterial ?? '' }}"--}}
+                                    {{--                                           href="{{ route('instructor.courses.materials.index') }}">{{ __('Material') }}</a>--}}
+                                    {{--                                    </li>--}}
 
                                     <li>
-                                        <a class="{{ $activeCourseMaterial ?? '' }}"
+                                        <a class="{{ $activeCourseAssignment ?? '' }}"
                                            href="{{ route('instructor.courses.assignments.index') }}">{{ __('Assignment') }}</a>
                                     </li>
                                     <li>
-                                        <a class="{{ $activeCourseMaterial ?? '' }}"
+                                        <a class="{{ $activeCourseQuiz ?? '' }}"
                                            href="{{ route('instructor.courses.quiz.index') }}">{{ __('Quiz') }}</a>
                                     </li>
-                                        <li>
-                                            <a class="{{ $activeCourseMaterial ?? '' }}"
-                                               href="{{ route('instructor.courses.announcement.index') }}">{{ __('Announcement') }}</a>
-                                        </li>
-                                        <li>
-                                            <a class="{{ $activeCourseMaterial ?? '' }}"
-                                               href="{{ route('instructor.courses.lectures.activities.index') }}">{{ __('Activities') }}</a>
-                                        </li>
-                                        <li>
-                                            <a class="{{ $activeCourseMaterial ?? '' }}"
-                                               href="{{ route('instructor.courses.forums.index') }}">{{ __('Forum') }}</a>
-                                        </li>
+                                    <li>
+                                        <a class="{{ $activeCourseAnnouncement ?? '' }}"
+                                           href="{{ route('instructor.courses.announcement.index') }}">{{ __('Announcement') }}</a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ $activeCourseActivity ?? '' }}"
+                                           href="{{ route('instructor.courses.lectures.activities.index') }}">{{ __('Activities') }}</a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ $activeCourseForum ?? '' }}"
+                                           href="{{ route('instructor.courses.forums.index') }}">{{ __('Forum') }}</a>
+                                    </li>
 
                                 @endif
 
@@ -193,6 +201,7 @@
                             </ul>
                         </div>
                     </li>
+                    @if($role=='instructor'||$role=='admin')
                         <li>
                             <a href="#reportsMenu" data-bs-toggle="collapse" role="button"
                                aria-expanded="{{ isset($showReportsManagement) ? 'true' : 'collapsed' }}"
@@ -206,41 +215,49 @@
                                             fill="white" fill-opacity="0.7"/>
                                         <path d="M12.4531 6.68213V21" stroke="rgb(95 108 118)" stroke-opacity="0.7"
                                               stroke-width="1.5"/>
-                                        <path d="M5.83594 9.65613L9.61725 10.6015" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                        <path d="M5.83594 9.65613L9.61725 10.6015" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7"
                                               stroke-width="1.5" stroke-linecap="round"/>
-                                        <path d="M5.83594 13.4375L9.61725 14.3828" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                        <path d="M5.83594 13.4375L9.61725 14.3828" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7"
                                               stroke-width="1.5" stroke-linecap="round"/>
-                                        <path d="M19.0703 13.4375L15.289 14.3828" stroke="rgb(95 108 118)" stroke-opacity="0.7"
+                                        <path d="M19.0703 13.4375L15.289 14.3828" stroke="rgb(95 108 118)"
+                                              stroke-opacity="0.7"
                                               stroke-width="1.5" stroke-linecap="round"/>
                                         <path
                                             d="M19.0704 6.34753V10.1386C19.0704 10.3991 19.0704 10.5293 18.9807 10.582C18.891 10.6346 18.7684 10.5764 18.5231 10.4599L17.3488 9.90207C17.2658 9.86265 17.2243 9.84294 17.1797 9.84294C17.1351 9.84294 17.0936 9.86265 17.0106 9.90207L15.8363 10.4599C15.591 10.5764 15.4684 10.6346 15.3787 10.582C15.2891 10.5293 15.2891 10.3991 15.2891 10.1386V7.71828"
-                                            stroke="rgb(95 108 118)" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"/>
+                                            stroke="rgb(95 108 118)" stroke-opacity="0.7" stroke-width="1.5"
+                                            stroke-linecap="round"/>
                                     </svg>
                                 </div>
                                 <span class="">{{__('Manage Reports')}}</span>
                             </a>
-                            <div class="collapse {{ $showReportsManagement ?? '' }}" id="reportsMenu"
+                            <div class="collapse {{ $showReportManagement ?? '' }}" id="reportsMenu"
                                  data-bs-parent="#sidebarMenu">
                                 <ul class="zSidebar-submenu">
-                                        <li>
-                                            <a class="{{ $activeCourseChapter ?? '' }}"
-                                               href="{{ route('instructor.reports.courses') }}">{{ __('Course Report') }}</a>
-                                        </li>
+                                    <li>
+                                        <a class="{{ $activeReport ?? '' }}"
+                                           href="{{ route($role.'.reports.courses') }}">{{ __('Course Report') }}</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
+                    @endif
 
-                @if($role=='student')
+
+                    @if($role=='student')
                         <li>
                             <a href="{{ route($role.'.enrollment.courses') }}"
                                class="{{ $activeEnrolled ?? '' }} d-flex align-items-center cg-10">
                                 <div class="d-flex">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"
                                          fill="none">
-                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286" stroke="rgb(95 108 118)"
+                                        <path d="M1.71387 11.4286L10.9996 2.14285L20.2853 11.4286"
+                                              stroke="rgb(95 108 118)"
                                               stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
                                               stroke-linejoin="round"/>
-                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144" stroke="rgb(95 108 118)"
+                                        <path d="M4.57129 8.57144L4.57129 17.8572H17.4284V8.57144"
+                                              stroke="rgb(95 108 118)"
                                               stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round"
                                               stroke-linejoin="round"/>
                                     </svg>
@@ -248,15 +265,17 @@
                                 <span class="">{{ __('Enrolled Courses') }}</span>
                             </a>
                         </li>
-                @endif
+                    @endif
 
                 @endif
                 <li>
                     <a href="{{ route($role.'.profile') }}"
                        class="{{ $activeProfile ?? '' }} d-flex align-items-center cg-10">
                         <div class="d-flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="bi bi-person" viewBox="0 0 16 16">
-                                <path stroke="rgb(95, 108, 118)" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                 class="bi bi-person" viewBox="0 0 16 16">
+                                <path stroke="rgb(95, 108, 118)"
+                                      d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                             </svg>
                         </div>
                         <span class="">{{ __('Profile') }}</span>
@@ -282,7 +301,6 @@
                         @csrf
                     </form>
                 </li>
-
 
 
             </ul>

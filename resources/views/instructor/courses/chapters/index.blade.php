@@ -32,34 +32,35 @@
 
                 </div>
 
-                <button type="submit" class="zBtn-three">{{__('Publish Now')}}</button>
+                <button type="submit" class="zBtn-three mt-3">{{__('Publish Now')}}</button>
             </div>
         </form>
-        <div>
+        <div class="mt-3">
             <input type="hidden" id="chapter-route" value="{{ route('admin.courses.chapters.index') }}">
-                <div class="primary-form-group mb-3">
-                    <div class="primary-form-group-wrap col-3">
-                        <select name="course_id" id="course" class="primary-form-control" spellcheck="false">
-                            <option value="" selected></option>
-                            @foreach($courses as $course)
-                                <option value="{{ $course->course_id }}">{{ $course->course->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            <div class="primary-form-group mb-3">
+                <div class="primary-form-group-wrap col-3">
+                    <label for="course" class="form-label">Filter By Course</label>
+                    <select name="course_id" id="course" class="primary-form-control" spellcheck="false">
+                        <option value="" selected></option>
+                        @foreach($courses as $course)
+                            <option value="{{ $course->course_id }}">{{ $course->course->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
-<x-table id="chapterTable">
-    <th scope="col"><div>{{ __('Title') }}</div></th>
-    <th scope="col"><div>{{ __('Course') }}</div></th>
-    <th scope="col"><div>{{ __('Status') }}</div></th>
-    <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
-</x-table>
+            </div>
+            <x-table id="chapterTable">
+                <th scope="col"><div>{{ __('Title') }}</div></th>
+                <th scope="col"><div>{{ __('Course') }}</div></th>
+                <th scope="col"><div>{{ __('Status') }}</div></th>
+                <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+            </x-table>
 
-                <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-xl">
-                        <div class="modal-content">
-                        </div>
+            <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
                     </div>
                 </div>
+            </div>
 
 
 
@@ -74,7 +75,7 @@
         $(document).on('change', '.toggle-status', function() {
             var chapterId = $(this).data('id'); // Get the chapters ID
             var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
-            const url=`{{route('instructor.courses.chapters.status','')}}/${chapterId}`
+            const url=`{{route('instructor.courses.chapters.updateStatus','')}}/${chapterId}`
             $.ajax({
                 url: url, // Update with your actual route
                 type: 'POST',

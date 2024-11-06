@@ -65,7 +65,7 @@ class MaterialController extends Controller
         ]);
         foreach ($request->titles as $index => $title) {
             $material = new Material();
-            $material->chapter_id = $request->chapter_id;
+            $material->lecture_id = $request->lecture_id;
             $material->title = $title;
 
 
@@ -87,7 +87,7 @@ class MaterialController extends Controller
                 $material->type = $extension; // Store the file extension
 
             }
-
+            dd($material);
             $material->save();
         }
 

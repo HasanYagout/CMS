@@ -13,9 +13,10 @@ use Yajra\DataTables\Contracts\DataTable;
 
 class AnnouncementController extends Controller
 {
-    public function index(Request $request){
-        if ($request->ajax()){
-               $announcement= Announcement::with('course')->where('instructor_id',Auth::id())->get();
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $announcement = Announcement::with('course')->where('instructor_id', Auth::id())->get();
 
             return datatables($announcement)
                 ->addIndexColumn()
@@ -24,15 +25,11 @@ class AnnouncementController extends Controller
                     return $data->course->name;
                 })
                 ->addColumn('type', function ($data) {
-                    if ($data->text_title){
-                    return 'announcement';
-                    }
-                    else{
+                    if ($data->text_title) {
+                        return 'announcement';
+                    } else {
                         return 'vote';
                     }
-                })
-                ->addColumn('type', function ($data) {
-                    return $data->title;
                 })
                 ->addColumn('status', function ($data) {
                     $checked = $data->status ? 'checked' : '';
@@ -46,11 +43,18 @@ class AnnouncementController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('instructor.courses.announcement.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
-            </button>';
+            </button>
+                    <button onclick="deleteItem(\'' . route('instructor.courses.announcement.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
-                ->rawColumns(['course','type','action','status'])
+                ->rawColumns(['course', 'type', 'action', 'status'])
                 ->make(true);
         }
 
@@ -64,7 +68,9 @@ class AnnouncementController extends Controller
                 ];
             })
             ->toArray();
-        return view('instructor.courses.announcement.index',$data);
+        $data['activeCourseAnnouncement'] = 'active';
+        $data['showCourseManagement'] = 'show';
+        return view('instructor.courses.announcement.index', $data);
     }
 
     public function store(Request $request)
@@ -110,5 +116,63 @@ class AnnouncementController extends Controller
         $announcement->save();
 
         return redirect()->route('instructor.courses.announcement.index')->with('success', 'Announcement created successfully.');
+    }
+
+    public function edit($id)
+    {
+
+        $data['announcement'] = Announcement::where('id', $id)->first();
+        return view('instructor.courses.announcement.edit-form', $data);
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        // Validate the form inputs
+        $request->validate([
+            'announcement_type' => 'required|in:text,vote',
+            'vote_title' => 'required_if:announcement_type,vote|string|max:255',
+            'choices' => 'required_if:announcement_type,vote|array',
+            'choices.*' => 'required_if:announcement_type,vote|string|max:255',
+            'text_title' => 'required_if:announcement_type,text|string|max:255',
+            'announcement_text' => 'required_if:announcement_type,text|string',
+        ]);
+
+        // Find the announcement
+        $announcement = Announcement::findOrFail($id);
+
+        // Update announcement details
+        $announcement->announcement_type = $request->announcement_type;
+        $announcement->title = $request->announcement_type == 'vote' ? $request->vote_title : $request->text_title;
+        $announcement->text = $request->announcement_type == 'text' ? $request->announcement_text : null;
+        if ($request->announcement_type == 'vote') {
+            $choices = collect(json_decode($announcement->choices))->map(function ($choice, $index) use ($request) {
+                return ['name' => $request->choices[$index], 'count' => $choice->count];
+            });
+            $announcement->choices = json_encode($choices);
+        } else {
+            $announcement->choices = null;
+        }
+
+        $announcement->save();
+
+
+        return redirect()->route('instructor.courses.announcement.index')->with('success', 'Announcement Updated successfully.');
+
+    }
+
+
+    public function updateStatus(Request $request)
+    {
+        Announcement::find($request->id)->update(['status' => $request->status]);
+        return response()->json(['message' => 'Announcement status updated successfully.']);
+    }
+
+    public function delete(Request $request, $id)
+    {
+
+        $announcement = Announcement::find($id);
+        $announcement->delete();
+        return response()->json(['message' => 'Announcement deleted successfully.']);
     }
 }

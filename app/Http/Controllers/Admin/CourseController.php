@@ -114,6 +114,7 @@ class CourseController extends Controller
       $course['end_date']=$request->end_date;
       $course['lectures']=$request->lectures;
       $course['hours']=$request->hours;
+      $course['department_id']=Auth::user()->admin->department_id;
       $course['slug']=Str::slug($course['name']).'-'.Str::random(6);
       Course::create($course);
         session()->flash('success', 'Course Created Successfully');
@@ -195,19 +196,7 @@ class CourseController extends Controller
 
     public function instructors()
     {
-        $data['courses']= Course::where('status',1)
-            ->where('department_id',Auth::user()->admin->department_id)
-            ->get();
 
-        $data['instructors'] = User::where('role_id', 2)
-            ->where('status', 1)
-            ->whereHas('instructor', function ($query) {
-                $query->where('department_id', Auth::user()->admin->department_id);
-            })
-            ->get();
-        $data['showCourseManagement']='show';
-        $data['activeCourseInstructor']='active';
-        return view('admin.courses.instructors',$data);
     }
 
     public function info($id)
@@ -265,7 +254,7 @@ class CourseController extends Controller
         $course->image = $thumbnailPath;
     }
     $course->save();
-    return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
+    return redirect()->route('admin.courses.create')->with('success', 'Course updated successfully.');
 }
 
     public function destroy($id)

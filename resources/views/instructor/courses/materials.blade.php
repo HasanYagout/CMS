@@ -23,8 +23,16 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="chapter">Select Chapter:</label>
-                                <select id="chapter" name="chapter_id" class="form-control form-select" required>
+                                <select id="chapters" name="chapter_id" class="form-control form-select" required>
                                     <option value="">-- Select Chapter --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-group">
+                                <label class="form-label" for="chapter">Select Lecture:</label>
+                                <select id="lectures" name="lecture_id" class="form-control form-select" required>
+                                    <option value="">-- Select Lecture --</option>
                                 </select>
                             </div>
                         </div>
@@ -125,13 +133,14 @@
         $(document).ready(function() {
             const path = "{{ asset('assets/images/icon/upload-img-1.svg') }}";
 
+            // Fetch chapters when course is selected
             $('#course').off('change').on('change', function() {
                 const courseId = $(this).val();
                 const chapterSelect = $('#chapters');
                 chapterSelect.empty().append('<option value="">-- Select Chapter --</option>');
 
                 if (courseId) {
-                    const url = `{{ route('instructor.courses.chapters.get', '') }}/${courseId}`;
+                    const url = `{{ route('instructor.courses.chapters.getChapters', '') }}/${courseId}`;
                     $.ajax({
                         url: url,
                         method: 'GET',
@@ -147,57 +156,53 @@
                 }
             });
 
+            // Fetch lectures when chapter is selected
+            $('#chapters').change(function() {
+                const chapterId = $(this).val();
+                const lectureSelect = $('#lectures');
+                lectureSelect.empty().append('<option value="">-- Select Lecture --</option>');
+
+                if (chapterId) {
+                    const url = `{{ route('instructor.courses.lectures.get', '') }}/${chapterId}`;
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(data) {
+                            $.each(data, function(index, lecture) {
+                                lectureSelect.append(`<option value="${lecture.id}">${lecture.title}</option>`);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching lectures:', error);
+                        }
+                    });
+                }
+            });
+
+            // Add another material
             $('#add-material').off('click').on('click', function() {
-                const url=`{{ asset('assets/images/icon/upload-img-1.svg') }}`;
                 const newMaterial = `
-                    <div class="col-lg-6">
-                    <div class="primary-form-group my-4">
-                    <div class="primary-form-group-wrap">
+        <div class="col-lg-6">
+            <div class="primary-form-group my-4">
+                <div class="primary-form-group-wrap">
                     <label class="form-label text-secondary-color" for="titles[]">Title:</label>
-                <input type="text" name="titles[]" class="primary-form-control" required>
+                    <input type="text" name="titles[]" class="primary-form-control" required>
                 </div>
             </div>
-                <div class="primary-form-group">
-                    <div class="primary-form-group-wrap zImage-upload-details">
-
-                        <label for="zImageUpload" class="form-label">Upload Image <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
-                        <div class="upload-img-box">
-                            <img src="">
-                            <input type="file" size="1000" name="images[]" accept="image/*,video/*" onchange="previewFile(this)">
-                        </div>
+            <div class="primary-form-group">
+                <div class="primary-form-group-wrap zImage-upload-details">
+                    <label for="zImageUpload" class="form-label">Upload Image <span class="text-mime-type">(jpg,jpeg,png)</span> <span class="text-danger">*</span></label>
+                    <div class="upload-img-box">
+                        <img src="">
+                        <input type="file" size="1000" name="images[]" accept="image/*,video/*" onchange="previewFile(this)">
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
                 $('#materials-container').append(newMaterial);
             });
-            $('#course_filter').change(function() {
-                const courseId = $(this).val();
-                const chapterSelect = $('#chapter_filter');
-                chapterSelect.empty().append('<option value="">-- Filter by Chapter --</option>');
 
-                if (courseId) {
-                    const url = `{{ route('admin.courses.chapters.get', '') }}/${courseId}`;
-                    $.ajax({
-                        url: url,
-                        method: 'GET',
-                        success: function(data) {
-                            $.each(data, function(index, chapter) {
-                                chapterSelect.append(`<option value="${chapter.id}">${chapter.title}</option>`);
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching chapters:', error);
-                        }
-                    });
-                }
-
-                materialTable.ajax.reload();
-            });
-
-            $('#chapter_filter').change(function() {
-                materialTable.ajax.reload();
-            });
-
+            // Initialize DataTable for materials
             const materialTable = $('#materialTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -215,6 +220,16 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false },
                 ]
             });
+
+            // Reload DataTable when filters change
+            $('#course_filter').change(function() {
+                materialTable.ajax.reload();
+            });
+
+            $('#chapter_filter').change(function() {
+                materialTable.ajax.reload();
+            });
         });
+
     </script>
 @endpush

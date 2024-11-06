@@ -20,8 +20,10 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $courses = Course::with('enrollments', 'availability.instructor', 'semester')
-                ->where('college_id', Auth::user()->instructor->department_id)
+            $courses = Course::whereHas('availabilities', function ($query) {
+                $query->where('instructor_id', Auth::id());
+            })->with('enrollments', 'availabilities.instructor', 'semester')
+                ->where('department_id', Auth::user()->instructor->department_id)
                 ->get()
                 ->map(function ($course) {
                     $course->enrollmentCount = $course->enrollments->count();
@@ -54,7 +56,9 @@ class ReportController extends Controller
                 ->make(true);
 
         }
-        return view('instructor.reports.courses');
+        $data['showReportManagement'] = 'show';
+        $data['activeReport'] = 'active';
+        return view('instructor.reports.courses', $data);
     }
 
     public function students(Request $request, $course_id)
@@ -99,7 +103,7 @@ class ReportController extends Controller
             return datatables($students)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-                    return '<a href="' . route('instructor.reports.grades', ['course_id' => $data->id]) . '">' . $data->student->first_name . ' ' . $data->student->last_name . '</a>';
+                    return '<a href="' . route('admin.reports.grades', ['course_id' => $data->id]) . '">' . $data->student->first_name . ' ' . $data->student->last_name . '</a>';
                 })
                 ->addColumn('assignments', function ($data) use ($submittedAssignments, $assignmentGradesSum) {
                     $studentAssignments = $submittedAssignments->where('student_id', $data->student_id);
@@ -126,7 +130,8 @@ class ReportController extends Controller
                 ->rawColumns(['name', 'status'])
                 ->make(true);
         }
-
+        $data['showReportManagement'] = 'show';
+        $data['activeReport'] = 'active';
         $data['course_id'] = $course_id;
         return view('instructor.reports.students', $data);
     }

@@ -30,8 +30,13 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::controller(ChapterController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
-                Route::post('/update/{id}', 'status')->name('status');
-                Route::get('/get/{id}', 'getChapterByCourseId')->name('get');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+                Route::get('/get/{id}', 'getChaptersAndAvailability')->name('get');
+                Route::get('/getchapters/{id}', 'getChapters')->name('getChapters');
+                Route::get('/availability/{courseId}', 'getAvailability')->name('getavailability');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
             });
         });
         Route::group(['prefix' => 'lectures', 'as' => 'lectures.'], function () {
@@ -39,13 +44,21 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::get('/', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
                 Route::get('/get/{id}', 'getLecturesByCourseId')->name('get');
+                Route::get('/latest/{course_id}', 'getLatestLecture')->name('latest');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
 
             });
-            Route::group(['prefix'=>'activities','as' => 'activities.'], function () {
+            Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
                 Route::controller(ActivityController::class)->group(function () {
                     Route::get('/', 'index')->name('index');
                     Route::post('/store', 'store')->name('store');
-
+                    Route::get('/edit/{id}', 'edit')->name('edit');
+                    Route::post('/update/{id}', 'update')->name('update');
+                    Route::post('/delete/{id}', 'delete')->name('delete');
+                    Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
                 });
             });
         });
@@ -61,9 +74,12 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::controller(\App\Http\Controllers\Instructor\ForumController::class)->group(function () {
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
             });
         });
-
 
 
         // Assignments routes within courses
@@ -71,6 +87,10 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::controller(AssignmentController::class)->group(function () {
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
 
             });
         });
@@ -78,7 +98,10 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::controller(QuizController::class)->group(function () {
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
-
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
             });
         });
 
@@ -87,7 +110,10 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::controller(AnnouncementController::class)->group(function () {
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
-
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
             });
         });
     });
@@ -99,4 +125,10 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
             Route::get('/grades/{course_id}', 'grades')->name('grades');
         });
     });
+    Route::controller(\App\Http\Controllers\Instructor\ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('profile');
+        Route::post('/profile_update', 'update')->name('profile.update');
+        Route::post('/profile_password', 'password')->name('profile.password');
+    });
+
 });

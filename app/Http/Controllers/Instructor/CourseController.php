@@ -39,7 +39,10 @@ class CourseController extends Controller
                 ->rawColumns(['name','lectures','hours','time','days','image'])
                 ->make(true);
         }
-        return view('instructor.courses.index');
+        $data['showCourseManagement']='show';
+        $data['activeCourseALL']='active';
+
+        return view('instructor.courses.index',$data);
     }
 
 

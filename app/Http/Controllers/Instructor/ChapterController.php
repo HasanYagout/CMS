@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Availabilities;
 use App\Models\Chapter;
 use App\Models\Course;
+use App\Models\Lecture;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +18,10 @@ class ChapterController extends Controller
         if ($request->ajax()) {
             $courseId = $request->get('course_id');
 
-            $query = Chapter::with('course')->where('instructor_id', Auth::id());
+            $query = Chapter::whereHas('course.availabilities',function ($query){
+                    $query->where('instructor_id',Auth::id());
+            });
+
             if ($courseId) {
                 $query->where('course_id', $courseId); // Filter by course ID
             }
@@ -44,12 +49,15 @@ class ChapterController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
-                                <li class="d-flex gap-2">
-                                    <button onclick="getEditModal(\'' . route('instructor.courses.materials.index', $data->id) . '\'' . ', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#alumniPhoneNo">
-                                        <img src="' . asset('assets/images/icon/edit.svg') . '" alt="edit" />
-                                    </button>
-                                </li>
-                            </ul>';
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('instructor.courses.chapters.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                    <button onclick="deleteItem(\'' . route('instructor.courses.chapters.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
                 ->rawColumns(['title','status','course','action'])
                 ->make(true);
@@ -58,7 +66,7 @@ class ChapterController extends Controller
         $data['activeCourseChapter']='active';
 
         $data['courses'] = Availabilities::with('course')->where('instructor_id', Auth::id())->get();
-        return view('instructor.courses.chapters', $data);
+        return view('instructor.courses.chapters.index', $data);
     }
 
     public function store(Request $request)
@@ -80,7 +88,7 @@ class ChapterController extends Controller
         return redirect()->back()->with('success', 'Chapters created successfully!');
     }
 
-    public function status(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
         Chapter::where('id', $id)->update(['status'=>$request->status]);
 
@@ -90,10 +98,55 @@ class ChapterController extends Controller
         session()->flash('success', 'Chapter Updated Successfully');
         return back();
     }
-    public function getChapterByCourseId($id)
+    public function getChaptersAndAvailability($courseId)
     {
+        $chapters = Chapter::where('course_id', $courseId)->get();
+        $availability = Availabilities::where('course_id', $courseId)->first();
 
-        return Chapter::with('course')->where('course_id',$id)->orderBy('created_at','DESC')->get();
+        return response()->json([
+            'chapters' => $chapters,
+            'availability' => $availability,
+        ]);
+    }
+    public function getChapters($courseId)
+    {
+        return Chapter::where('course_id', $courseId)->get();
+    }
+    public function getAvailability($courseId) {
+        $course = Course::find($courseId);
+     $availability = Availabilities::where('course_id', $courseId)->first();
+      return response()->json([ 'course' => $course, 'availability' => $availability ]);
+    }
+    public function edit($id)
+    {
+        $data['chapter']= Chapter::with('course')->where('id', $id)->first();
+        $data['availabilities'] = Availabilities::whereHas('course', function ($query) { $query->where('department_id', Auth::user()->instructor->department_id); })->with('course')->get();
+
+        return view('instructor.courses.chapters.edit-form', $data);
+    }
+    public function update(Request $request, $id) {
+
+         $request->validate([
+             'title' => 'required|string|max:255',
+             'course_id' => 'required|exists:courses,id',
+             ]);
+          $chapter = Chapter::find($id);
+          $chapter->title = $request->title;
+          $chapter->course_id = $request->course_id;
+          $chapter->save();
+          return redirect()->route('instructor.courses.chapters.index')->with('success', 'Chapter updated successfully.');
+
+    }
+
+    public function delete(Request $request, $id) {
+         $chapter = Chapter::find($id);
+          $hasLectures = Lecture::where('chapter_id', $chapter->id)->exists();
+          if ($hasLectures) {
+              return response()->json(['message' => 'Cannot delete chapter as it has associated lectures.'], 400);
+
+          }
+          $chapter->delete();
+        return response()->json(['message' => 'Chapter deleted successfully.']);
     }
 
 

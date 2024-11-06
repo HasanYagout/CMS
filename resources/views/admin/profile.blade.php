@@ -45,7 +45,7 @@
 
                     </div>
                     <div class="tab-pane fade text-black" id="photo" role="tabpanel" aria-labelledby="photo-tab">
-                        <form method="POST" action="{{ route('superAdmin.profile.update') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data">
                             @csrf
                             <label class="form-label" for="image">Upload Image</label>
                             <input name="image" class="form-control" type="file">
@@ -53,7 +53,7 @@
                         </form>
                     </div>
                     <div class="tab-pane fade text-black" id="password" role="tabpanel" aria-labelledby="password-tab">
-                        <form method="POST" action="{{ route('superAdmin.profile.password') }}">
+                        <form method="POST" action="{{ route('admin.profile.password') }}">
                             @csrf
                             <label class="form-label" for="previous_password">Previous Password</label>
                             <input name="previous_password" class="form-control" type="password" required>

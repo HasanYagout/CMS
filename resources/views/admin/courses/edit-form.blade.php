@@ -19,7 +19,6 @@
                 </div>
             </div>
 
-
             <div class="col-md-6">
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">

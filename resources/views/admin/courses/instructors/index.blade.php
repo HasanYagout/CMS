@@ -111,13 +111,13 @@
                 </thead>
             </table>
         </div>
-    <div class="modal fade zModalTwo" id="edit-modal" aria-hidden="true" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content zModalTwo-content">
+        <div class="modal fade zModalTwo" id="edit-modal" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content zModalTwo-content">
 
+                </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 

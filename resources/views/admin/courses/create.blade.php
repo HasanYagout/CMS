@@ -73,6 +73,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="pb-4 col-md-12 ">
                                 <div class="primary-form-group">
                                     <div class="primary-form-group-wrap zImage-upload-details">
