@@ -70,18 +70,18 @@ class DashboardController extends Controller
         $student = Auth::user()->student;
         $collegeId = $student->college_id;
         $data['news'] = News::where('college_id', $collegeId)->get();
-        $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query)  {
+        $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query) {
             $query->where('student_id', Auth::id());
         })->count();
 
-        $data['assignments'] = InstructorAssignments::whereHas('lecture.chapter.course.enrollments', function ($query)  {
+        $data['assignments'] = InstructorAssignments::whereHas('lecture.chapter.course.enrollments', function ($query) {
             $query->where('student_id', Auth::id());
         })->count();
 
-        $data['quizzes'] = InstructorQuiz::whereHas('lecture.chapter.course.enrollments', function ($query)  {
+        $data['quizzes'] = InstructorQuiz::whereHas('lecture.chapter.course.enrollments', function ($query) {
             $query->where('student_id', Auth::id());
         })->count();
-
-        return view('student.dashboard',$data);
+        $data['activeHome'] = 'active';
+        return view('student.dashboard', $data);
     }
 }

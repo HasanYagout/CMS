@@ -67,10 +67,14 @@ class EnrollmentController extends Controller
             $data['hours'][$index] = $difference->h;
         }
 
-        $data['lectures'] = Lecture::whereHas('chapters.course', function ($query) use ($data) {
+        $data['lectures'] = Lecture::whereHas('chapter.course', function ($query) use ($data) {
             $query->where('id', $data['course']->id);
-        })->with('chapters.course')->get();
+        })
+            ->whereBetween('start_date', [Carbon::today(), Carbon::today()->addDays(3)])
+            ->with('chapter.course')
+            ->get();
 
+       
         $data['announcements'] = Announcement::with('course')
             ->where('course_id', $data['course']->id)
             ->whereIn('course_id', function ($query) use ($studentId) {
@@ -90,28 +94,41 @@ class EnrollmentController extends Controller
     {
         $studentId = Auth::id();
 
-        $data['courses']= Course::whereHas('enrollments', function ($query) use ($studentId) {
+        $data['courses'] = Course::whereHas('enrollments', function ($query) use ($studentId) {
             $query->where('student_id', $studentId)
+                ->where('status', 1)
                 ->whereHas('payment', function ($query) {
                     $query->where('is_paid', true);
                 });
         })
             ->with(['availability.instructor']) // Eager load the instructor
             ->get();
-
+        $data['activeEnrolled'] = 'active';
         return view('student.enrollment.index', $data);
     }
-    public function register(Request $request,$id)
+
+    public function register(Request $request, $id)
     {
-        $enrollment_id  =Enrollment::insertGetId(
-            ['student_id'=>Auth::id(),
-             'course_id'=>$id,
-            ]
-        );
-        Payment::create(
-            ['enrollment_id'=>$enrollment_id,
-             ]
-        );
+        $course = Course::find($id);
+        if ($course) {
+            $enrollment_id = Enrollment::insertGetId(
+                ['student_id' => Auth::id(),
+                    'course_id' => $id,
+                    'status', false
+                ]
+            );
+            Payment::create(
+                ['enrollment_id' => $enrollment_id,
+                    'is_paid' => false,
+                    'student_id' => Auth::id()
+                ]
+            );
+            return back()->with('Course Registered successfully');
+        } else {
+            return back()->withErrors('Course Not Found');
+
+        }
+
 
     }
 

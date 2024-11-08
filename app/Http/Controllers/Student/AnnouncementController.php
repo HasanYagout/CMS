@@ -14,10 +14,9 @@ class AnnouncementController extends Controller
     public function index($courseId)
     {
 
-        $data['Announcements']=Announcement::where('course_id',$courseId)
-            ->get();
-        $data['activeAnnouncement']='active';
-        return view('student.courses.announcement.index',$data);
+        $data['Announcements'] = Announcement::where('course_id', $courseId)->orderBy('created_at', 'desc')->get();
+        $data['activeAnnouncement'] = 'active';
+        return view('student.courses.announcement.index', $data);
     }
 
     public function store(Request $request)

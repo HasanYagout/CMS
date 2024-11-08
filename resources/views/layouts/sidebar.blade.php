@@ -194,6 +194,14 @@
                                         <a class="{{ $activeCourseForum ?? '' }}"
                                            href="{{ route('instructor.courses.forums.index') }}">{{ __('Forum') }}</a>
                                     </li>
+                                    <li>
+                                        <a class="{{ $activeCourseStudent ?? '' }}"
+                                           href="{{ route('instructor.courses.students.index') }}">{{ __('Students') }}</a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ $activeCourseAttendance ?? '' }}"
+                                           href="{{ route('instructor.courses.attendance.index') }}">{{ __('Attendance') }}</a>
+                                    </li>
 
                                 @endif
 

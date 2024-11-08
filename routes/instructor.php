@@ -9,6 +9,7 @@ use App\Http\Controllers\Instructor\ChapterController;
 use App\Http\Controllers\Instructor\LectureController;
 use App\Http\Controllers\Instructor\MaterialController;
 use App\Http\Controllers\Instructor\QuizController;
+use App\Http\Controllers\Instructor\StudentController;
 use Illuminate\Support\Facades\Route;
 
 // Instructor routes group
@@ -39,6 +40,15 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/delete/{id}', 'delete')->name('delete');
             });
         });
+
+        Route::group(['prefix' => 'attendance', 'as' => 'attendance.'], function () {
+            Route::controller(\App\Http\Controllers\Instructor\AttendanceController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/update', 'update')->name('update');
+
+            });
+        });
+
         Route::group(['prefix' => 'lectures', 'as' => 'lectures.'], function () {
             Route::controller(LectureController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -114,6 +124,14 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/update/{id}', 'update')->name('update');
                 Route::post('/delete/{id}', 'delete')->name('delete');
                 Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+            });
+        });
+        Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
+            Route::controller(StudentController::class)->group(function () {
+                Route::get('/index', 'index')->name('index');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+
             });
         });
     });

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class StudentAssignment extends Model
 {
     use HasFactory;
-    protected   $table = 'students_assignments';
+
+    protected $table = 'students_assignments';
+    protected $fillable = ['student_id', 'instructor_assignments_id', 'comment', 'path', 'grade'];
 
     public function instructorAssignment()
     {

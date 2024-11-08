@@ -10,7 +10,9 @@
 
                     @foreach($course->chapters as $index => $chapter)
                         <div class="col-12 mb-3">
-                            <button class="btn bg-primary-color w-75 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChapter{{ $index }}" aria-expanded="false" aria-controls="collapseChapter{{ $index }}">
+                            <button class="btn bg-primary-color w-75 text-white" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseChapter{{ $index }}" aria-expanded="false"
+                                    aria-controls="collapseChapter{{ $index }}">
                                 {{ $chapter->title }}
                             </button>
                             <div class="collapse multi-collapse mt-2" id="collapseChapter{{ $index }}">
@@ -19,12 +21,25 @@
 
                                         @if($chapter->lectures)
                                             @foreach($chapter->lectures as $lecture)
+                                                @php
+                                                    $today = \Carbon\Carbon::today();
+                                                    $startDate = \Carbon\Carbon::parse($lecture->start_date);
+                                                    $daysLeft = $today->diffInDays($startDate, false);
+                                                    $isAccessible = $daysLeft <= 2 && $daysLeft >= 0;
+                                                @endphp
+
                                                 <div class="col-lg-4">
-
-                                                    <a href="{{route('student.courses.lectures.view',['course_id'=>$course->id,'lecture_id'=>$lecture->id])}}" class="bg-secondary-color p-2 rounded my-3 text-white">
-
-                                                        {{ $lecture->title }}
-                                                    </a>
+                                                    @if($isAccessible)
+                                                        <a href="{{route('student.courses.lectures.view',['course_id'=>$course->id,'lecture_id'=>$lecture->id])}}"
+                                                           class="bg-secondary-color p-2 rounded my-3 text-white">
+                                                            {{ $lecture->title }}
+                                                        </a>
+                                                    @else
+                                                        <span
+                                                            class="bg-secondary-color p-2 rounded my-3 text-white disabled">
+                                                            {{ $lecture->title }} (Accessible in {{ $daysLeft }} days)
+                                                        </span>
+                                                    @endif
                                                 </div>
                                             @endforeach
                                         @else

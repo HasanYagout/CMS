@@ -7,7 +7,8 @@
             <p>No announcements available.</p>
         @else
             @foreach($Announcements as $index => $announcement)
-                <section class="announcement justify-content-around bg-light-blue p-20 rounded mb-3 {{ $loop->first ? 'd-flex' : '' }}">
+                <section
+                    class="announcement bg-light-blue flex-column gap-3 justify-content-between mb-3 p-20 rounded d-flex">
                     <h3 class="text-black">{{ $announcement->title }}</h3>
                     @if($announcement->announcement_type == 'vote')
                         @php
@@ -28,7 +29,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <button type="submit" class="btn btn-primary">Vote</button>
+                            <button type="submit" class="zBtn-two">Vote</button>
                         </form>
                         <div>
                             <h4 class="text-black">Results:</h4>
@@ -37,12 +38,17 @@
                                     $totalVotes = array_sum(array_column($choices, 'count'));
                                     $percentage = $totalVotes > 0 ? ($choice['count'] / $totalVotes) * 100 : 0;
                                 @endphp
-                                <div>{{ $choice['name'] }}: {{ round($percentage, 2) }}% ({{ $choice['count'] }} votes)</div>
+                                <div>{{ $choice['name'] }}: {{ round($percentage, 2) }}% ({{ $choice['count'] }}
+                                    votes)
+                                </div>
                             @endforeach
                         </div>
+
                     @else
-                        <p>{{ $announcement->text }}</p>
+                        <span>{{ $announcement->text }}</span>
+
                     @endif
+                    <span class="text-third-color">{{ $announcement->created_at }}</span>
                 </section>
             @endforeach
         @endif
