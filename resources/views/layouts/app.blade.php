@@ -10,7 +10,7 @@
 
     <div id="preloader">
         <div id="preloader_status">
-            <img src="{{ asset('frontend/images/liu-logo.png') }}" alt="{{ getOption('app_name') }}" />
+            <img src="{{ asset('frontend/images/liu-logo.png') }}" alt="{{ getOption('app_name') }}"/>
         </div>
     </div>
     <!-- Main Content -->
@@ -20,7 +20,7 @@
         <!-- Main Content -->
         <div class="zMainContent w-57 ms-auto">
 
-{{--            @include('layouts.nav')--}}
+            {{--            @include('layouts.nav')--}}
 
             @yield('content')
 
@@ -62,7 +62,7 @@
                             }).then(() => {
                                 if (response.logout) {
                                     // Redirect to login page if logout is true
-{{--                                    window.location.href = {{route('auth.login')}}; // Change to your login URL--}}
+                                    {{--                                    window.location.href = {{route('auth.login')}}; // Change to your login URL--}}
                                 } else {
                                     // Optionally handle success for other instructors
                                     window.location.reload(); // Reload the current page
@@ -79,28 +79,10 @@
             }
         });
     }
-    $(document).ready(function() {
+
+    $(document).ready(function () {
         $('.dropdown-toggle').dropdown();
     });
-
-    @if(Session::has('success'))
-    toastr.success("{{ session('success') }}");
-    @endif
-    @if(Session::has('error'))
-    toastr.error("{{ session('error') }}");
-    @endif
-    @if(Session::has('info'))
-    toastr.info("{{ session('info') }}");
-    @endif
-    @if(Session::has('warning'))
-    toastr.warning("{{ session('warning') }}");
-    @endif
-
-    @if ($errors->any())
-    @foreach ($errors->all() as $error)
-    toastr.error("{{ $error }}");
-    @endforeach
-    @endif
 </script>
 
 

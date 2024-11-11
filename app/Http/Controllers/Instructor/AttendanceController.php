@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\Availabilities;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
@@ -16,15 +17,23 @@ class AttendanceController extends Controller
             if ($request->course_id) {
                 $enrollments = Enrollment::with('student', 'course.chapters.lectures')
                     ->where('course_id', $request->course_id)
-                    ->get();
+                    ->paginate(10); // Adjust the number of items per page as needed
 
                 $students = $enrollments->map(function ($enrollment) {
-                    $lectures = $enrollment->course->chapters->flatMap(function ($chapter) {
-                        return $chapter->lectures->map(function ($lecture) {
-                            return ['id' => $lecture->id, 'name' => $lecture->title];
+                    $lectures = $enrollment->course->chapters->flatMap(function ($chapter) use ($enrollment) {
+                        return $chapter->lectures->map(function ($lecture) use ($enrollment) {
+                            // Get the attendance status for this lecture and student
+                            $attendance = Attendance::where('student_id', $enrollment->student->user_id)
+                                ->where('lecture_id', $lecture->id)
+                                ->first();
+
+                            return [
+                                'id' => $lecture->id,
+                                'name' => $lecture->title,
+                                'attended' => $attendance ? true : false // Check if attendance exists
+                            ];
                         });
                     });
-
 
                     return [
                         'id' => $enrollment->student->user_id,
@@ -34,9 +43,10 @@ class AttendanceController extends Controller
                     ];
                 });
 
-                return response()->json(['data' => $students]);
-
-
+                return response()->json([
+                    'data' => $students,
+                    'links' => (string)$enrollments->links() // Pass pagination links to the frontend
+                ]);
             }
         }
 
@@ -54,8 +64,22 @@ class AttendanceController extends Controller
         return view('instructor.courses.attendance.index', $data);
     }
 
+
     public function update(Request $request)
     {
-        dd($request->all());
+        foreach ($request->attendanceData as $attendance) {
+            Attendance::updateOrCreate(
+                [
+                    'lecture_id' => $attendance['lecture_id'],
+                    'student_id' => $attendance['student_id']
+                ],
+                [
+                    'status' => $attendance['status']
+                ]
+            );
+        }
+
+        return response()->json(['success' => true, 'message' => 'Attendance updated successfully.']);
     }
+
 }

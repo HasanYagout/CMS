@@ -12,7 +12,7 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $department=Department::all();
+            $department = Department::all();
 
             return datatables($department)
                 ->addIndexColumn()
@@ -36,23 +36,25 @@ class DepartmentController extends Controller
                     <button onclick="getEditModal(\'' . route('superAdmin.department.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('superAdmin.department.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('superAdmin.department.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
             </ul>';
                 })
-                ->rawColumns(['name','action','status'])
+                ->rawColumns(['name', 'action', 'status'])
                 ->make(true);
         }
-        $data['activeDepartment']='active';
-        return view('super.department.index',$data);
+        $data['activeDepartment'] = 'active';
+        return view('super.department.index', $data);
     }
 
     public function store(Request $request)
     {
-        Department::create(['name'=>$request->name]);
+        Department::create(['name' => $request->name]);
+        return redirect()->route('superAdmin.department.index')->with('success', 'Department created Successfully');
     }
+
     public function updateStatus(Request $request)
     {
 
@@ -62,9 +64,10 @@ class DepartmentController extends Controller
 
     public function edit($id)
     {
-        $data['department']= Department::where('id', $id)->first();
+        $data['department'] = Department::where('id', $id)->first();
         return view('super.department.edit-form', $data);
     }
+
     public function update(Request $request, $id)
     {
         // Validate the form inputs
@@ -73,14 +76,14 @@ class DepartmentController extends Controller
         ]);
 
         // Check if admin has associated courses
-        $department = Department::where('id',$id)->first();
+        $department = Department::where('id', $id)->first();
 
 
         // Update admin details
         $department->name = $request->name;
         $department->save();
 
-        return redirect()->route('superAdmin.semesters.index')->with('success','Semester updated successfully');
+        return redirect()->route('superAdmin.semesters.index')->with('success', 'Semester updated successfully');
     }
 
     public function delete(Request $request, $id)

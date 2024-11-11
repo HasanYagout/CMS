@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Student\AnnouncementController;
 use App\Http\Controllers\Student\ChapterController;
 use App\Http\Controllers\Student\ForumController;
@@ -36,6 +37,7 @@ Route::group(['middleware' => ['student'], 'prefix' => 'student', 'as' => 'stude
             Route::get('/{course_id}', [QuizController::class, 'index'])->name('index');
             Route::get('/show/{quiz}', [QuizController::class, 'show'])->name('show');
             Route::post('/remaining_time', [QuizController::class, 'remaining_time'])->name('remaining_time');
+            Route::post('/store', [QuizController::class, 'store'])->name('store');
         });
 
         Route::group(['prefix' => 'announcements', 'as' => 'announcements.'], function () {
@@ -66,6 +68,10 @@ Route::group(['middleware' => ['student'], 'prefix' => 'student', 'as' => 'stude
         Route::get('/course/view/{id}', [EnrollmentController::class, 'view'])->name('view');
         Route::post('register/{id}', [EnrollmentController::class, 'register'])->name('register');
     });
-    Route::get('/profile', [\App\Http\Controllers\Student\ProfileController::class, 'index'])->name('profile');
+    Route::controller(\App\Http\Controllers\Student\ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('profile');
+        Route::post('/profile_update', 'update')->name('profile.update');
+        Route::post('/profile_password', 'password')->name('profile.password');
+    });
 
 });

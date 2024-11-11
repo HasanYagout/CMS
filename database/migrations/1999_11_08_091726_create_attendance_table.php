@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('attendance', function (Blueprint $table) {
             $table->id();
-            $table->foreign('lecture_id');
-            $table->foreign('student_id');
+            $table->foreignId('lecture_id');
+            $table->foreignId('student_id');
             $table->integer('status');
             $table->timestamps();
         });

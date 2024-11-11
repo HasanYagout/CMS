@@ -4,9 +4,9 @@
         <div class="container mt-5">
             <h3 class="text-black">{{ $quiz->title }}</h3>
             <h4 id="timer" class="alert alert-info my-4">Time Remaining: <span id="time"></span></h4>
-
-            <form  id="examForm" method="post">
+            <form id="examForm" action="{{route('student.courses.quizzes.store')}}" method="post">
                 @csrf
+                <input type="hidden" name="quiz_id" value="{{$quiz->id}}">
                 <h3 class="text-black">Please read the following instructions carefully:</h3>
                 <ol class="mt-4">
                     <li>Make sure you have a stable internet connection.</li>
@@ -16,11 +16,13 @@
                 <hr>
                 @foreach ($quiz->questions as $index=> $question)
                     <div class="mb-4">
-                        <h5 class="text-secondary-color mb-2"><span class="me-2">{{$index+1}} -</span>{{ $question->text }}</h5>
+                        <h5 class="text-secondary-color mb-2"><span
+                                class="me-2">{{$index+1}} -</span>{{ $question->text }}</h5>
                         @if ($question->type == 'mcq')
                             @foreach (explode(',', $question->options) as $option)
                                 <div class="text-black">
-                                    <input type="radio" name="questions[{{ $question->id }}]" value="{{ trim($option) }}">
+                                    <input type="radio" name="questions[{{ $question->id }}]"
+                                           value="{{ trim($option) }}">
                                     <label>{{ trim($option) }}</label>
                                 </div>
                             @endforeach
@@ -39,7 +41,7 @@
 @endsection
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let duration = {{ $quiz->duration }} * 60; // Exam duration in seconds
             const timerDisplay = $('#time');
 
@@ -49,7 +51,7 @@
             }
 
             function startTimer() {
-                const interval = setInterval(function() {
+                const interval = setInterval(function () {
                     let minutes = Math.floor(duration / 60);
                     let seconds = duration % 60;
 
@@ -70,9 +72,8 @@
             startTimer();
 
 
-
             // Clear the timer in localStorage on exam submission
-            $('#examForm').on('submit', function() {
+            $('#examForm').on('submit', function () {
                 localStorage.removeItem('remainingTime');
             });
         });

@@ -21,100 +21,122 @@
             text-align: center;
         }
     </style>
-    <label for="course">Course</label>
-    <select class="form-control" id="course">
-        <option value="">Select a Course</option>
-        @foreach($courses as $course)
-            <option value="{{ $course['id'] }}">{{ $course['name'] }}</option>
-        @endforeach
-    </select>
-    <div class="container">
-        <h2>Course Attendance</h2>
-        <table id="attendanceTable">
-            <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Lecture</th>
-                <th>Attended</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Add student and lecture rows dynamically -->
-            </tbody>
-        </table>
-        <button id="submitAttendance" class="btn btn-primary mt-3">Submit Attendance</button>
-    </div>
+    <x-wrapper title="Attendance">
+        <label for="course">Course</label>
+        <select class="form-control" id="course">
+            <option value="">Select a Course</option>
+            @foreach($courses as $course)
+                <option value="{{ $course['id'] }}">{{ $course['name'] }}</option>
+            @endforeach
+        </select>
+        <div class="container">
+            <table id="attendanceTable" class="table zTable">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        <div>{{ __('Student Name') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('Lecture') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('Attended') }}</div>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Add student and lecture rows dynamically -->
+                </tbody>
+            </table>
+            <button id="submitAttendance" class="zBtn-one mt-3">Submit Attendance</button>
+        </div>
+        <div id="paginationLinks"></div>
+    </x-wrapper>
+
 @endsection
 
 @push('script')
     <script>
         $(document).ready(function () {
             let attendanceData = [];
+            const fetchStudents = (courseId, url) => {
+                $.ajax({
+                    url: url,
+                    data: {course_id: courseId},
+                    method: 'GET',
+                    success: function (response) {
+                        if (response.data && Array.isArray(response.data)) {
+                            const students = response.data.map(student => ({
+                                id: student.id,
+                                first_name: student.first_name,
+                                last_name: student.last_name,
+                                lectures: student.lectures
+                            }));
+
+                            const $tableBody = $('#attendanceTable tbody');
+                            $tableBody.empty(); // Clear previous data
+
+                            students.forEach(student => {
+                                student.lectures.forEach((lecture, index) => {
+                                    const $tr = $('<tr></tr>');
+
+                                    // Only display student name on the first lecture row
+                                    if (index === 0) {
+                                        const $tdName = $('<td></td>').text(student.first_name + ' ' + student.last_name).attr('rowspan', student.lectures.length);
+                                        $tr.append($tdName);
+                                    }
+
+                                    // Lecture number
+                                    const $tdLecture = $('<td></td>').text(lecture.name);
+                                    $tr.append($tdLecture);
+
+                                    // Attendance checkbox
+                                    const $tdCheckbox = $('<td></td>');
+                                    const $checkbox = $('<input></input>', {
+                                        type: 'checkbox',
+                                        class: 'attendance-checkbox',
+                                        'data-student-id': student.id,
+                                        'data-lecture-id': lecture.id,
+                                        checked: lecture.attended // Set the checkbox status
+                                    });
+                                    $tdCheckbox.append($checkbox);
+                                    $tr.append($tdCheckbox);
+
+                                    $tableBody.append($tr);
+                                });
+                            });
+
+                            // Add pagination links
+                            $('#paginationLinks').html(response.links);
+                        } else {
+                            console.error('Invalid response data format:', response.data);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching course info:', error);
+                    }
+                });
+            };
 
             $('#course').change(function () {
                 const courseId = $(this).val();
-                const students = [];
 
                 if (courseId) {
-                    $.ajax({
-                        url: "{{ route('instructor.courses.attendance.index') }}",
-                        data: {course_id: courseId},
-                        method: 'GET',
-                        success: function (response) {
-                            if (response.data && Array.isArray(response.data)) {
-                                response.data.forEach(student => {
-                                    students.push({
-                                        id: student.id,
-                                        first_name: student.first_name,
-                                        last_name: student.last_name,
-                                        lectures: student.lectures
-                                    });
-                                });
-
-                                const $tableBody = $('#attendanceTable tbody');
-                                $tableBody.empty(); // Clear previous data
-
-                                students.forEach(student => {
-                                    student.lectures.forEach((lecture, index) => {
-                                        const $tr = $('<tr></tr>');
-
-                                        // Only display student name on the first lecture row
-                                        if (index === 0) {
-                                            const $tdName = $('<td></td>').text(student.first_name + ' ' + student.last_name).attr('rowspan', student.lectures.length);
-                                            $tr.append($tdName);
-                                        }
-
-                                        // Lecture number
-                                        const $tdLecture = $('<td></td>').text(lecture.name);
-                                        $tr.append($tdLecture);
-
-                                        // Attendance checkbox
-                                        const $tdCheckbox = $('<td></td>');
-                                        const $checkbox = $('<input></input>', {
-                                            type: 'checkbox',
-                                            class: 'attendance-checkbox',
-                                            'data-student-id': student.id,
-                                            'data-lecture-id': lecture.id
-                                        });
-                                        $tdCheckbox.append($checkbox);
-                                        $tr.append($tdCheckbox);
-
-                                        $tableBody.append($tr);
-                                    });
-                                });
-                            } else {
-                                console.error('Invalid response data format:', response.data);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error fetching course info:', error);
-                        }
-                    });
+                    fetchStudents(courseId, "{{ route('instructor.courses.attendance.index') }}");
                 }
             });
 
+            // Handle pagination link clicks
+            $(document).on('click', '#paginationLinks a', function (e) {
+                e.preventDefault();
+                const courseId = $('#course').val();
+                const url = $(this).attr('href');
+                fetchStudents(courseId, url);
+            });
+
             // Handle attendance checkbox toggle
-            $('#attendanceTable').on('change', '.attendance-checkbox', function () {
+            $('#attendanceTable').off().on('change', '.attendance-checkbox', function () {
                 const studentId = $(this).data('student-id');
                 const lectureId = $(this).data('lecture-id');
                 const isChecked = $(this).is(':checked');
@@ -131,7 +153,7 @@
             });
 
             // Handle submit button click
-            $('#submitAttendance').click(function () {
+            $('#submitAttendance').on().off().click(function () {
                 // Send an AJAX request to update attendance
                 $.ajax({
                     url: "{{ route('instructor.courses.attendance.update') }}", // Replace with your actual route for updating attendance

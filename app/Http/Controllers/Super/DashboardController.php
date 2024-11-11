@@ -24,11 +24,14 @@ class DashboardController extends Controller
             return datatables($admins)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-                        return $data->admin->first_name.' '.$data->admin->last_name;
+                    return $data->admin->first_name . ' ' . $data->admin->last_name;
+                })
+                ->addColumn('name', function ($data) {
+                    return $data->email;
                 })
                 ->addColumn('department', function ($data) {
 
-                return $data->admin->department->name;
+                    return $data->admin->department->name;
 
                 })
                 ->addColumn('status', function ($data) {
@@ -47,12 +50,12 @@ class DashboardController extends Controller
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>';
                 })
-                ->rawColumns(['name','action','status'])
+                ->rawColumns(['name', 'action', 'status'])
                 ->make(true);
         }
-        $data['colleges']=Department::all();
-        $data['activeHome']='active';
-        return view('super.dashboard',$data);
+        $data['colleges'] = Department::all();
+        $data['activeHome'] = 'active';
+        return view('super.dashboard', $data);
     }
 
     public function store(Request $request)
@@ -64,7 +67,7 @@ class DashboardController extends Controller
             'email' => 'required|email|unique:users,email',
             'department' => 'required|exists:department,id',
         ]);
-        $user= User::create([
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make('12345678'),
             'role_id' => 1,
@@ -72,14 +75,12 @@ class DashboardController extends Controller
         ]);
 
 
-            Admin::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'user_id' => $user->id,
-                'department_id' => $request->department,
-            ]);
-
-
+        Admin::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'user_id' => $user->id,
+            'department_id' => $request->department,
+        ]);
 
 
         return redirect()->route('admin.instructors.index')->with('success', 'admin added successfully.');
@@ -87,8 +88,8 @@ class DashboardController extends Controller
 
     public function edit($id)
     {
-       $data['admin']= Admin::where('user_id', $id)->first();
-       $data['departments']= Department::all();
+        $data['admin'] = Admin::where('user_id', $id)->first();
+        $data['departments'] = Department::all();
         return view('super.edit-form', $data);
     }
 
@@ -102,7 +103,7 @@ class DashboardController extends Controller
         ]);
 
         // Check if admin has associated courses
-        $admin = Admin::where('user_id',$id)->first();
+        $admin = Admin::where('user_id', $id)->first();
 
         $hasCourses = Availabilities::where('instructor_id', $admin->user_id)->exists();
 

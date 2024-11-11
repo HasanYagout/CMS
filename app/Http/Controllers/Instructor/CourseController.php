@@ -13,14 +13,15 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $availabilities = Availabilities::with('instructor','course')->where('instructor_id',Auth::id())->get();
+            $availabilities = Availabilities::with('instructor', 'course')->where('instructor_id', Auth::id())->get();
+           
             return datatables($availabilities)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
                     return $data->course->name;
                 })
                 ->addColumn('image', function ($data) {
-                    return '<img src="' . asset('storage/courses') .'/'.$data->course->image. '" alt="upload" />';
+                    return '<img src="' . asset('storage/courses') . '/' . $data->course->image . '" alt="upload" />';
 
                 })
                 ->addColumn('lectures', function ($data) {
@@ -33,18 +34,16 @@ class CourseController extends Controller
                     return json_decode($data->days);
                 })
                 ->addColumn('time', function ($data) {
-                    return $data->start_time.' - '.$data->end_time;
+                    return $data->start_time . ' - ' . $data->end_time;
                 })
-
-                ->rawColumns(['name','lectures','hours','time','days','image'])
+                ->rawColumns(['name', 'lectures', 'hours', 'time', 'days', 'image'])
                 ->make(true);
         }
-        $data['showCourseManagement']='show';
-        $data['activeCourseALL']='active';
+        $data['showCourseManagement'] = 'show';
+        $data['activeCourseALL'] = 'active';
 
-        return view('instructor.courses.index',$data);
+        return view('instructor.courses.index', $data);
     }
-
 
 
 }

@@ -90,13 +90,18 @@ class ActivityController extends Controller
             'grade' => 'required|array',
             'grade.*' => 'required|numeric|min:0',
         ]);
+
+
         // Loop through activities and save each one
         foreach ($request->activity_title as $index => $title) {
+            $string = $request->options[$index];
+            $array = explode(',', $string);
+            $jsonObject = json_encode($array);
             InstructorActivity::create([
                 'lecture_id' => $request->lecture_id,
                 'title' => $title,
                 'due_date' => $request->due_date,
-                'options' => json_encode(explode(',', $request->options[$index])),
+                'options' => $jsonObject,
                 'correct_answer' => $request->correct_answer[$index],
                 'grade' => $request->grade[$index],
                 'instructor_id' => Auth::id(),

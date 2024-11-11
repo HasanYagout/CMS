@@ -172,8 +172,14 @@
                                 </li>
                                 <li>You will be notified when time expires and you can continue or submit</li>
                             </ol>
-                            <a href="{{ route('student.courses.quizzes.show', $quiz->id) }}"
-                               class="bg-secondary-color btn d-block m-auto text-white w-25">Start Exam</a>
+                            @if($alreadySubmitted)
+                                <span
+                                    class="fs-18 fw-1000 text-secondary-color">Your Grade is:{{$grade.'/'.$totalQuizGrade}}</span>
+                            @else
+                                <a href="{{ route('student.courses.quizzes.show', $quiz->id) }}"
+                                   class="bg-secondary-color btn d-block m-auto text-white w-25">Start Exam</a>
+                            @endif
+
                         @endif
                     </div>
                     <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="contact-tab">
@@ -187,7 +193,8 @@
                                 <section class="d-flex justify-content-around bg-light-blue mb-20 p-20">
                                     <h3 class="align-content-center text-black">{{ $activity->title }}</h3>
                                     <ul>
-                                        @foreach(explode(',', $activity->options) as $option)
+
+                                        @foreach(json_decode($activity->options) as $option)
                                             <li>
                                                 <input type="radio" name="activity_{{ $activity->id }}"
                                                        value="{{ $option }}"
@@ -207,7 +214,7 @@
                                                     <span class="p-2 rounded-4 text-white bg-danger">Incorrect</span>
                                                 @endif
                                             @else
-                                                don't
+
                                             @endif
                                         </div>
                                     </section>
@@ -229,21 +236,25 @@
                         <section>
                             <h3>Grades</h3>
                             <hr>
-                            <div class="row">
+                            <div class="row gap-3">
                                 <x-drop title="assignments" total="{{$totalAssignments}}"
                                         submitted="{{$submittedAssignments}}">
 
                                 </x-drop>
-                                {{--                        <x-drop title="quizzes" total="{{$totalQuizzes}}" submitted="{{$submittedQuizzes}}">--}}
+                                <x-drop title="quizzes" total="{{$totalQuizzes}}" submitted="{{$submittedQuizzes}}">
 
-                                {{--                        </x-drop>--}}
+                                </x-drop>
                                 <x-drop title="activites" total="{{$totalActivities}}"
                                         submitted="{{$submittedActivities}}">
 
                                 </x-drop>
+                                <x-drop title="attendance" total="{{$totalLectures}}"
+                                        submitted="{{$attendedLectures}}">
+
+                                </x-drop>
                             </div>
                             <section>
-                                Total Grades:
+                                Total Grades:{{$total}}
                             </section>
 
                         </section>
@@ -254,6 +265,7 @@
 
         </div>
     </div>
+
 @endsection
 @push('script')
     <script>
@@ -292,14 +304,16 @@
                 @endforeach
 
                 $.ajax({
-                    url: '{{ route("instructor.courses.lectures.activities.store") }}',
+                    url: '{{ route("student.courses.lectures.activities.store") }}',
                     method: 'POST',
                     data: {
                         _token: $('input[name="_token"]').val(),
                         results: results
                     },
                     success: function (response) {
-                        console.log('Results submitted successfully:', response);
+                        if (response.success) {
+                            window.location.href = `{{ route('student.courses.lectures.view', ['course_id' => $course->id, 'lecture_id' => $activeLecture->id]) }}`;
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.error('Error submitting results:', error);
