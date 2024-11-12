@@ -14,7 +14,7 @@ class CourseController extends Controller
     {
         if ($request->ajax()) {
             $availabilities = Availabilities::with('instructor', 'course')->where('instructor_id', Auth::id())->get();
-           
+
             return datatables($availabilities)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
@@ -22,7 +22,6 @@ class CourseController extends Controller
                 })
                 ->addColumn('image', function ($data) {
                     return '<img src="' . asset('storage/courses') . '/' . $data->course->image . '" alt="upload" />';
-
                 })
                 ->addColumn('lectures', function ($data) {
                     return $data->course->lectures;

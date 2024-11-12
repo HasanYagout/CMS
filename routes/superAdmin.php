@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Super\AdminController;
 use App\Http\Controllers\Super\DashboardController as SuperDashboardController;
 use App\Http\Controllers\Super\ProfileController as SuperProfileController;
 use App\Http\Controllers\Super\SemesterController;
@@ -7,13 +9,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['super'], 'prefix' => 'superAdmin', 'as' => 'superAdmin.'], function () {
 
-    // Dashboard Routes
     Route::controller(SuperDashboardController::class)->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::post('/updateStatus', 'updateStatus')->name('updateStatus');
+    });
+    // Dashboard Routes
+    Route::controller(AdminController::class)->group(function () {
+        Route::prefix('admin')->as('admin.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/update/{id}', 'update')->name('update');
+            Route::post('/updateStatus', 'updateStatus')->name('updateStatus');
+        });
+
     });
 
     // Profile Routes
