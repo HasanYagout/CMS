@@ -14,7 +14,7 @@
                         </button>
                         <div class="collapse multi-collapse mt-2" id="collapseChapter{{ $index }}">
                             <div class="card card-body">
-                                <div class="row">
+                                <div class="row gap-4">
 
                                     @if($chapter->lectures)
                                         @foreach($chapter->lectures as $lecture)
