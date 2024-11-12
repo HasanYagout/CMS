@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        
+
         if ($request->ajax()) {
             $admins = User::where('role_id', 1)
                 ->with('admin.department')
@@ -45,7 +45,7 @@ class AdminController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('superAdmin.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    return '<button onclick="getEditModal(\'' . route('superAdmin.admin.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>';
                 })
@@ -90,7 +90,7 @@ class AdminController extends Controller
     {
         $data['admin'] = Admin::where('user_id', $id)->first();
         $data['departments'] = Department::all();
-        return view('super.edit-form', $data);
+        return view('super.admin.edit-form', $data);
     }
 
     public function update(Request $request, $id)

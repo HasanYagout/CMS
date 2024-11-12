@@ -22,6 +22,11 @@
                 <h1 class=" text-third-color"> {{$admins}}</h1>
             </x-wrapper>
         </div>
+        <div class="col-lg-4">
+            <x-wrapper title="departments">
+                <h1 class=" text-third-color"> {{$departments}}</h1>
+            </x-wrapper>
+        </div>
     </div>
 
 @endsection

@@ -60,7 +60,7 @@
             var status = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
-                url: '{{ route("superAdmin.updateStatus") }}',
+                url: '{{ route("superAdmin.admin.updateStatus") }}',
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',

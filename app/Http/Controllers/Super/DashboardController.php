@@ -23,6 +23,7 @@ class DashboardController extends Controller
         $data['instructors'] = Instructor::count();
         $data['students'] = Student::count();
         $data['admins'] = Admin::count();
+        $data['departments'] = Department::count();
         $data['activeHome'] = 'active';
         return view('super.dashboard', $data);
     }
