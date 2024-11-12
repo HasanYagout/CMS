@@ -1,4 +1,5 @@
-<form class="ajax reset" action="{{route('superAdmin.semesters.update',$department->id)}}" method="post" data-handler="commonResponseForModal">
+<form class="ajax reset" action="{{route('superAdmin.department.update',$department->id)}}" method="post"
+      data-handler="commonResponseForModal">
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
         <!-- Header -->
@@ -6,7 +7,7 @@
             <h4 class="fs-20 fw-500 lh-38 text-1b1c17">{{ __('Update admin') }}</h4>
             <div class="mClose">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <img src="{{ asset('assets/images/icon/delete.svg') }}" alt="" />
+                    <img src="{{ asset('assets/images/icon/delete.svg') }}" alt=""/>
                 </button>
             </div>
         </div>
@@ -14,7 +15,8 @@
             <div class="col-12">
                 <div class="primary-form-group mt-2">
                     <div class="primary-form-group-wrap">
-                        <label for="firstName" class="form-label">{{ __('Name') }} <span class="text-danger">*</span></label>
+                        <label for="firstName" class="form-label">{{ __('Name') }} <span
+                                class="text-danger">*</span></label>
                         <input type="text" class="primary-form-control" name="name" value="{{ $department->name }}">
                     </div>
                 </div>
@@ -22,6 +24,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="py-10 px-26 bg-cdef84 border-0 bd-ra-12 fs-15 fw-500 lh-25 text-black hover-bg-one">{{ __('Update') }}</button>
+        <button type="submit"
+                class="py-10 px-26 bg-cdef84 border-0 bd-ra-12 fs-15 fw-500 lh-25 text-black hover-bg-one">{{ __('Update') }}</button>
     </div>
 </form>

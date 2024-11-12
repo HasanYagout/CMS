@@ -83,7 +83,7 @@ class DepartmentController extends Controller
         $department->name = $request->name;
         $department->save();
 
-        return redirect()->route('superAdmin.semesters.index')->with('success', 'Semester updated successfully');
+        return redirect()->route('superAdmin.department.index')->with('success', 'Department updated successfully');
     }
 
     public function delete(Request $request, $id)
