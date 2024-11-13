@@ -25,5 +25,5 @@
     </x-wrapper>
 @endsection
 @push('script')
-    <script src="{{ asset('assets/instructor/js/course.js') }}"></script>
+    <script src="{{ asset('assets/Instructor/js/course.js') }}"></script>
 @endpush

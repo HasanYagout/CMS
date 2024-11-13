@@ -14,7 +14,7 @@ class CourseController extends Controller
     {
         if ($request->ajax()) {
             $availabilities = Availabilities::with('instructor', 'course')->where('instructor_id', Auth::id())->get();
-            dd($availabilities);
+           
             return datatables($availabilities)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
