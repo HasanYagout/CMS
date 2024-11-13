@@ -36,6 +36,7 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::get('/getchapters/{id}', 'getChapters')->name('getChapters');
                 Route::get('/availability/{courseId}', 'getAvailability')->name('getavailability');
                 Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::get('details/{chapterId}', 'getChapterDetails')->name('details');
                 Route::post('/update/{id}', 'update')->name('update');
                 Route::post('/delete/{id}', 'delete')->name('delete');
             });

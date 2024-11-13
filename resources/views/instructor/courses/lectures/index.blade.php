@@ -149,7 +149,6 @@
                             console.error('Error fetching chapters:', error);
                         }
                     });
-
                 }
             });
 
@@ -157,6 +156,7 @@
             if ($.fn.dataTable.isDataTable('#lectureTable')) {
                 $('#lectureTable').DataTable().clear().destroy();
             }
+
             const courseSelect = document.getElementById('course');
             const lectureTable = $('#lectureTable'); // Use jQuery for DataTables
 
@@ -164,7 +164,7 @@
                 const courseId = this.value;
 
                 // Reload DataTable with the selected course ID
-                chapterTable.DataTable().ajax.url(`{{ route('instructor.courses.chapters.index') }}?course_id=${courseId}`).load();
+                lectureTable.DataTable().ajax.url(`{{ route('instructor.courses.lectures.index') }}?course_id=${courseId}`).load();
             });
 
             // Initialize the DataTable
@@ -201,4 +201,5 @@
             });
         });
     </script>
+
 @endpush
