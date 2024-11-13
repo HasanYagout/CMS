@@ -8,9 +8,12 @@
             </h1>
             <div class="row">
                 <div class="col-lg-6">
-                    <x-wrapper class="shadow" title="Courses">
-                        <h1 class="text-third-color">{{ $courses }}</h1>
-                    </x-wrapper>
+                    <a href="{{route('instructor.courses.index')}}">
+                        <x-wrapper class="shadow" title="Courses">
+                            <h1 class="text-third-color">{{ $courses }}</h1>
+                        </x-wrapper>
+                    </a>
+
                 </div>
             </div>
         </x-wrapper>

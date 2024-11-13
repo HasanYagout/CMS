@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\InstructorActivity;
 use App\Models\InstructorAssignments;
 use App\Models\InstructorQuiz;
+use App\Models\Lecture;
 use App\Models\StudentActivity;
 use App\Models\StudentAssignment;
 use App\Models\StudentQuiz;
@@ -59,7 +61,6 @@ class ReportController extends Controller
 
     public function students(Request $request, $course_id)
     {
-
         if ($request->ajax()) {
             // Fetch instructor assignments, quizzes, and activities
             $assignments = InstructorAssignments::whereHas('lecture.chapter.course', function ($query) use ($course_id) {
@@ -88,7 +89,6 @@ class ReportController extends Controller
             })->get();
 
             // Calculate total grade
-
             $assignmentGradesSum = $assignments->sum('grade');
             $quizGradesSum = $quizzes->sum('grade');
             $activityGradesSum = $activities->sum('grade');
@@ -97,10 +97,17 @@ class ReportController extends Controller
             // Fetch students enrolled in the course
             $students = Enrollment::with('student', 'payment')->where('course_id', $course_id)->get();
 
+            // Fetch all lectures in the course
+            $lectures = Lecture::whereHas('chapter.course', function ($query) use ($course_id) {
+                $query->where('id', $course_id);
+            })->get();
+
+            $totalLectures = $lectures->count();
+
             return datatables($students)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-                    return '<a href="' . route('instructor.reports.grades', ['course_id' => $data->id]) . '">' . $data->student->first_name . ' ' . $data->student->last_name . '</a>';
+                    return $data->student->first_name . ' ' . $data->student->last_name;
                 })
                 ->addColumn('assignments', function ($data) use ($submittedAssignments, $assignmentGradesSum) {
                     $studentAssignments = $submittedAssignments->where('student_id', $data->student_id);
@@ -116,6 +123,13 @@ class ReportController extends Controller
                     $studentActivities = $submittedActivities->where('student_id', $data->student_id);
                     $studentActivityMarks = $studentActivities->sum('grade');
                     return $studentActivityMarks . '/' . $activityGradesSum;
+                })
+                ->addColumn('attendance', function ($data) use ($totalLectures) {
+                    $attendedLectures = Attendance::where('student_id', $data->student_id)
+                        ->whereHas('lecture.chapter.course', function ($query) use ($data) {
+                            $query->where('id', $data->course_id);
+                        })->count();
+                    return $attendedLectures . '/' . $totalLectures;
                 })
                 ->addColumn('total', function ($data) use ($submittedAssignments, $submittedQuizzes, $submittedActivities, $totalGradesSum) {
                     $studentAssignments = $submittedAssignments->where('student_id', $data->student_id)->sum('grade');

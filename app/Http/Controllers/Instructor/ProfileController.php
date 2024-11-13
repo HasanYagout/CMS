@@ -20,17 +20,28 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $file = $request->file('image');
-        $date = now()->format('Ymd'); // Get current date in YYYYMMDD format
-        $randomSlug = Str::random(10); // Generate a random string of 10 characters
-        $randomNumber = rand(100000, 999999); // Generate a random number
+        // Validate the request to ensure the image is present and is a valid image file
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file type and size
+        ]);
 
-        $fileName = $date . '_' . $randomSlug . '_' . $randomNumber . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('storage/profile'), $fileName); // Save the file to the specified path
+        // Check if the request contains a file
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $date = now()->format('Ymd'); // Get current date in YYYYMMDD format
+            $randomSlug = Str::random(10); // Generate a random string of 10 characters
+            $randomNumber = rand(100000, 999999); // Generate a random number
 
-        $image = $fileName;
-        User::find(Auth::id())->update(['image' => $image]);
-        return redirect()->route('instructor.profile')->with('success', 'Profile Updated successfully.');
+            $fileName = $date . '_' . $randomSlug . '_' . $randomNumber . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/profile'), $fileName); // Save the file to the specified path
+
+            $image = $fileName;
+            User::find(Auth::id())->update(['image' => $image]);
+
+            return redirect()->route('instructor.profile')->with('success', 'Profile Updated successfully.');
+        }
+
+        return redirect()->route('instructor.profile')->with('error', 'No image file was uploaded.');
     }
 
     public function password(Request $request)

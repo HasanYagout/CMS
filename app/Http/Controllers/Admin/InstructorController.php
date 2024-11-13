@@ -31,11 +31,23 @@ class InstructorController extends Controller
             return datatables($admins)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-                    return $data->instructor->first_name.' '.$data->instructor->last_name;
+                    return $data->instructor->first_name . ' ' . $data->instructor->last_name;
 
                 })
                 ->addColumn('email', function ($data) {
                     return $data->email;
+
+                })
+                ->addColumn('gender', function ($data) {
+                    return $data->instructor->gender;
+
+                })
+                ->addColumn('degree', function ($data) {
+                    return $data->instructor->degree;
+
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->instructor->phone;
 
                 })
                 ->addColumn('status', function ($data) {
@@ -55,17 +67,17 @@ class InstructorController extends Controller
                     <button onclick="getEditModal(\'' . route('admin.instructors.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('admin.instructors.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('admin.instructors.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
             </ul>';
                 })
-                ->rawColumns(['name','action','status'])
+                ->rawColumns(['name', 'action', 'status'])
                 ->make(true);
         }
-        $data['activeInstructor']='active';
-        return view('admin.instructors.index',$data);
+        $data['activeInstructor'] = 'active';
+        return view('admin.instructors.index', $data);
     }
 
     public function store(Request $request)
@@ -75,27 +87,36 @@ class InstructorController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'gender' => 'required|string|in:male,female',
+            'degree' => 'required|string|max:255',
+            'birth_date' => 'required|date',
         ]);
+
         $departmentId = Auth::user()->admin->department_id;
 
-       $user= User::create([
-           'email' => $request->email,
-           'password' => Hash::make('12345678'),
-           'role_id' => 2,
-           'status' => 1,
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make('12345678'),
+            'role_id' => 2,
+            'status' => 1,
         ]);
 
 
-           Instructor::create([
-               'first_name' => $request->first_name,
-               'last_name' => $request->last_name,
-               'user_id' => $user->id,
-               'department_id' => $departmentId,
-           ]);
+        Instructor::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'user_id' => $user->id,
+            'department_id' => $departmentId,
+            'gender' => $request->gender,
+            'degree' => $request->degree,
+            'birth_date' => $request->birth_date,
+            'phone' => $request->phone,
+        ]);
 
 
         return redirect()->route('admin.instructors.index')->with('success', 'admin added successfully.');
     }
+
     public function updateStatus(Request $request)
     {
 
@@ -105,27 +126,46 @@ class InstructorController extends Controller
 
     public function edit($id)
     {
-        $data['instructor']= Instructor::where('user_id', $id)->first();
+        $data['instructor'] = Instructor::where('user_id', $id)->first();
         return view('admin.instructors.edit-form', $data);
     }
+
     public function update(Request $request, $id)
     {
         // Validate the form inputs
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'gender' => 'required|string|in:male,female,other',
+            'degree' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'phone' => 'required|numeric|digits:9',
         ]);
 
-        // Check if admin has associated courses
-        $instructor = Instructor::where('user_id',$id)->first();
+        // Find the instructor by user_id
+        $instructor = Instructor::where('user_id', $id)->first();
 
+        // Check if the instructor exists
+        if (!$instructor) {
+            return redirect()->route('admin.instructors.index')->with('error', 'Instructor not found.');
+        }
 
-        // Update admin details
+        // Update instructor details
         $instructor->first_name = $request->first_name;
         $instructor->last_name = $request->last_name;
+        $instructor->gender = $request->gender;
+        $instructor->degree = $request->degree;
+        $instructor->phone = $request->phone;
+        $instructor->birth_date = $request->birth_date;
         $instructor->save();
 
-        return redirect()->route('admin.instructors.index')->with('success','Instructor updated successfully');
+        // Update user's email
+        $user = User::find($id);
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->route('admin.instructors.index')->with('success', 'Instructor updated successfully.');
     }
 
     public function delete(Request $request, $id)
@@ -142,7 +182,7 @@ class InstructorController extends Controller
             return back()->with('error', 'Cannot delete instructor as there are associated courses, assignments, quizzes, or activities.');
         }
         User::find($id)->delete();
-        Instructor::where('user_id',$id)->delete();
+        Instructor::where('user_id', $id)->delete();
         return redirect()->route('admin.instructors.index')->with('success', 'Instructor deleted successfully.');
 
     }

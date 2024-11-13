@@ -9,22 +9,26 @@ use Illuminate\Support\Collection;
 class Instructor extends Model
 {
     use HasFactory;
+
     protected $table = 'instructor';
-     protected $fillable=['first_name','last_name','user_id','department_id'];
+    protected $fillable = ['first_name', 'last_name', 'user_id', 'department_id', 'gender', 'birth_date', 'degree', 'phone'];
 
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function availabilities()
     {
         return $this->hasMany(Availabilities::class, 'instructor_id');
     }
+
     public function college()
     {
         return $this->belongsTo(Department::class);
     }
+
     public function department()
     {
         return $this->belongsTo(Department::class);

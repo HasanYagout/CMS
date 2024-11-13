@@ -43,6 +43,28 @@
                 orderable: true,
             },
             {
+                data: "gender",
+                name: "gender",
+                responsivePriority: 1,
+                searchable: true,
+                orderable: true,
+            },
+            {
+                data: "degree",
+                name: "degree",
+                responsivePriority: 1,
+                searchable: true,
+                orderable: true,
+            },
+            {
+                data: "phone",
+                name: "phone",
+                responsivePriority: 1,
+                searchable: true,
+                orderable: true,
+            },
+
+            {
                 data: "status",
                 name: "status",
                 responsivePriority: 1,

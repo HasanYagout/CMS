@@ -140,7 +140,6 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
         Route::controller(\App\Http\Controllers\Instructor\ReportController::class)->group(function () {
             Route::get('/index', 'index')->name('courses');
             Route::get('/students/{course_id}', 'students')->name('students');
-            Route::get('/grades/{course_id}', 'grades')->name('grades');
         });
     });
     Route::controller(\App\Http\Controllers\Instructor\ProfileController::class)->group(function () {

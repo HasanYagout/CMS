@@ -16,4 +16,9 @@ class Attendance extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function lecture()
+    {
+        return $this->belongsTo(Lecture::class);
+    }
 }
