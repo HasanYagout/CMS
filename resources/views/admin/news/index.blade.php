@@ -6,7 +6,7 @@
             <label for="" class="form-label">News Title</label>
             <input name="title" class="form-control w-25" type="text">
             <label for="" class="form-label">News Description</label>
-            <textarea name="description"  class="form-control w-25 summernoteOne" type="text"></textarea>
+            <textarea name="description" class="form-control w-25 summernoteOne" type="text"></textarea>
             <button class="zBtn-two mt-2" type="submit">Save</button>
         </form>
     </x-wrapper>
@@ -16,10 +16,18 @@
             <table class="table zTable" id="newsTable">
                 <thead>
                 <tr>
-                    <th scope="col"><div>{{ __('Name') }}</div></th>
-                    <th scope="col"><div>{{ __('posted By') }}</div></th>
-                    <th scope="col"><div>{{ __('Status') }}</div></th>
-                    <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                    <th scope="col">
+                        <div>{{ __('Name') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('posted By') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="text-center">{{ __('Status') }}</div>
+                    </th>
+                    <th class="w-110 text-center" scope="col">
+                        <div>{{ __('Action') }}</div>
+                    </th>
                 </tr>
                 </thead>
             </table>

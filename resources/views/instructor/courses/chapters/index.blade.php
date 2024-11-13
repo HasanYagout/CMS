@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="Add Chapter">
-        <form method="POST" action="{{route('instructor.courses.chapters.store')}}" enctype="multipart/form-data" >
+        <form method="POST" action="{{route('instructor.courses.chapters.store')}}" enctype="multipart/form-data">
             @csrf
             <div>
                 <div class="pb-30"></div>
@@ -9,7 +9,8 @@
                     <div class="col-4">
                         <div class="primary-form-group">
                             <div class="primary-form-group-wrap">
-                                <label for="instructor" class="form-label">{{__('Courses')}} <span class="text-danger">*</span></label>
+                                <label for="instructor" class="form-label">{{__('Courses')}} <span
+                                        class="text-danger">*</span></label>
                                 <select name="course_id" class="primary-form-control " id="body" spellcheck="false">
                                     <option value="" selected></option>
                                     @foreach($courses as $course)
@@ -49,10 +50,18 @@
                 </div>
             </div>
             <x-table id="chapterTable">
-                <th scope="col"><div>{{ __('Title') }}</div></th>
-                <th scope="col"><div>{{ __('Course') }}</div></th>
-                <th scope="col"><div>{{ __('Status') }}</div></th>
-                <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                <th scope="col">
+                    <div>{{ __('Title') }}</div>
+                </th>
+                <th scope="col">
+                    <div>{{ __('Course') }}</div>
+                </th>
+                <th scope="col">
+                    <div class="text-center">{{ __('Status') }}</div>
+                </th>
+                <th class="w-110 text-center" scope="col">
+                    <div>{{ __('Action') }}</div>
+                </th>
             </x-table>
 
             <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
@@ -63,19 +72,16 @@
             </div>
 
 
-
-
         </div>
     </x-wrapper>
-
 
 @endsection
 @push('script')
     <script>
-        $(document).on('change', '.toggle-status', function() {
+        $(document).on('change', '.toggle-status', function () {
             var chapterId = $(this).data('id'); // Get the chapters ID
             var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
-            const url=`{{route('instructor.courses.chapters.updateStatus','')}}/${chapterId}`
+            const url = `{{route('instructor.courses.chapters.updateStatus','')}}/${chapterId}`
             $.ajax({
                 url: url, // Update with your actual route
                 type: 'POST',
@@ -83,10 +89,10 @@
                     status: status,
                     _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
                 },
-                success: function(response) {
+                success: function (response) {
                     toastr.success(response.message);
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     // Optionally, handle error response
                     console.error('Error updating status:', xhr);
                 }
@@ -139,10 +145,10 @@
 
                 columns: [
                     // { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    { data: 'title', name: 'title' },
-                    { data: 'course', name: 'course' },
-                    { data: 'status', name: 'status', orderable: false, searchable: false },
-                    { data: 'action', name: 'action' },
+                    {data: 'title', name: 'title'},
+                    {data: 'course', name: 'course'},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
+                    {data: 'action', name: 'action'},
                 ]
             });
         });

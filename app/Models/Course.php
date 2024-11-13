@@ -10,7 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $table = 'courses';
-    protected $fillable = ['name', 'start_date', 'end_date', 'image', 'lectures', 'hours', 'slug', 'department_id', 'availability_id', 'semester_id', 'description', 'status'];
+    protected $fillable = ['name', 'start_date', 'end_date', 'image', 'lectures', 'hours', 'slug', 'department_id', 'availability_id', 'semester_id', 'description', 'status', 'user_id'];
 
     public function chats()
     {

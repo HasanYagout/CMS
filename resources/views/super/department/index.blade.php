@@ -14,9 +14,15 @@
             <table class="table zTable" id="collegeTable">
                 <thead>
                 <tr>
-                    <th scope="col"><div>{{ __('Name') }}</div></th>
-                    <th scope="col"><div>{{ __('Status') }}</div></th>
-                    <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                    <th scope="col">
+                        <div>{{ __('Name') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="text-center">{{ __('Status') }}</div>
+                    </th>
+                    <th class="w-110 text-center" scope="col">
+                        <div>{{ __('Action') }}</div>
+                    </th>
                 </tr>
                 </thead>
             </table>
@@ -33,7 +39,7 @@
 @endsection
 @push('script')
     <script>
-        $(document).on('change', '.toggle-status', function() {
+        $(document).on('change', '.toggle-status', function () {
             var adminId = $(this).data('id');
             var status = $(this).is(':checked') ? 1 : 0;
 
@@ -45,7 +51,7 @@
                     id: adminId,
                     status: status
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     if (response.success) {
                         toastr.success('Status updated successfully.');
@@ -53,7 +59,7 @@
                         toastr.error('Failed to update status.');
                     }
                 },
-                error: function() {
+                error: function () {
                     toastr.error('Error updating status.');
                 }
             });

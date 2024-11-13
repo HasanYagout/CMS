@@ -24,7 +24,7 @@ class CourseController extends Controller
     {
 
         if ($request->ajax()) {
-            $course = Course::with('semester')->where('department_id',Auth::user()->admin->department_id)->orderBy('id', 'desc')->get();
+            $course = Course::with('semester')->where('department_id', Auth::user()->admin->department_id)->orderBy('id', 'desc')->get();
             return datatables($course)
                 ->addIndexColumn()
                 ->addColumn('id', function ($data) {
@@ -34,7 +34,7 @@ class CourseController extends Controller
                     return $data->name;
                 })
                 ->addColumn('image', function ($data) {
-                    return '<img src='.asset('storage/courses').'/'.$data->image.'>';
+                    return '<img src=' . asset('storage/courses') . '/' . $data->image . '>';
                 })
                 ->addColumn('semester', function ($data) {
 
@@ -63,38 +63,37 @@ class CourseController extends Controller
                     <button onclick="getEditModal(\'' . route('admin.courses.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('admin.courses.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('admin.courses.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
             </ul>';
                 })
-                ->rawColumns(['name','semester','image','action','status'])
+                ->rawColumns(['name', 'semester', 'image', 'action', 'status'])
                 ->make(true);
         }
-        $data['showCourseManagement']='show';
-        $data['activeCourseALL']='active';
-        return view('admin.courses.index',$data);
+        $data['showCourseManagement'] = 'show';
+        $data['activeCourseALL'] = 'active';
+        return view('admin.courses.index', $data);
     }
-
 
 
     public function create()
     {
-        $data['semesters']=Semester::where('status',1)->get();
-        $data['showCourseManagement']='show';
-        $data['activeCourseCreate']='active';
-        return view('admin.courses.create',$data);
+        $data['semesters'] = Semester::where('status', 1)->get();
+        $data['showCourseManagement'] = 'show';
+        $data['activeCourseCreate'] = 'active';
+        return view('admin.courses.create', $data);
     }
 
     public function store(Request $request)
     {
-      $course= $request->validate([
-          'name' => 'required',
-           'image'=>'required',
-           'semester_id' => 'required|exists:academic_years,id',
-           'description' => 'required',
-       ]);
+        $course = $request->validate([
+            'name' => 'required',
+            'image' => 'required',
+            'semester_id' => 'required|exists:academic_years,id',
+            'description' => 'required',
+        ]);
         $image = NULL;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -108,20 +107,20 @@ class CourseController extends Controller
             $image = $fileName; // Save only the file name to the database
         }
 
-      $course['status']=1;
-      $course['image']=$image;
-      $course['start_date']=$request->start_date;
-      $course['end_date']=$request->end_date;
-      $course['lectures']=$request->lectures;
-      $course['hours']=$request->hours;
-      $course['department_id']=Auth::user()->admin->department_id;
-      $course['slug']=Str::slug($course['name']).'-'.Str::random(6);
-      Course::create($course);
+        $course['status'] = 1;
+        $course['image'] = $image;
+        $course['start_date'] = $request->start_date;
+        $course['end_date'] = $request->end_date;
+        $course['lectures'] = $request->lectures;
+        $course['hours'] = $request->hours;
+        $course['user_id'] = Auth::id();
+        $course['department_id'] = Auth::user()->admin->department_id;
+        $course['slug'] = Str::slug($course['name']) . '-' . Str::random(6);
+        Course::create($course);
         session()->flash('success', 'Course Created Successfully');
         return back();
 
     }
-
 
 
     public function chapter(Request $request)
@@ -168,7 +167,7 @@ class CourseController extends Controller
                 </li>
             </ul>';
                 })
-                ->rawColumns(['title','status','course','action'])
+                ->rawColumns(['title', 'status', 'course', 'action'])
                 ->make(true);
         }
 
@@ -179,7 +178,7 @@ class CourseController extends Controller
     public function store_chapter(Request $request)
     {
 
-       $request->validate([
+        $request->validate([
             'titles' => 'required',
             'course_id' => 'required|exists:courses,id',
         ]);
@@ -188,7 +187,7 @@ class CourseController extends Controller
             Chapter::create([
                 'title' => $title,
                 'course_id' => $request->course_id,
-                'status'=>1
+                'status' => 1
             ]);
         }
 
@@ -225,37 +224,38 @@ class CourseController extends Controller
 
     public function edit($id)
     {
-        $data['course']= Course::find($id);
-        $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
+        $data['course'] = Course::find($id);
+        $data['instructors'] = Instructor::where('department_id', Auth::user()->admin->department_id)
             ->get();
-        $data['availabilities']=Availabilities::where('course_id',$id)->get();
-        $data['semesters']=Semester::where('status',1)->get();
+        $data['availabilities'] = Availabilities::where('course_id', $id)->get();
+        $data['semesters'] = Semester::where('status', 1)->get();
         return view('admin.courses.edit-form', $data);
     }
- public function update(Request $request, $id) {
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after:start_date',
-        'semester_id' => 'required|exists:academic_years,id',
-        'description' => 'required|string',
-        'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-    $course = Course::find($id);
-    $course->name = $request->title;
-    $course->start_date = $request->start_date;
-    $course->end_date = $request->end_date;
-    $course->semester_id = $request->semester_id;
-    $course->description = $request->description;
-    if ($request->hasFile('thumbnail'))
+
+    public function update(Request $request, $id)
     {
-        $thumbnail = $request->file('thumbnail');
-        $thumbnailPath = $thumbnail->store('courses', 'public');
-        $course->image = $thumbnailPath;
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'semester_id' => 'required|exists:academic_years,id',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+        $course = Course::find($id);
+        $course->name = $request->title;
+        $course->start_date = $request->start_date;
+        $course->end_date = $request->end_date;
+        $course->semester_id = $request->semester_id;
+        $course->description = $request->description;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailPath = $thumbnail->store('courses', 'public');
+            $course->image = $thumbnailPath;
+        }
+        $course->save();
+        return redirect()->route('admin.courses.create')->with('success', 'Course updated successfully.');
     }
-    $course->save();
-    return redirect()->route('admin.courses.create')->with('success', 'Course updated successfully.');
-}
 
     public function destroy($id)
     {
@@ -270,9 +270,9 @@ class CourseController extends Controller
             $hasActivities = InstructorActivity::whereHas('lecture.chapter.course', function ($query) use ($id) {
                 $query->where('id', $id);
             })->exists();
-            $hasChapters = Chapter::where('course_id',$id)->exists();
+            $hasChapters = Chapter::where('course_id', $id)->exists();
 
-            if ($hasAvailabilities || $hasAssignments || $hasQuizzes || $hasActivities ||$hasChapters) {
+            if ($hasAvailabilities || $hasAssignments || $hasQuizzes || $hasActivities || $hasChapters) {
                 return response()->json(['message' => 'Cannot delete course as there are associated records.'], 400);
             }
 
@@ -288,4 +288,5 @@ class CourseController extends Controller
 
             return response()->json(['message' => 'An error occurred while deleting the course.'], 500);
         }
-    }}
+    }
+}

@@ -12,13 +12,27 @@
                         <thead>
                         <tr>
 
-                            <th scope="col"><div>{{ __('Name') }}</div></th>
-                            <th scope="col"><div>{{ __('Image') }}</div></th>
-                            <th scope="col"><div>{{ __('Semester') }}</div></th>
-                            <th scope="col"><div>{{ __('start_date') }}</div></th>
-                            <th scope="col"><div>{{ __('end_date') }}</div></th>
-                            <th scope="col"><div>{{ __('Status') }}</div></th>
-                            <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                            <th scope="col">
+                                <div>{{ __('Name') }}</div>
+                            </th>
+                            <th scope="col">
+                                <div>{{ __('Image') }}</div>
+                            </th>
+                            <th scope="col">
+                                <div>{{ __('Semester') }}</div>
+                            </th>
+                            <th scope="col">
+                                <div>{{ __('start_date') }}</div>
+                            </th>
+                            <th scope="col">
+                                <div>{{ __('end_date') }}</div>
+                            </th>
+                            <th scope="col">
+                                <div class="text-center">{{ __('Status') }}</div>
+                            </th>
+                            <th class="w-110 text-center" scope="col">
+                                <div>{{ __('Action') }}</div>
+                            </th>
                         </tr>
                         </thead>
                     </table>
@@ -29,7 +43,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
             </div>

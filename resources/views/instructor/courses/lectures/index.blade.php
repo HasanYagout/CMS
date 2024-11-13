@@ -1,14 +1,15 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="add Lectures">
-        <form method="POST" action="{{route('instructor.courses.lectures.store')}}" class="d-flex flex-column gap-2" enctype="multipart/form-data">
+        <form method="POST" action="{{route('instructor.courses.lectures.store')}}" class="d-flex flex-column gap-2"
+              enctype="multipart/form-data">
             @csrf
             <label class="form-label" for="course">course</label>
             <select class="form-control" name="course_id" id="course">
                 <option value=""></option>
-            @foreach($courses as $course)
+                @foreach($courses as $course)
                     <option value="{{$course->course->id}}">{{$course->course->name}}</option>
-            @endforeach
+                @endforeach
             </select>
             <label class="form-label" for="chapter">chapter:</label>
             <select class="form-control" name="chapter_id" id="chapters">
@@ -29,7 +30,8 @@
             <div class="primary-form-group">
                 <div class="primary-form-group-wrap zImage-upload-details">
 
-                    <label for="zImageUpload" class="form-label text-secondary-color">{{ __('Upload Image') }} <span class="text-mime-type">(jpg,jpeg,png)</span></label>
+                    <label for="zImageUpload" class="form-label text-secondary-color">{{ __('Upload Image') }} <span
+                            class="text-mime-type">(jpg,jpeg,png)</span></label>
                     <!-- Attachment preview -->
                     <div id="files-area" class="pb-10">
                                     <span id="filesList">
@@ -45,14 +47,14 @@
                                 <label for="mAttachment1"><img
                                         onerror="this.src='{{asset('assets/images/no-image.jpg')}}'"
                                         src="{{ asset('assets/images/icon/post-photo.svg') }}"
-                                        alt="" /></label>
+                                        alt=""/></label>
                                 <input type="file" name="images[]"
                                        accept=".png,.jpg,.svg,.jpeg,.gif,.mp4,.mov,.avi,.mkv,.webm,.flv"
-                                       id="mAttachment1" class="d-none" multiple />
+                                       id="mAttachment1" class="d-none" multiple/>
                                 <label for="mAttachment1"><img
                                         onerror="this.src='{{asset('assets/images/no-image.jpg')}}'"
                                         src="{{ asset('assets/images/icon/post-video.svg') }}"
-                                        alt="" /></label>
+                                        alt=""/></label>
                             </div>
                         </div>
 
@@ -68,14 +70,30 @@
     </x-wrapper>
     <x-wrapper title="Lectures">
         <x-table id="lectureTable">
-            <th scope="col"><div>{{ __('Course') }}</div></th>
-            <th scope="col"><div>{{ __('Chapter') }}</div></th>
-            <th scope="col"><div>{{ __('Lecture') }}</div></th>
-            <th scope="col"><div>{{ __('Zoom Link') }}</div></th>
-            <th scope="col"><div>{{ __('Start Date') }}</div></th>
-            <th scope="col"><div>{{ __('End Date') }}</div></th>
-            <th scope="col"><div>{{ __('Status') }}</div></th>
-            <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+            <th scope="col">
+                <div>{{ __('Course') }}</div>
+            </th>
+            <th scope="col">
+                <div>{{ __('Chapter') }}</div>
+            </th>
+            <th scope="col">
+                <div>{{ __('Lecture') }}</div>
+            </th>
+            <th scope="col">
+                <div>{{ __('Zoom Link') }}</div>
+            </th>
+            <th scope="col">
+                <div>{{ __('Start Date') }}</div>
+            </th>
+            <th scope="col">
+                <div>{{ __('End Date') }}</div>
+            </th>
+            <th scope="col">
+                <div class="text-center">{{ __('Status') }}</div>
+            </th>
+            <th class="w-110 text-center" scope="col">
+                <div>{{ __('Action') }}</div>
+            </th>
         </x-table>
         <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -87,10 +105,10 @@
 @endsection
 @push('script')
     <script>
-        $(document).off().on('change', '.toggle-status', function() {
+        $(document).off().on('change', '.toggle-status', function () {
             var chapterId = $(this).data('id'); // Get the chapters ID
             var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
-            const url=`{{route('instructor.courses.lectures.updateStatus','')}}/${chapterId}`
+            const url = `{{route('instructor.courses.lectures.updateStatus','')}}/${chapterId}`
             $.ajax({
                 url: url, // Update with your actual route
                 type: 'POST',
@@ -98,10 +116,10 @@
                     status: status,
                     _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
                 },
-                success: function(response) {
+                success: function (response) {
                     toastr.success(response.message);
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     // Optionally, handle error response
                     console.error('Error updating status:', xhr);
                 }
@@ -112,7 +130,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            $('#course').on('change', function() {
+            $('#course').on('change', function () {
                 const courseId = $(this).val();
                 const chapterSelect = $('#chapters');
                 chapterSelect.empty().append('<option value="">-- Select Chapter --</option>');
@@ -122,12 +140,12 @@
                     $.ajax({
                         url: `{{ route('instructor.courses.chapters.get', '') }}/${courseId}`,
                         method: 'GET',
-                        success: function(data) {
-                            $.each(data.chapters, function(index, chapter) {
+                        success: function (data) {
+                            $.each(data.chapters, function (index, chapter) {
                                 chapterSelect.append(`<option value="${chapter.id}">${chapter.title}</option>`);
                             });
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error('Error fetching chapters:', error);
                         }
                     });
@@ -171,14 +189,14 @@
 
                 columns: [
                     // { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    { data: 'course', name: 'course' },
-                    { data: 'chapter', name: 'chapter' },
-                    { data: 'lecture', name: 'lecture' },
-                    { data: 'zoom_link', name: 'zoom_link' },
-                    { data: 'start_date', name: 'start_date' },
-                    { data: 'end_date', name: 'end_date' },
-                    { data: 'status', name: 'status', orderable: false, searchable: false },
-                    { data: 'action', name: 'action' },
+                    {data: 'course', name: 'course'},
+                    {data: 'chapter', name: 'chapter'},
+                    {data: 'lecture', name: 'lecture'},
+                    {data: 'zoom_link', name: 'zoom_link'},
+                    {data: 'start_date', name: 'start_date'},
+                    {data: 'end_date', name: 'end_date'},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
+                    {data: 'action', name: 'action'},
                 ]
             });
         });

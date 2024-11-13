@@ -69,7 +69,7 @@
                 <div>{{ __('Title') }}</div>
             </th>
             <th scope="col">
-                <div>{{ __('Status') }}</div>
+                <div class="text-center">{{ __('Status') }}</div>
             </th>
             <th scope="col">
                 <div>{{ __('Action') }}</div>

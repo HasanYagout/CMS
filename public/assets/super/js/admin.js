@@ -23,7 +23,7 @@
                 previous: "<i class='fa-solid fa-angles-left'></i>",
                 next: "<i class='fa-solid fa-angles-right'></i>",
             },
-            searchPlaceholder: "Search Instructors",
+            searchPlaceholder: "Search Admins",
             search: "<span class='searchIcon'><i class='fa-solid fa-magnifying-glass'></i></span>",
         },
         dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
@@ -137,14 +137,19 @@
                         ),
                     },
                     success: function (response) {
-                        Swal.fire({
-                            title: "Deleted",
-                            html: '<span style="color:red">Item has been deleted</span>',
-                            timer: 2000,
-                            icon: "success",
-                        });
-                        toastr.success("Instructor deleted successfully.");
-                        table.ajax.reload();
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Deleted",
+                                html: '<span style="color:red">Item has been deleted</span>',
+                                timer: 2000,
+                                icon: "success",
+                            });
+                            toastr.success("Instructor deleted successfully.");
+                            table.ajax.reload();
+                        } else {
+                            toastr.error(response.error);
+                            table.ajax.reload();
+                        }
                     },
                     error: function (error) {
                         toastr.error(error.responseJSON.message);

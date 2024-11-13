@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Super;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Availabilities;
+use App\Models\Course;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,9 +46,16 @@ class AdminController extends Controller
             </ul>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '<button onclick="getEditModal(\'' . route('superAdmin.admin.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('superAdmin.admin.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
-            </button>';
+            </button>
+                    <button onclick="deleteItem(\'' . route('superAdmin.admin.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
+                        <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
+                    </button>
+                </li>
+            </ul>';
                 })
                 ->rawColumns(['name', 'action', 'status'])
                 ->make(true);
@@ -83,7 +91,7 @@ class AdminController extends Controller
         ]);
 
 
-        return redirect()->route('admin.instructors.index')->with('success', 'admin added successfully.');
+        return redirect()->route('superAdmin.admin.index')->with('success', 'admin added successfully.');
     }
 
     public function edit($id)
@@ -125,4 +133,19 @@ class AdminController extends Controller
         User::find($request->id)->update(['status' => $request->status]);
         return response()->json(['success' => true]);
     }
+
+    public function delete(Request $request, $id)
+    {
+        $admin = User::find($id);
+        if (!$admin) {
+            return response()->json(['error' => 'Admin not found.'], 404);
+        }
+        $hasCourses = Course::where('user_id', $id)->exists();
+
+        if ($hasCourses) {
+            return response()->json(['error' => 'Cannot delete admin as they have associated courses.']);
+        }
+        $admin->delete();
+    }
+
 }

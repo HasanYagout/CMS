@@ -15,7 +15,9 @@
                                 <select id="course_id" name="course_id" class="form-control form-select" required>
                                     <option value="">-- Select Course --</option>
                                     @foreach ($courses as $course)
-                                        <option value="{{ $course->id }}" data-lectures="{{ $course->lectures_per_week }}" data-hours="{{ $course->lecture_hours }}">{{ $course->name }}</option>
+                                        <option value="{{ $course->id }}"
+                                                data-lectures="{{ $course->lectures_per_week }}"
+                                                data-hours="{{ $course->lecture_hours }}">{{ $course->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -23,13 +25,15 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="lectures_per_week">Lectures per Week:</label>
-                                <input type="number" disabled id="lectures_per_week" name="lectures_per_week" class="form-control" readonly>
+                                <input type="number" disabled id="lectures_per_week" name="lectures_per_week"
+                                       class="form-control" readonly>
                             </div>
                         </div>
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="lecture_duration">Lecture Duration (hours):</label>
-                                <input type="number" disabled id="lecture_duration" name="lecture_duration" class="form-control" readonly>
+                                <input type="number" disabled id="lecture_duration" name="lecture_duration"
+                                       class="form-control" readonly>
                             </div>
                         </div>
                         <div class="col-lg-4 mb-3">
@@ -38,7 +42,8 @@
                                 <select id="instructor" name="instructor_id" class="form-control form-select" required>
                                     <option value=""></option>
                                     @foreach($instructors as $instructor)
-                                        <option value="{{ $instructor->user_id }}">{{ $instructor->first_name }}</option>
+                                        <option
+                                            value="{{ $instructor->user_id }}">{{ $instructor->first_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -58,7 +63,8 @@
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label" for="days">Select Days:</label>
-                                <select id="days" name="days[]" class="form-control select2" multiple="multiple" required>
+                                <select id="days" name="days[]" class="form-control select2" multiple="multiple"
+                                        required>
                                     <option value="Monday">Monday</option>
                                     <option value="Tuesday">Tuesday</option>
                                     <option value="Wednesday">Wednesday</option>
@@ -100,13 +106,27 @@
             <table class="table zTable" id="AvailabilityTable">
                 <thead>
                 <tr>
-                    <th scope="col"><div>{{ __('Name') }}</div></th>
-                    <th scope="col"><div>{{ __('Instructor') }}</div></th>
-                    <th scope="col"><div>{{ __('days') }}</div></th>
-                    <th scope="col"><div>{{ __('start time') }}</div></th>
-                    <th scope="col"><div>{{ __('end time') }}</div></th>
-                    <th scope="col"><div>{{ __('status') }}</div></th>
-                    <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                    <th scope="col">
+                        <div>{{ __('Name') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('Instructor') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('days') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('start time') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('end time') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="text-center">{{ __('Status') }}</div>
+                    </th>
+                    <th class="w-110 text-center" scope="col">
+                        <div>{{ __('Action') }}</div>
+                    </th>
                 </tr>
                 </thead>
             </table>
@@ -123,7 +143,7 @@
 
 @push('script')
     <script>
-        $(document).on('change', '.toggle-status', function() {
+        $(document).on('change', '.toggle-status', function () {
             var adminId = $(this).data('id');
             var status = $(this).is(':checked') ? 1 : 0;
 
@@ -135,26 +155,26 @@
                     id: adminId,
                     status: status
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         toastr.success('Status updated successfully.');
                     } else {
                         toastr.error('Failed to update status.');
                     }
                 },
-                error: function() {
+                error: function () {
                     toastr.error('Error updating status.');
                 }
             });
         });
 
-        $('#edit-modal').on('shown.bs.modal', function() {
+        $('#edit-modal').on('shown.bs.modal', function () {
             $('#days2').select2({
                 placeholder: "Select Days",
                 allowClear: true
             });
         });
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initialize Select2 for days
             $('#days').select2({
                 placeholder: "Select Days",
@@ -162,11 +182,10 @@
             });
 
 
-
             // Initially disable the instructor select
             $('#instructor').prop('disabled', true);
 
-            $('#course_id').change(function() {
+            $('#course_id').change(function () {
                 const courseId = $(this).val();
                 const lectureDuration = $('#lecture_duration');
                 const lecturesPerWeek = $('#lectures_per_week');
@@ -181,7 +200,7 @@
                     $.ajax({
                         url: url,
                         method: 'GET',
-                        success: function(data) {
+                        success: function (data) {
                             // Update course details
                             lecturesPerWeek.val(data.course.lectures);
                             lectureDuration.val(data.course.hours);
@@ -189,11 +208,11 @@
                             instructors.empty();
                             instructors.append(`<option value="">-- Select Instructor --</option>`);
 
-                            data.instructors.forEach(function(instructor) {
+                            data.instructors.forEach(function (instructor) {
                                 instructors.append(`<option value="${instructor.instructor.user_id}">${instructor.instructor.first_name} ${instructor.instructor.last_name}</option>`);
                             });
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error('Error fetching course info:', error);
                         }
                     });
@@ -207,7 +226,7 @@
             });
 
             // Fetch and disable the already booked days and times for the selected instructor
-            $('#instructor').change(function() {
+            $('#instructor').change(function () {
                 const instructorId = $(this).val();
 
                 if (instructorId) {
@@ -215,7 +234,7 @@
                     $.ajax({
                         url: url,
                         method: 'GET',
-                        success: function(data) {
+                        success: function (data) {
                             // Reset days and times
                             $('#days').find('option').prop('disabled', false).trigger('change');
                             $('#start_time, #end_time').prop('disabled', false);
@@ -247,7 +266,7 @@
                             // Show the availability table
                             $('#availability-table').show();
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error('Error fetching availabilities:', error);
                         }
                     });
@@ -270,7 +289,7 @@
                 searching: true,
                 ajax: {
                     url: `{{ route('admin.availability.index') }}`,
-                    data: function(d) {
+                    data: function (d) {
                         d.course_id = $('#course_filter').val();
                         d.instructor_id = $('#chapter_filter').val();
                     }
@@ -286,18 +305,18 @@
                 dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
 
                 columns: [
-                    { data: 'name', name: 'name' },
-                    { data: 'instructor', name: 'instructor' },
-                    { data: 'days', name: 'days', orderable: false, searchable: false },
-                    { data: 'start_time', name: 'start_time', orderable: false, searchable: false },
-                    { data: 'end_time', name: 'end_time', orderable: false, searchable: false },
-                    { data: 'status', name: 'status', orderable: false, searchable: false },
-                    { data: 'action', name: 'action', orderable: false, searchable: false },
+                    {data: 'name', name: 'name'},
+                    {data: 'instructor', name: 'instructor'},
+                    {data: 'days', name: 'days', orderable: false, searchable: false},
+                    {data: 'start_time', name: 'start_time', orderable: false, searchable: false},
+                    {data: 'end_time', name: 'end_time', orderable: false, searchable: false},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
 
             // Reload DataTable on filter change
-            $('#course_filter, #chapter_filter').change(function() {
+            $('#course_filter, #chapter_filter').change(function () {
                 AvailabilityTable.draw();
             });
         });

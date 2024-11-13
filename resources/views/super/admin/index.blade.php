@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="Add Admin">
-        <form method="POST" action="{{route('superAdmin.store')}}">
+        <form method="POST" action="{{route('superAdmin.admin.store')}}">
             @csrf
             <label class="form-label" for="">First Name</label>
             <input class="form-control" name="first_name" type="text">
@@ -35,7 +35,7 @@
                         <div>{{ __('department') }}</div>
                     </th>
                     <th scope="col">
-                        <div>{{ __('Status') }}</div>
+                        <div class="text-center">{{ __('Status') }}</div>
                     </th>
                     <th class="w-110 text-center" scope="col">
                         <div>{{ __('Action') }}</div>

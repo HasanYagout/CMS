@@ -24,6 +24,8 @@ Route::group(['middleware' => ['super'], 'prefix' => 'superAdmin', 'as' => 'supe
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::post('/update/{id}', 'update')->name('update');
             Route::post('/updateStatus', 'updateStatus')->name('updateStatus');
+            Route::post('/delete/{id}', 'delete')->name('delete');
+
         });
 
     });

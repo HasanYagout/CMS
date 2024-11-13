@@ -3,12 +3,13 @@
     <div class="p-30">
         <section class="bg-white bd-half bd-c-ebedf0 bd-ra-25 p-30">
             <h1 class="text-primary-color mb-2">Add Assignments</h1>
-            <form method="POST"  action="{{route('instructor.courses.assignments.store')}}">
+            <form method="POST" action="{{route('instructor.courses.assignments.store')}}">
                 @csrf
                 <div class="row gy-4">
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="course" class="form-label text-secondary-color fw-bold">{{__('Course')}} <span class="text-danger">*</span></label>
+                            <label for="course" class="form-label text-secondary-color fw-bold">{{__('Course')}} <span
+                                    class="text-danger">*</span></label>
                             <select name="course_id" class="primary-form-control" id="course">
                                 <option value=""></option>
                                 @foreach($courses as $course)
@@ -19,7 +20,8 @@
                     </div>
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="chapter" class="form-label text-secondary-color fw-bold">{{__('hapter')}} <span class="text-danger">*</span></label>
+                            <label for="chapter" class="form-label text-secondary-color fw-bold">{{__('hapter')}} <span
+                                    class="text-danger">*</span></label>
                             <select class="primary-form-control" name="chapter_id" id="chapter">
                                 <option value="">Select Chapter</option>
                             </select>
@@ -27,7 +29,8 @@
                     </div>
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="lecture" class="form-label text-secondary-color fw-bold">{{ __('Lecture') }} <span class="text-danger">*</span></label>
+                            <label for="lecture" class="form-label text-secondary-color fw-bold">{{ __('Lecture') }}
+                                <span class="text-danger">*</span></label>
                             <select class="primary-form-control" name="lecture_id" id="lecture">
                                 <option value="">Select Lecture</option>
                             </select>
@@ -35,26 +38,32 @@
                     </div>
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="title" class="form-label text-secondary-color fw-bold">{{__('Title')}} <span class="text-danger">*</span></label>
+                            <label for="title" class="form-label text-secondary-color fw-bold">{{__('Title')}} <span
+                                    class="text-danger">*</span></label>
                             <input type="text" name="title" id="title" class="primary-form-control">
                         </div>
                     </div>
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="grade" class="form-label text-secondary-color fw-bold">{{__('Grade')}} <span class="text-danger">*</span></label>
+                            <label for="grade" class="form-label text-secondary-color fw-bold">{{__('Grade')}} <span
+                                    class="text-danger">*</span></label>
                             <input name="grade" type="number" id="grade" class="primary-form-control">
                         </div>
                     </div>
                     <div class="primary-form-group col-lg-4">
                         <div class="primary-form-group-wrap">
-                            <label for="due_date" class="form-label text-secondary-color fw-bold">{{__('Due Date')}} <span class="text-danger">*</span></label>
+                            <label for="due_date" class="form-label text-secondary-color fw-bold">{{__('Due Date')}}
+                                <span class="text-danger">*</span></label>
                             <input name="due_date" type="date" id="due_date" class="primary-form-control">
                         </div>
                     </div>
                     <div class="primary-form-group col-lg-12">
                         <div class="primary-form-group-wrap">
-                            <label for="description" class="form-label text-secondary-color fw-bold">{{__('Description')}} <span class="text-danger">*</span></label>
-                            <textarea name="description" class="primary-form-control min-h-180 summernoteOne"></textarea>
+                            <label for="description"
+                                   class="form-label text-secondary-color fw-bold">{{__('Description')}} <span
+                                    class="text-danger">*</span></label>
+                            <textarea name="description"
+                                      class="primary-form-control min-h-180 summernoteOne"></textarea>
                         </div>
                     </div>
                 </div>
@@ -72,13 +81,27 @@
                 <table class="table zTable" id="assignmentsTable">
                     <thead>
                     <tr>
-                        <th scope="col"><div>{{ __('course') }}</div></th>
-                        <th scope="col"><div>{{ __('chapter') }}</div></th>
-                        <th scope="col"><div>{{ __('lecture') }}</div></th>
-                        <th scope="col"><div>{{ __('title') }}</div></th>
-                        <th scope="col"><div>{{ __('due date') }}</div></th>
-                        <th scope="col"><div>{{ __('status') }}</div></th>
-                        <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                        <th scope="col">
+                            <div>{{ __('course') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('chapter') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('lecture') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('title') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('due date') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div class="text-center">{{ __('Status') }}</div>
+                        </th>
+                        <th class="w-110 text-center" scope="col">
+                            <div>{{ __('Action') }}</div>
+                        </th>
                     </tr>
                     </thead>
                 </table>
@@ -91,7 +114,6 @@
             </div>
 
 
-
         </div>
 
     </div>
@@ -99,10 +121,10 @@
 @endsection
 @push('script')
     <script>
-        $(document).on('change', '.toggle-status', function() {
+        $(document).on('change', '.toggle-status', function () {
             var chapterId = $(this).data('id'); // Get the chapters ID
             var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
-            const url=`{{route('instructor.courses.assignments.updateStatus','')}}/${chapterId}`
+            const url = `{{route('instructor.courses.assignments.updateStatus','')}}/${chapterId}`
             $.ajax({
                 url: url, // Update with your actual route
                 type: 'POST',
@@ -110,17 +132,17 @@
                     status: status,
                     _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
                 },
-                success: function(response) {
+                success: function (response) {
                     toastr.success(response.message);
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     // Optionally, handle error response
                     console.error('Error updating status:', xhr);
                 }
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             const course = $('#course');
             const chapter = $('#chapter');
             const lecture = $('#lecture');

@@ -9,6 +9,7 @@ use App\Models\Availabilities;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Instructor;
+use App\Models\Semester;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class DashboardController extends Controller
         $data['students'] = Student::count();
         $data['admins'] = Admin::count();
         $data['departments'] = Department::count();
+        $data['semesters'] = Semester::count();
         $data['activeHome'] = 'active';
         return view('super.dashboard', $data);
     }
