@@ -22,7 +22,6 @@ class LoginController extends Controller
     }
 
 
-
     public function login()
     {
 
@@ -80,57 +79,6 @@ class LoginController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        // Validation rules
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'mobile' => 'required|string|max:15',
-            'email' => 'required|email|max:255|unique:users,email',
-            'proposal' => 'required|file|mimes:pdf|max:2048', // Accept PDF files up to 2MB
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $fileName = null;
-
-        // Handle file upload
-        if ($request->hasFile('proposal')) {
-            $folderName = Str::slug($request->name . '_' . now(), '_');
-            $file = $request->file('proposal');
-            $extension = $file->getClientOriginalExtension();
-            $fileName = $folderName . '.' . $extension;
-            $file->storeAs('public/company/proposal', $fileName);
-        } else {
-            return redirect()->back()->withErrors(['proposal' => 'Proposal file is required'])->withInput();
-        }
-
-        $defaultPassword = Hash::make($request->password);
-        DB::transaction(function () use ($request, $fileName, $defaultPassword) {
-            // Create new user record
-            $user=User::create([
-                'email' => $request->input('email'),
-                'password' => $defaultPassword,
-                'role_id' => 3,
-                'status' => STATUS_PENDING,
-            ]);
-
-            // Create new company record
-            Company::create([
-                'name' => $request->input('name'),
-                'slug' => Str::slug($request->input('name')) . '_' . uniqid(),
-                'phone' => $request->input('mobile'),
-                'proposal' => $fileName,
-                'user_id' => $user->id,
-            ]);
-
-
-        });
-
-        // Redirect or return response
-        return redirect()->route('auth.login')->with('success', 'Registration successful. Please log in.');
-    }
-
-
 
     public function logout(Request $request)
     {
@@ -152,9 +100,5 @@ class LoginController extends Controller
         return redirect()->route('login');
     }
 
-    public function register()
-    {
 
-        return view('auth.register');
-    }
 }

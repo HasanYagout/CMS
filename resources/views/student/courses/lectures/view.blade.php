@@ -257,9 +257,7 @@
                                         submitted="{{$attendedLectures}}">
                                 </x-drop>
                             </div>
-                            <section>
-                                Total Grades:{{$total}}
-                            </section>
+
 
                         </section>
                     </div>

@@ -41,6 +41,9 @@ class LectureController extends Controller
         $today = Carbon::today();
         $tomorrow = Carbon::tomorrow();
         $startDate = Carbon::parse($activeLecture->start_date);
+        if (!$startDate->isSameDay($today) && !$startDate->isSameDay($tomorrow)) {
+            return redirect()->route('student.courses.index')->with('error', 'Lecture is not accessible at this time.');
+        }
 
         // Calculate the total number of lectures
         $totalLectures = $lectures->count();
@@ -58,6 +61,7 @@ class LectureController extends Controller
             return $studentQuiz ? $studentQuiz->grade : 0;
         })
             ->sum();
+
         $quizzes = $activeLecture->quizzes->map(function ($quiz) use ($studentId) {
             $studentQuiz = StudentQuiz::where('instructor_quiz_id', $quiz->id)
                 ->where('student_id', $studentId)->first();
@@ -85,7 +89,6 @@ class LectureController extends Controller
             'quizzes' => $activeLecture->quizzes,
             'totalAssignmentGrade' => $totalAssignmentGrade,
             'totalActivityGrade' => $totalActivityGrade,
-            'total' => $totalQuizGrades + $totalAssignmentGrade + $totalActivityGrade,
             'totalQuizGrades' => $totalQuizGrades,
             'studentTotalQuizGrades' => $studentTotalQuizGrades,
         ];

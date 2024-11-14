@@ -29,7 +29,7 @@ class AuthController extends Controller
             $user = Auth::user();
 
             $token = $user->createToken('authToken')->plainTextToken;
-            
+
 
             return response()->json([
                 'message' => 'Login successful',
@@ -37,7 +37,7 @@ class AuthController extends Controller
                 'user' => $user
             ]);
         }
-
+        
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 

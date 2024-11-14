@@ -12,6 +12,7 @@ class StudentController extends Controller
     {
         if ($request->ajax()) {
             $enrollments = Enrollment::with('student', 'course', 'payment')->get();
+            
             return datatables($enrollments)
                 ->addIndexColumn()
                 ->addColumn('course', function ($enrollment) {
@@ -21,6 +22,7 @@ class StudentController extends Controller
                     return $enrollment->student->first_name . ' ' . $enrollment->student->last_name;
                 })
                 ->addColumn('payment_status', function ($enrollment) {
+
                     $paid = $enrollment->payment->is_paid ? 'checked' : '';
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">

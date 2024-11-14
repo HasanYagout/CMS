@@ -15,7 +15,7 @@
                                 <select name="course_id" class="primary-form-control" id="body" spellcheck="false">
                                     <option value="" selected></option>
                                     @foreach($courses as $course)
-                                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                        <option value="{{ $course->id }}">{{ $course->course->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -72,9 +72,9 @@
                         <div class="primary-form-group mb-3">
                             <div class="primary-form-group-wrap">
                                 <label for="course" class="form-label">Filter By Course</label>
+
                                 <select name="course_id" id="course" class="primary-form-control" spellcheck="false">
                                     <option value="" selected></option>
-
                                     @foreach($courses as $course)
                                         <option value="{{ $course->course_id }}">{{ $course->course->name }}</option>
                                     @endforeach
