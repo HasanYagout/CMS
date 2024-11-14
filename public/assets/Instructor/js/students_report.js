@@ -57,6 +57,20 @@
                 searchable: true,
                 orderable: true,
             },
+            {
+                data: "attendance",
+                name: "attendance",
+                responsivePriority: 1,
+                searchable: true,
+                orderable: true,
+            },
+            {
+                data: "action",
+                name: "action",
+                responsivePriority: 1,
+                searchable: true,
+                orderable: true,
+            },
         ],
         initComplete: function (settings, json) {
             $(".z-filter-block").html($("#search-section").html());

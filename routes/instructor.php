@@ -49,6 +49,12 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
 
             });
         });
+        Route::group(['prefix' => 'evaluate', 'as' => 'evaluate.'], function () {
+            Route::controller(\App\Http\Controllers\Instructor\EvaluateController::class)->group(function () {
+                Route::get('/edit/{student_id}', 'edit')->name('edit');
+
+            });
+        });
 
         Route::group(['prefix' => 'lectures', 'as' => 'lectures.'], function () {
             Route::controller(LectureController::class)->group(function () {

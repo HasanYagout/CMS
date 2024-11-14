@@ -18,11 +18,23 @@
                     <th scope="col">
                         <div>{{ __('activities') }}</div>
                     </th>
+                    <th scope="col">
+                        <div>{{ __('attendance') }}</div>
+                    </th>
+                    <th scope="col">
+                        <div>{{ __('action') }}</div>
+                    </th>
+
                 </tr>
                 </thead>
             </table>
         </div>
     </x-wrapper>
+    <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content"></div>
+        </div>
+    </div>
 @endsection
 @push('script')
     <script src="{{asset('assets/Instructor/js/students_report.js')}}"></script>

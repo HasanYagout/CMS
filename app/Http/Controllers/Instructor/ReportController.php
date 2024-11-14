@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\InstructorActivity;
@@ -64,7 +65,7 @@ class ReportController extends Controller
     public function students(Request $request, $course_id)
     {
         if ($request->ajax()) {
-            // Fetch instructor assignments, quizzes, and activities
+
             $assignments = InstructorAssignments::whereHas('lecture.chapter.course', function ($query) use ($course_id) {
                 $query->where('id', $course_id);
             })->get();
@@ -77,6 +78,21 @@ class ReportController extends Controller
                 $query->where('id', $course_id);
             })->get();
 
+            $attendance = Attendance::whereHas('lecture.chapter.course', function ($query) use ($course_id) {
+                $query->where('id', $course_id);
+            })->get();
+
+            $course = Course::with('chapters.lectures')
+                ->where('id', $course_id)
+                ->first();
+
+            if ($course) {
+                $totalLectures = $course->chapters->sum(function ($chapter) {
+                    return $chapter->lectures->count();
+                });
+            }
+
+            $attendanceSum = $totalLectures;
             // Fetch student submissions
             $submittedAssignments = StudentAssignment::whereHas('assignment.lecture.chapter.course', function ($query) use ($course_id) {
                 $query->where('id', $course_id);
@@ -95,6 +111,8 @@ class ReportController extends Controller
             $assignmentGradesSum = $assignments->sum('grade');
             $quizGradesSum = $quizzes->sum('grade');
             $activityGradesSum = $activities->sum('grade');
+
+
             $totalGradesSum = $assignmentGradesSum + $quizGradesSum + $activityGradesSum;
 
             // Fetch students enrolled in the course
@@ -103,6 +121,7 @@ class ReportController extends Controller
             return datatables($students)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
+
                     return '<a href="' . route('admin.reports.grades', ['course_id' => $data->id]) . '">' . $data->student->first_name . ' ' . $data->student->last_name . '</a>';
                 })
                 ->addColumn('assignments', function ($data) use ($submittedAssignments, $assignmentGradesSum) {
@@ -120,14 +139,20 @@ class ReportController extends Controller
                     $studentActivityMarks = $studentActivities->sum('grade');
                     return $studentActivityMarks . '/' . $activityGradesSum;
                 })
-                ->addColumn('total', function ($data) use ($submittedAssignments, $submittedQuizzes, $submittedActivities, $totalGradesSum) {
-                    $studentAssignments = $submittedAssignments->where('student_id', $data->student_id)->sum('grade');
-                    $studentQuizzes = $submittedQuizzes->where('student_id', $data->student_id)->sum('grade');
-                    $studentActivities = $submittedActivities->where('student_id', $data->student_id)->sum('grade');
-                    $studentTotal = $studentAssignments + $studentQuizzes + $studentActivities;
-                    return $studentTotal . '/' . $totalGradesSum;
+                ->addColumn('attendance', function ($data) use ($attendance, $attendanceSum) {
+                    $studentAttendanceCount = count($attendance->where('student_id', $data->student_id));
+                    return $studentAttendanceCount . '/' . $attendanceSum;
                 })
-                ->rawColumns(['name', 'status'])
+                ->addColumn('action', function ($data) {
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('instructor.courses.evaluate.edit', $data->student_id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                </li>
+            </ul>';
+                })
+                ->rawColumns(['name', 'status', 'action'])
                 ->make(true);
         }
         $data['showReportManagement'] = 'show';
