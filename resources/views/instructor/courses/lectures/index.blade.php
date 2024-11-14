@@ -30,8 +30,7 @@
             <div class="primary-form-group">
                 <div class="primary-form-group-wrap zImage-upload-details">
 
-                    <label for="zImageUpload" class="form-label text-secondary-color">{{ __('Upload Image') }} <span
-                            class="text-mime-type">(jpg,jpeg,png)</span></label>
+                    <label for="zImageUpload" class="form-label text-secondary-color">{{ __('Upload Files')}}</label>
                     <!-- Attachment preview -->
                     <div id="files-area" class="pb-10">
                                     <span id="filesList">
@@ -49,7 +48,7 @@
                                         src="{{ asset('assets/images/icon/post-photo.svg') }}"
                                         alt=""/></label>
                                 <input type="file" name="images[]"
-                                       accept=".png,.jpg,.svg,.jpeg,.gif,.mp4,.mov,.avi,.mkv,.webm,.flv"
+                                       accept=".png,.jpg,.svg,.jpeg,.gif,.mp4,.mov,.avi,.mkv,.webm,.flv,.pdf,.docx,.pptx"
                                        id="mAttachment1" class="d-none" multiple/>
                                 <label for="mAttachment1"><img
                                         onerror="this.src='{{asset('assets/images/no-image.jpg')}}'"
@@ -79,9 +78,7 @@
             <th scope="col">
                 <div>{{ __('Lecture') }}</div>
             </th>
-            <th scope="col">
-                <div>{{ __('Zoom Link') }}</div>
-            </th>
+          
             <th scope="col">
                 <div>{{ __('Start Date') }}</div>
             </th>
@@ -192,7 +189,7 @@
                     {data: 'course', name: 'course'},
                     {data: 'chapter', name: 'chapter'},
                     {data: 'lecture', name: 'lecture'},
-                    {data: 'zoom_link', name: 'zoom_link'},
+                    // {data: 'zoom_link', name: 'zoom_link'},
                     {data: 'start_date', name: 'start_date'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'status', name: 'status', orderable: false, searchable: false},

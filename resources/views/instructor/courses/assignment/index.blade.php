@@ -188,6 +188,6 @@
             });
         });
     </script>
-    <script src="{{ asset('assets/instructor/js/instructorassignments.js') }}"></script>
+    <script src="{{ asset('assets/instructor/js/assignments.js') }}"></script>
 
 @endpush

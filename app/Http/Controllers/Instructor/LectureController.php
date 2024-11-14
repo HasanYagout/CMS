@@ -81,12 +81,12 @@ class LectureController extends Controller
 
         $request->validate(['course_id' => 'required|exists:courses,id',
             'chapter_id' => 'required|exists:chapters,id',
-//            'start_date' => 'required|date|after_or_equal:today',
-//            'end_date' => 'required|date|after:start_date',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'zoom_link' => 'nullable|url',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048']);
+        ]);
 
         $lecture = new Lecture();
         $lecture->chapter_id = $request->chapter_id;
@@ -102,12 +102,13 @@ class LectureController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('materials', 'public');
-
-                Material::create(['lecture_id' => $lecture->id,
+                Material::create([
+                    'lecture_id' => $lecture->id,
                     'title' => $image->getClientOriginalName(),
                     'type' => 'image',
                     'url' => $path,
                 ]);
+                
             }
         }
 

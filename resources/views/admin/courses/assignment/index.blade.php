@@ -7,7 +7,8 @@
                 @csrf
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="course" class="form-label text-secondary-color fw-bold">{{__('Course')}} <span class="text-danger">*</span></label>
+                        <label for="course" class="form-label text-secondary-color fw-bold">{{__('Course')}} <span
+                                class="text-danger">*</span></label>
                         <select name="course_id" class="primary-form-control" id="course">
                             <option value=""></option>
                             @foreach($courses as $course)
@@ -18,7 +19,8 @@
                 </div>
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="chapter" class="form-label text-secondary-color fw-bold">{{__('hapter')}} <span class="text-danger">*</span></label>
+                        <label for="chapter" class="form-label text-secondary-color fw-bold">{{__('hapter')}} <span
+                                class="text-danger">*</span></label>
                         <select class="primary-form-control" name="chapter_id" id="chapter">
                             <option value="">Select Chapter</option>
                         </select>
@@ -26,25 +28,29 @@
                 </div>
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="title" class="form-label text-secondary-color fw-bold">{{__('Title')}} <span class="text-danger">*</span></label>
+                        <label for="title" class="form-label text-secondary-color fw-bold">{{__('Title')}} <span
+                                class="text-danger">*</span></label>
                         <input type="text" name="title" id="title" class="primary-form-control">
                     </div>
                 </div>
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="description" class="form-label text-secondary-color fw-bold">{{__('Description')}} <span class="text-danger">*</span></label>
+                        <label for="description" class="form-label text-secondary-color fw-bold">{{__('Description')}}
+                            <span class="text-danger">*</span></label>
                         <textarea name="description" class="primary-form-control min-h-180 summernoteOne"></textarea>
                     </div>
                 </div>
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="marks" class="form-label text-secondary-color fw-bold">{{__('Marks')}} <span class="text-danger">*</span></label>
+                        <label for="marks" class="form-label text-secondary-color fw-bold">{{__('Marks')}} <span
+                                class="text-danger">*</span></label>
                         <input name="marks" type="number" id="marks" class="primary-form-control">
                     </div>
                 </div>
                 <div class="primary-form-group">
                     <div class="primary-form-group-wrap">
-                        <label for="due_date" class="form-label text-secondary-color fw-bold">{{__('Due Date')}} <span class="text-danger">*</span></label>
+                        <label for="due_date" class="form-label text-secondary-color fw-bold">{{__('Due Date')}} <span
+                                class="text-danger">*</span></label>
                         <input name="due_date" type="date" id="due_date" class="primary-form-control">
                     </div>
                 </div>
@@ -62,10 +68,18 @@
                 <table class="table zTable" id="assignmentsTable">
                     <thead>
                     <tr>
-                        <th scope="col"><div>{{ __('Name') }}</div></th>
-                        <th scope="col"><div>{{ __('course') }}</div></th>
-                        <th scope="col"><div>{{ __('chapters') }}</div></th>
-                        <th class="w-110 text-center" scope="col"><div>{{ __('Action') }}</div></th>
+                        <th scope="col">
+                            <div>{{ __('Name') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('course') }}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{{ __('chapters') }}</div>
+                        </th>
+                        <th class="w-110 text-center" scope="col">
+                            <div>{{ __('Action') }}</div>
+                        </th>
                     </tr>
                     </thead>
                 </table>
@@ -78,7 +92,6 @@
             </div>
 
 
-
         </div>
 
     </div>
@@ -86,7 +99,7 @@
 @endsection
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const course = $('#course');
             const chapter = $('#chapters');
 
@@ -111,6 +124,6 @@
             });
         });
     </script>
-    <script src="{{ asset('assets/admin/js/instructorassignments.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/assignments.js') }}"></script>
 
 @endpush
