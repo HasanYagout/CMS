@@ -57,7 +57,6 @@ class EnrollmentController extends Controller
                 Carbon::now()->addDays(3)->format('Y-m-d')
             ])
             ->get();
-
         $data['attentions'] = $data['assignments']->merge($data['quizzes']);
         $data['days'] = [];
         $data['hours'] = [];
@@ -74,7 +73,7 @@ class EnrollmentController extends Controller
             ->with('chapter.course')
             ->get();
 
-       
+
         $data['announcements'] = Announcement::with('course')
             ->where('course_id', $data['course']->id)
             ->whereIn('course_id', function ($query) use ($studentId) {

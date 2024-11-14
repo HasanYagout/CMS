@@ -12,10 +12,9 @@
 {{--<script src="{{ asset('assets/select2/js/select2.js')}}"></script>--}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-@stack('script')
 
 <script>
-    document.getElementById('logout-link').addEventListener('click', function(event) {
+    document.getElementById('logout-link').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent the default link action
 
         Swal.fire({
@@ -33,39 +32,39 @@
             }
         });
     });
-document.addEventListener('DOMContentLoaded', function () {
-    const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
 
-    togglePasswordButtons.forEach(button => {
-    button.addEventListener('click', function () {
-    const passwordInput = this.previousElementSibling;
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const passwordInput = this.previousElementSibling;
 
-    if (passwordInput.type === 'password') {
-    passwordInput.type = 'text';
-    this.innerHTML = '<i class="fa fa-eye-slash"></i>';
-} else {
-    passwordInput.type = 'password';
-    this.innerHTML = '<i class="fa fa-eye"></i>';
-}
-});
-});
-});
-	@if(Session::has('success'))
-	toastr.success("{{ session('success') }}");
-	@endif
-	@if(Session::has('error'))
-	toastr.error("{{ session('error') }}");
-	@endif
-	@if(Session::has('info'))
-	toastr.info("{{ session('info') }}");
-	@endif
-	@if(Session::has('warning'))
-	toastr.warning("{{ session('warning') }}");
-	@endif
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.innerHTML = '<i class="fa fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    this.innerHTML = '<i class="fa fa-eye"></i>';
+                }
+            });
+        });
+    });
+    @if(Session::has('success'))
+    toastr.success("{{ session('success') }}");
+    @endif
+    @if(Session::has('error'))
+    toastr.error("{{ session('error') }}");
+    @endif
+    @if(Session::has('info'))
+    toastr.info("{{ session('info') }}");
+    @endif
+    @if(Session::has('warning'))
+    toastr.warning("{{ session('warning') }}");
+    @endif
 
-	@if (@$errors->any())
-	@foreach ($errors->all() as $error)
-	toastr.error("{{ $error }}");
-	@endforeach
-	@endif
+    @if (@$errors->any())
+    @foreach ($errors->all() as $error)
+    toastr.error("{{ $error }}");
+    @endforeach
+    @endif
 </script>

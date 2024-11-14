@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-wrapper title="Quiz Submission">
-
-
-        <form action="{{route('instructor.courses.quiz.store')}}" method="POST" id="quizForm"
+        <form action="{{ route('instructor.courses.quiz.store') }}" method="POST" id="quizForm"
               class="d-flex flex-column gap-5">
             @csrf
             <div class="row">
@@ -12,28 +10,24 @@
                         <label for="title">Quiz Title:</label>
                         <input type="text" class="form-control" id="title" name="title" required>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="duration">Quiz Duration (in minutes):</label>
                         <input type="number" class="form-control" id="duration" name="duration" value="60" required>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="duration">Grade:</label>
+                        <label for="grade">Grade:</label>
                         <input type="number" class="form-control" id="grade" name="grade" required>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="duration">Due Date:</label>
+                        <label for="due_date">Due Date:</label>
                         <input type="date" class="form-control" id="due_date" name="due_date" required>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -62,46 +56,49 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea name="description" class="primary-form-control min-h-180 summernoteOne"
+                                  id="courseDescription" placeholder="{{ __('Description') }}"
+                                  spellcheck="false">{{ $course->description }}</textarea>
+                    </div>
+                </div>
             </div>
 
-            <div id="questionsContainer" class="gap-3 row">
-                <div class="gap-2 gy-3 question-group row">
+            <div id="questionsContainer" class="row">
+                <div class="col-lg-6 question-group">
                     <h5 class="text-secondary-color">Question 1</h5>
-                    <div class="col-lg-4 d-flex flex-column form-group gap-2">
+                    <div class="form-group">
                         <label for="question1Text">Question Text:</label>
                         <input type="text" class="form-control" name="questions[0][text]" required>
                     </div>
-                    {{--                    <div class="col-lg-4 d-flex flex-column form-group gap-2">--}}
-                    {{--                        <label>Answer Type:</label>--}}
-                    {{--                        <select class="form-control question-type" name="questions[0][type]">--}}
-                    {{--                            <option value="mcq">Multiple Choice</option>--}}
-                    {{--                            <option value="essay">Essay</option>--}}
-                    {{--                        </select>--}}
-                    {{--                    </div>--}}
-                    <div class="options-container row">
-                        <div class="col-lg-4 d-flex flex-column form-group gap-2">
-                            <label>Choices (separate by commas):</label>
-                            <input type="text" class="form-control col-lg-6" name="questions[0][options]"
-                                   placeholder="Option 1, Option 2">
-                        </div>
-                        <div class="col-lg-4 d-flex flex-column form-group gap-2">
-                            <label for="correctAnswer">Correct Answer:</label>
-                            <input type="text" class="form-control" name="questions[0][correct_answer]"
-                                   placeholder="Enter correct answer">
-                        </div>
-
+                    <div class="d-flex flex-column gap-3 options-container">
+                        <label>Options:</label>
+                        <input type="text" class="form-control" name="questions[0][options][]" placeholder="Option 1">
+                        <input type="text" class="form-control" name="questions[0][options][]" placeholder="Option 2">
+                        <input type="text" class="form-control" name="questions[0][options][]" placeholder="Option 3">
+                        <input type="text" class="form-control" name="questions[0][options][]" placeholder="Option 4">
                     </div>
-                    <span class="remove-question text-decoration-underline text-third-color"
-                          onclick="$(this).closest('.question-group').remove()">Remove Question</span>
+                    <div class="form-group">
+                        <label for="correctAnswer">Correct Answer:</label>
+                        <select class="form-control" name="questions[0][correct_answer]" required>
+                            <option value="">Select Correct Answer</option>
+                            <option value="Option 1">Option 1</option>
+                            <option value="Option 2">Option 2</option>
+                            <option value="Option 3">Option 3</option>
+                            <option value="Option 4">Option 4</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+
             <section class="mb-18">
                 <button type="button" class="zBtn-two" id="addQuestion">Add Another Question</button>
-
-                <button type="submit" class=" zBtn-one">Submit Quiz</button>
+                <button type="submit" class="zBtn-one">Submit Quiz</button>
             </section>
-
         </form>
+
         <input type="hidden" id="quiz-route" value="{{ route('instructor.courses.quiz.index') }}">
         <x-table id="quizTable">
             <th scope="col">
@@ -125,60 +122,100 @@
             <th scope="col">
                 <div>{{ __('Action') }}</div>
             </th>
-
         </x-table>
     </x-wrapper>
+
     <div class="modal fade" id="edit-modal" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-            </div>
+            <div class="modal-content"></div>
         </div>
     </div>
 @endsection
+
 @push('script')
     <script>
-        $(document).on('change', '.toggle-status', function () {
-            var chapterId = $(this).data('id'); // Get the chapters ID
-            var status = $(this).is(':checked') ? 1 : 0; // Get the new status (1 for checked, 0 for unchecked)
-            const url = `{{route('instructor.courses.quiz.updateStatus','')}}/${chapterId}`
-            $.ajax({
-                url: url, // Update with your actual route
-                type: 'POST',
-                data: {
-                    status: status,
-                    _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
-                },
-                success: function (response) {
-                    toastr.success(response.message);
-                },
-                error: function (xhr) {
-                    // Optionally, handle error response
-                    console.error('Error updating status:', xhr);
-                }
-            });
-        });
-
         $(document).ready(function () {
+            function updateQuestionNumbers() {
+                $('.question-group').each(function (index) {
+                    const questionNumber = index + 1;
+                    $(this).find('h5').text(`Question ${questionNumber}`);
+                    $(this).find('input[name^="questions"]').each(function () {
+                        const name = $(this).attr('name');
+                        const newName = name.replace(/[\d+]/, `[${index}]`);
+                        $(this).attr('name', newName);
+                    });
+                    $(this).find('select[name^="questions"]').each(function () {
+                        const name = $(this).attr('name');
+                        const newName = name.replace(/[\d+]/, `[${index}]`);
+                        $(this).attr('name', newName);
+                    });
+                });
+            }
+
+            $(document).on('click', '#addQuestion', function () {
+                const questionCount = $('.question-group').length;
+                const questionGroup = `
+                <div class="col-lg-6 question-group">
+                    <h5 class="text-secondary-color">Question ${questionCount + 1}</h5>
+                    <div class="form-group">
+                        <label for="question${questionCount + 1}Text">Question Text:</label>
+                        <input type="text" class="form-control" name="questions[${questionCount}][text]" required>
+                    </div>
+                    <div class="d-flex flex-column gap-3 options-container">
+                        <label>Options:</label>
+                        <input type="text" class="form-control" name="questions[${questionCount}][options][]" placeholder="Option 1">
+                        <input type="text" class="form-control" name="questions[${questionCount}][options][]" placeholder="Option 2">
+                        <input type="text" class="form-control" name="questions[${questionCount}][options][]" placeholder="Option 3">
+                        <input type="text" class="form-control" name="questions[${questionCount}][options][]" placeholder="Option 4">
+                    </div>
+                    <div class="form-group">
+                        <label for="correctAnswer">Correct Answer:</label>
+                        <select class="form-control" name="questions[${questionCount}][correct_answer]" required>
+                            <option value="">Select Correct Answer</option>
+                            <option value="Option 1">Option 1</option>
+                            <option value="Option 2">Option 2</option>
+                            <option value="Option 3">Option 3</option>
+                            <option value="Option 4">Option 4</option>
+                        </select>
+                    </div>
+                    <span class="remove-question text-decoration-underline text-third-color">Remove Question</span>
+                </div>
+            `;
+                $('#questionsContainer').append(questionGroup);
+            });
+
+            $(document).on('click', '.remove-question', function () {
+                $(this).closest('.question-group').remove();
+                updateQuestionNumbers();
+            });
+
             $(document).on('change', '#course_id', function () {
                 const courseId = $(this).val();
-                const url = `{{route('instructor.courses.chapters.getChapters','')}}/${courseId}`;
+                const url = `{{ route('instructor.courses.chapters.getChapters', '') }}/${courseId}`;
                 const chapterSelect = $('#chapter_id');
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function (data) {
-                        chapterSelect.empty();
-                        $.each(data, function (index, chapter) {
-                            chapterSelect.append(`<option value="${chapter.id}">${chapter.title}</option>`);
-                        });
-                    }
-                });
+                if (courseId) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function (data) {
+                            chapterSelect.empty();
+                            $.each(data, function (index, chapter) {
+                                chapterSelect.append(`<option value="${chapter.id}">${chapter.title}</option>`);
+                            });
+                        },
+                        error: function (xhr) {
+                            console.error('Error fetching chapters:', xhr);
+                        }
+                    });
+                } else {
+                    chapterSelect.empty().append('<option value="">Select Chapter</option>');
+                }
             });
 
             $(document).on('change', '#chapter_id', function () {
                 const chapterId = $(this).val();
-                const url = `{{route('instructor.courses.lectures.get','')}}/${chapterId}`;
+                const url = `{{ route('instructor.courses.lectures.get', '') }}/${chapterId}`;
                 const lectureSelect = $('#lecture_id');
 
                 $.ajax({
@@ -186,44 +223,13 @@
                     method: 'GET',
                     success: function (data) {
                         lectureSelect.empty();
-                        $.each(data, function (index, chapter) {
-                            lectureSelect.append(`<option value="${chapter.id}">${chapter.title}</option>`);
+                        $.each(data, function (index, lecture) {
+                            lectureSelect.append(`<option value="${lecture.id}">${lecture.title}</option>`);
                         });
                     }
                 });
             });
-
-            let questionCount = 1;
-
-            // Ensure handler is only attached once
-            $(document).off('click', '#addQuestion').on('click', '#addQuestion', function () {
-                questionCount++;
-                const questionGroup = `
-            <div class="gap-2 gy-3 question-group row">
-                <h5 class="text-secondary-color">Question ${questionCount}</h5>
-                <div class="col-lg-4 d-flex flex-column form-group gap-2">
-                    <label for="question${questionCount}Text">Question Text:</label>
-                    <input type="text" class="form-control" name="questions[${questionCount - 1}][text]" required>
-                </div>
-
-                <div class="options-container row">
-                    <div class="col-lg-4 d-flex flex-column form-group gap-2">
-                        <label>Choices (separate by commas):</label>
-                        <input type="text" class="form-control col-lg-6" name="questions[${questionCount - 1}][options]" placeholder="Option 1, Option 2">
-                    </div>
-                    <div class="col-lg-4 d-flex flex-column form-group gap-2">
-                        <label for="correctAnswer">Correct Answer:</label>
-                        <input type="text" class="form-control col-lg-6" name="questions[${questionCount - 1}][correct_answer]" placeholder="Enter correct answer">
-                    </div>
-                </div>
-                <span class="remove-question text-decoration-underline text-third-color" onclick="$(this).closest('.question-group').remove()">Remove Question</span>
-            </div>
-        `;
-                $('#questionsContainer').append(questionGroup);
-            });
         });
-
     </script>
-    <script src="{{ asset('assets/instructor/js/quiz.js') }}"></script>
-
+    <script src="{{asset('assets/Instructor/js/quiz.js')}}"></script>
 @endpush

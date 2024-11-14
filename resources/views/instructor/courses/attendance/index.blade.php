@@ -21,7 +21,7 @@
             text-align: center;
         }
     </style>
-    <x-wrapper title="Attendance">
+    <x-wrapper title="Attendance" class=" d-flex flex-column gap-4">
         <label for="course">Course</label>
         <select class="form-control" id="course">
             <option value="">Select a Course</option>
@@ -163,7 +163,9 @@
                         attendanceData: attendanceData
                     },
                     success: function (response) {
-                        console.log('Attendance updated successfully');
+                        if (response.success) {
+                            toastr.success(response.message);
+                        }
                     },
                     error: function (error) {
                         console.error('Error updating attendance:', error);

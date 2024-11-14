@@ -51,7 +51,10 @@ class ForumController extends Controller
                 ->rawColumns(['name', 'action', 'status'])
                 ->make(true);
         }
-        $data['courses'] = Course::where('department_id', Auth::id())->get();
+        $data['courses'] = Course::whereHas('availability', function ($query) {
+            $query->where('instructor_id', Auth::id());
+        })->where('department_id', Auth::user()->instructor->department_id)->get();
+       
         $data['showCourseManagement'] = 'show';
         $data['activeCourseForum'] = 'active';
         return view('instructor.courses.forum.index', $data);

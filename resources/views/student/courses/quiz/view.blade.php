@@ -15,11 +15,12 @@
                 </ol>
                 <hr>
                 @foreach ($quiz->questions as $index=> $question)
+                    
                     <div class="mb-4">
                         <h5 class="text-secondary-color mb-2"><span
                                 class="me-2">{{$index+1}} -</span>{{ $question->text }}</h5>
                         @if ($question->type == 'mcq')
-                            @foreach (explode(',', $question->options) as $option)
+                            @foreach (json_decode($question->options) as $option)
                                 <div class="text-black">
                                     <input type="radio" name="questions[{{ $question->id }}]"
                                            value="{{ trim($option) }}">
@@ -35,8 +36,6 @@
                 <button type="submit" class=" bg-secondary-color btn btn-primary text-white ">Submit Exam</button>
             </form>
         </div>
-
-
     </x-wrapper>
 @endsection
 @push('script')

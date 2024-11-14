@@ -158,28 +158,32 @@
                         @endif
                     </div>
                     <div class="tab-pane fade" id="quizzes" role="tabpanel" aria-labelledby="contact-tab">
-                        <h3 class="text-black mt-3 mb-3 text-center">{{$activeLecture->title}}</h3>
+                        <h3 class="text-black mt-3 mb-3 text-center">{{ $activeLecture->title }}</h3>
                         <hr>
-                        @if(!is_null($quiz))
+                        @if(!is_null($quizzes))
+                            @foreach($quizzes as $quiz)
+                                <h3 class="text-black">{{ $quiz->title }}</h3>
 
-                            <h3 class="text-black">{{$quiz->title}}</h3>
-
-                            <h6 class="text-black mt-5">instructions:</h6>
-                            <ol class="mt-3 fs-16">
-                                <li>Test time limit is {{$quiz->duration}} minutes</li>
-                                <li>Once started, this short test must be completed in one sitting. Do not leave the
-                                    “test” before clicking Save and Submit
-                                </li>
-                                <li>You will be notified when time expires and you can continue or submit</li>
-                            </ol>
-                            @if($alreadySubmitted)
-                                <span
-                                    class="fs-18 fw-1000 text-secondary-color">Your Grade is:{{$grade.'/'.$totalQuizGrade}}</span>
-                            @else
-                                <a href="{{ route('student.courses.quizzes.show', $quiz->id) }}"
-                                   class="bg-secondary-color btn d-block m-auto text-white w-25">Start Exam</a>
-                            @endif
-
+                                <h6 class="text-black mt-5">Instructions:</h6>
+                                <ol class="mt-3 fs-16">
+                                    <li>Test time limit is {{ $quiz->duration }} minutes</li>
+                                    <li>Once started, this short test must be completed in one sitting. Do not leave the
+                                        “test” before clicking Save and Submit
+                                    </li>
+                                    <li>You will be notified when time expires and you can continue or submit</li>
+                                </ol>
+                                <h6 class="text-black mt-5">Description</h6>
+                                <div>
+                                    {!! $quiz->description !!}
+                                </div>
+                                @if($quiz->alreadySubmitted)
+                                    <span
+                                        class="fs-18 fw-1000 text-secondary-color">Your Grade is: {{ $quiz->grade . '/' . $quiz->grade_total }}</span>
+                                @else
+                                    <a href="{{ route('student.courses.quizzes.show', $quiz->id) }}"
+                                       class="bg-secondary-color btn d-block m-auto text-white w-25">Start Exam</a>
+                                @endif
+                            @endforeach
                         @endif
                     </div>
                     <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="contact-tab">
@@ -244,13 +248,13 @@
                                 <x-drop title="quizzes" total="{{$totalQuizzes}}" submitted="{{$submittedQuizzes}}">
 
                                 </x-drop>
+
                                 <x-drop title="activites" total="{{$totalActivities}}"
                                         submitted="{{$submittedActivities}}">
 
                                 </x-drop>
                                 <x-drop title="attendance" total="{{$totalLectures}}"
                                         submitted="{{$attendedLectures}}">
-
                                 </x-drop>
                             </div>
                             <section>

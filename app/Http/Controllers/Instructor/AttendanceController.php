@@ -60,6 +60,8 @@ class AttendanceController extends Controller
                 ];
             })
             ->toArray();
+        $data['activeCourseAttendance'] = 'active';
+        $data['showCourseManagement'] = 'show';
 
         return view('instructor.courses.attendance.index', $data);
     }

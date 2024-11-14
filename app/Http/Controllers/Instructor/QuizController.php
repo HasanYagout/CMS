@@ -23,6 +23,7 @@ class QuizController extends Controller
                 })
                 ->addColumn('course', function ($data) {
 
+
                     return $data->lecture->chapter->course->name;
                 })
                 ->addColumn('chapter', function ($data) {
@@ -71,26 +72,34 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
+        // Debugging line (remove in production)
+        // dd($request->all());
+
+        // Validate the incoming request
         $request->validate([
             'title' => 'required|string|max:255',
             'course_id' => 'required|exists:courses,id',
             'chapter_id' => 'required|exists:chapters,id',
             'lecture_id' => 'required|exists:lectures,id',
+            'description' => 'required|string',
             'duration' => 'required|integer|min:1', // Ensure duration is a positive integer
             'questions' => 'required|array',
             'questions.*.text' => 'required|string',
-            'questions.*.options' => 'nullable|string',
-            'questions.*.correct_answer' => 'nullable|string',
+            'questions.*.options' => 'required|array|min:2', // Ensure there are at least 2 options
+            'questions.*.options.*' => 'required|string', // Each option must be a string
+            'questions.*.correct_answer' => 'required|string|in:Option 1,Option 2,Option 3,Option 4', // Adjust based on your options
         ]);
 
         // Save the quiz
         $quiz = InstructorQuiz::create([
             'title' => $request->title,
+            'description' => $request->description,
             'lecture_id' => $request->lecture_id,
-            'duration' => $request->duration, // Save the duration
-            'due_date' => $request->due_date, // Save the duration
-            'grade' => $request->grade, // Save the duration
-            'instructor_id' => Auth::id(), // Save the duration
+            'duration' => $request->duration,
+            'due_date' => $request->due_date,
+            'grade' => $request->grade,
+            'status' => 1,
+            'instructor_id' => Auth::id(),
         ]);
 
         // Save questions
@@ -99,11 +108,10 @@ class QuizController extends Controller
                 'instructor_quiz_id' => $quiz->id,
                 'text' => $question['text'],
                 'type' => 'mcq',
-                'options' => $question['options'],
+                'options' => json_encode($question['options']), // Save options as a JSON encoded string
                 'correct_answer' => $question['correct_answer'],
             ]);
         }
-
 
         return redirect()->back()->with('success', 'Quiz created successfully!');
     }

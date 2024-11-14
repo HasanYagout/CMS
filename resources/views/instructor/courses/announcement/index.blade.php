@@ -142,5 +142,5 @@
             });
         });
     </script>
-    <script src="{{asset('assets/instructor/js/announcement.js')}}"></script>
+    <script src="{{asset('assets/Instructor/js/announcement.js')}}"></script>
 @endpush

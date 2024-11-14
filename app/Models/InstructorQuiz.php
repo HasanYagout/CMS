@@ -10,7 +10,7 @@ class InstructorQuiz extends Model
     use HasFactory;
 
     protected $table = 'instructor_quiz';
-    protected $fillable = ['title', 'lecture_id', 'grade', 'duration', 'status', 'due_date', 'instructor_id'];
+    protected $fillable = ['title', 'lecture_id', 'description', 'grade', 'duration', 'status', 'due_date', 'instructor_id'];
 
     public function questions()
     {
