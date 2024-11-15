@@ -19,7 +19,7 @@ class AvailabilityController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $availability = Availabilities::with('instructor','course')->orderBy('id', 'desc')->get();
+            $availability = Availabilities::with('instructor', 'course')->orderBy('id', 'desc')->get();
             return datatables($availability)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
@@ -55,17 +55,19 @@ class AvailabilityController extends Controller
                     <button onclick="getEditModal(\'' . route('admin.availability.edit', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
-                    <button onclick="deleteItem(\'' . route('admin.availability.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="'.__('Delete').'">
+                    <button onclick="deleteItem(\'' . route('admin.availability.delete', $data->id) . '\', \'departmentDataTable\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" title="' . __('Delete') . '">
                         <img src="' . asset('assets/images/icon/delete-1.svg') . '" alt="delete">
                     </button>
                 </li>
             </ul>';
                 })
-                ->rawColumns(['name','instructor','start_time','end_time','days','status','action'])
+                ->rawColumns(['name', 'instructor', 'start_time', 'end_time', 'days', 'status', 'action'])
                 ->make(true);
         }
-        $data['courses']= Course::where('status',1)
-            ->where('department_id',Auth::user()->admin->department_id)
+//
+        $data['courses'] = Course::whereDoesntHave('availabilities')
+            ->where('department_id', Auth::user()->admin->department_id)
+            ->where('status', 1)
             ->get();
 
         $data['instructors'] = User::where('role_id', 2)
@@ -74,16 +76,16 @@ class AvailabilityController extends Controller
                 $query->where('department_id', Auth::user()->admin->department_id);
             })
             ->get();
-        $data['showCourseManagement']='show';
-        $data['activeCourseInstructor']='active';
-        return view('admin.availability.index',$data);
+        $data['showCourseManagement'] = 'show';
+        $data['activeCourseInstructor'] = 'active';
+        return view('admin.availability.index', $data);
 
     }
 
     public function create()
     {
         $data['instructors'] = Instructor::all();
-        return view('admin.availability.create',$data);
+        return view('admin.availability.create', $data);
     }
 
     public function store(Request $request)
@@ -123,11 +125,12 @@ class AvailabilityController extends Controller
 
         return back();
     }
+
     public function getInstructorAvailability($instructorId)
     {
         $allDays = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'];
         $allTimeSlots = [
-            '08:00:00','09:00:00', '10:00:00', '11:00:00', '12:00:00',
+            '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00',
             '13:00:00', '14:00:00', '15:00:00', '16:00:00'
         ];
 
@@ -168,8 +171,9 @@ class AvailabilityController extends Controller
 
     public function getAvailabilityByInstructor(Request $request)
     {
-      return Availabilities::with('instructor')->where('instructor_id',$request->instructorId)->get();
+        return Availabilities::with('instructor')->where('instructor_id', $request->instructorId)->get();
     }
+
     public function updateStatus(Request $request)
     {
         Availabilities::find($request->id)->update(['status' => $request->status]);
@@ -178,15 +182,17 @@ class AvailabilityController extends Controller
 
     public function edit($id)
     {
-        $data['availability']=Availabilities::with('instructor','course')->findOrFail($id);
-        $data['courses']= Course::where('department_id',Auth::user()->admin->department_id)->get();
+        $data['availability'] = Availabilities::with('instructor', 'course')->findOrFail($id);
+        $data['courses'] = Course::where('department_id', Auth::user()->admin->department_id)->get();
 
-        $data['instructors']=Instructor::where('department_id',Auth::user()->admin->department_id)
+        $data['instructors'] = Instructor::where('department_id', Auth::user()->admin->department_id)
             ->get();
-        $data['semesters']=Semester::where('status',1)->get();
+        $data['semesters'] = Semester::where('status', 1)->get();
         return view('admin.availability.edit-form', $data);
     }
-    public function update(Request $request, $id) {
+
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'instructor_id' => 'required|exists:users,id',
@@ -210,13 +216,13 @@ class AvailabilityController extends Controller
     public function destroy($id)
     {
 
-            $availability = Availabilities::find($id);
-            $hasEnrollments = Enrollment::where('course_id', $availability->course_id)->exists();
-            if ($hasEnrollments) {
-                return response()->json(['message' => 'Cannot delete availability as there are associated records.'], 400);
-            }
+        $availability = Availabilities::find($id);
+        $hasEnrollments = Enrollment::where('course_id', $availability->course_id)->exists();
+        if ($hasEnrollments) {
+            return response()->json(['message' => 'Cannot delete availability as there are associated records.'], 400);
+        }
 
-            $availability->delete();
+        $availability->delete();
         return response()->json(['message' => 'Availability deleted successfully.'], 200);
 
     }

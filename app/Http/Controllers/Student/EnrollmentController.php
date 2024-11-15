@@ -83,7 +83,7 @@ class EnrollmentController extends Controller
             })
             ->get();
 
-        $data['forum'] = Forum::where('course_id', $data['course']->id)->get();
+        $data['forums'] = Forum::where('course_id', $data['course']->id)->get();
 
         return view('student.enrollment.dashboard', $data);
     }
@@ -110,10 +110,12 @@ class EnrollmentController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
+
             $enrollment_id = Enrollment::insertGetId(
-                ['student_id' => Auth::id(),
+                [
+                    'student_id' => Auth::id(),
                     'course_id' => $id,
-                    'status', false
+                    'status' => false
                 ]
             );
             Payment::create(
@@ -122,7 +124,7 @@ class EnrollmentController extends Controller
                     'student_id' => Auth::id()
                 ]
             );
-            return back()->with('Course Registered successfully');
+            return redirect()->route('student.courses.info', $course->slug)->with('Course Registered successfully');
         } else {
             return back()->withErrors('Course Not Found');
 

@@ -21,23 +21,34 @@ class AssignmentController extends Controller
         return view('student.courses.assignments.index', $data);
     }
 
+
     public function store(Request $request, $id)
     {
-        // Validate the incoming request data
         $validatedData = $request->validate([
             'comment' => 'required|string|max:255',
-            'assignments.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+//            'assignments.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,zip', // Adjust mime types and size as needed
         ]);
 
-        // Initialize an array to hold file paths
         $filePaths = [];
 
         // Handle file uploads
         if ($request->hasFile('assignments')) {
             foreach ($request->file('assignments') as $file) {
-                // Store the file using a unique name
-                $filePath = $file->store('assignments');
-                $filePaths[] = $filePath;
+                // Generate a random string
+                $randomString = Str::random(10);
+                // Generate a random slug
+                $randomSlug = Str::slug(Str::random(5));
+                // Generate a random number
+                $randomNumber = rand(1000, 9999);
+                // Get the file extension
+                $extension = $file->getClientOriginalExtension();
+                // Combine them into a new file name
+                $newFileName = "{$randomString}_{$randomSlug}_{$randomNumber}.{$extension}";
+
+                $file->move(public_path('storage/assignments'), $newFileName); // Save the file to the specified path
+
+
+                $filePaths[] = str_replace('public/', '', $newFileName);
             }
         }
 

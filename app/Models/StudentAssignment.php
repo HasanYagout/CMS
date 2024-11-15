@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Middleware\Student;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

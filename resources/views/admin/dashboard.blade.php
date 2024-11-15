@@ -10,9 +10,11 @@
     </div>
     <div class="row">
         <div class="col-lg-4">
-            <x-wrapper title="Courses">
-                <h1 class=" text-third-color"> {{$courses}}</h1>
-            </x-wrapper>
+            <a href="{{route('admin.courses.index')}}">
+                <x-wrapper title="Courses">
+                    <h1 class=" text-third-color"> {{$courses}}</h1>
+                </x-wrapper>
+            </a>
         </div>
         <div class="col-lg-4">
             <x-wrapper title="Instructors">

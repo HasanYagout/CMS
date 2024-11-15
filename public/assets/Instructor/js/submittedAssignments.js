@@ -1,9 +1,10 @@
 (function ($) {
     "use strict";
-    if ($.fn.dataTable.isDataTable("#newsTable")) {
-        $("#newsTable").DataTable().clear().destroy();
+    if ($.fn.dataTable.isDataTable("#assignmentsTable")) {
+        $("#assignmentsTable").DataTable().clear().destroy();
     }
-    var table = $("#newsTable").DataTable({
+
+    var table = $("#assignmentsTable").DataTable({
         pageLength: 10,
         ordering: true,
         serverSide: true,
@@ -11,7 +12,7 @@
         responsive: true,
         searching: true,
         ajax: {
-            url: $("#news-route").val(),
+            url: $("#assignments-route").val(),
             data: function (d) {
                 d.selectedDepartment = $("#department :selected").val();
                 d.selectedPassingYear = $("#passing-year :selected").val();
@@ -23,33 +24,26 @@
                 previous: "<i class='fa-solid fa-angles-left'></i>",
                 next: "<i class='fa-solid fa-angles-right'></i>",
             },
-            searchPlaceholder: "Search News",
+            searchPlaceholder: "Search Activity",
             search: "<span class='searchIcon'><i class='fa-solid fa-magnifying-glass'></i></span>",
         },
         dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
         columns: [
             {
-                data: "title",
-                name: "title",
+                data: "name",
+                name: "name",
                 responsivePriority: 1,
                 searchable: true,
                 orderable: true,
             },
             {
-                data: "posted_by",
-                name: "posted_by",
+                data: "assignment",
+                name: "assignment",
                 responsivePriority: 1,
                 searchable: true,
                 orderable: true,
             },
 
-            {
-                data: "status",
-                name: "status",
-                responsivePriority: 1,
-                searchable: true,
-                orderable: true,
-            },
             {
                 data: "action",
                 name: "action",

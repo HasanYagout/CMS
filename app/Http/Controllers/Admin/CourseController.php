@@ -193,10 +193,6 @@ class CourseController extends Controller
 
     }
 
-    public function instructors()
-    {
-
-    }
 
     public function info($id)
     {

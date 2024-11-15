@@ -105,7 +105,10 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::get('/index', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
                 Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::get('/view/{id}', 'view')->name('view');
+                Route::get('/show/{id}', 'show')->name('show');
                 Route::post('/update/{id}', 'update')->name('update');
+                Route::post('/submitGrade/{student_id}/{assignment}', 'submitGrade')->name('submitGrade');
                 Route::post('/delete/{id}', 'delete')->name('delete');
                 Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
 

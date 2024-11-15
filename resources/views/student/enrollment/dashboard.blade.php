@@ -16,7 +16,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="chat-tab" data-bs-toggle="tab" href="#chat" role="tab"
-                           aria-controls="chat" aria-selected="false">Chat</a>
+                           aria-controls="chat" aria-selected="false">Forum</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="quizzes-tab" data-bs-toggle="tab" href="#quizzes" role="tab"
@@ -54,35 +54,14 @@
                         <ul class="d-flex flex-column gap-3">
                             <div class="chat-section p-3" style="background-color:rgba(35, 55, 255, 0.09);">
                                 <div class="chat-messages  rounded" style="max-height: 350px; overflow-y: auto;">
-                                    {{--                                    @foreach($chats as $chat)--}}
-                                    {{--                                        <div class=" d-flex flex-column mb-3 {{ Auth::id() == $chat->user_id ? 'align-items-end' : 'align-items-start' }}">--}}
-                                    {{--                                            <strong class="{{ Auth::id() == $chat->user_id ? 'text-third-color' : 'text-secondary-color' }}">--}}
-                                    {{--                                                @if(Auth::id() == $chat->user_id)--}}
-                                    {{--                                                    --}}{{-- Don't display name for the user sending the message --}}
+                                    <div class="d-flex flex-column gap-2">
 
-                                    {{--                                                @elseif($chat->user->role_id == 3)--}}
-                                    {{--                                                    {{ $chat->user->student->first_name.' '.$chat->user->student->last_name }}--}}
-                                    {{--                                                @else--}}
-                                    {{--                                                    {{ $chat->user->instructor->first_name.' '.$chat->user->instructor->last_name }}--}}
-                                    {{--                                                @endif--}}
-                                    {{--                                            </strong>--}}
-                                    {{--                                            <div style="overflow-wrap: anywhere;width: fit-content;{{ Auth::id() == $chat->user_id ? 'background-color:#c2fb95;' : 'background-color:rgba(35, 55, 255, 0.09);' }}" class="d-inline-block p-2 fw-400 rounded ">--}}
-                                    {{--                                                {{ $chat->message }}--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                            <small class="text-muted">--}}
-                                    {{--                                                {{ $chat->created_at->format('F j, Y, g:i a') }}--}}
-                                    {{--                                            </small>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    @endforeach--}}
+                                        @foreach($forums as $forum)
+                                            <a class="bg-primary-color fs-18 p-13 rounded-3 text-white"
+                                               href="{{route('student.courses.forum.index',['course_id'=>$course_id,'id'=>$forum->id])}}">{{$forum->title}}</a>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                <form action="{{ route('student.courses.forum.store') }}" class="d-flex gap-3"
-                                      method="POST">
-                                    @csrf
-                                    <input type="hidden" name="course_id" value="{{ $course_id}}">
-                                    <textarea name="message" style="width: 60%" class="form-control"
-                                              placeholder="Type your message..."></textarea>
-                                    <button type="submit" class="zBtn-one mt-2">Send</button>
-                                </form>
                             </div>
                         </ul>
                     </div>

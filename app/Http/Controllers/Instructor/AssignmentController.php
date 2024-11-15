@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Student;
 use App\Models\Availabilities;
 use App\Models\Course;
 use App\Models\InstructorAssignments;
@@ -20,7 +21,7 @@ class AssignmentController extends Controller
             return datatables($assignments)
                 ->addIndexColumn()
                 ->addColumn('course', function ($data) {
-                    return $data->lecture->chapter->course->name;
+                    return '<a href=' . route('instructor.courses.assignments.view', $data->lecture->chapter->course->id) . '>' . $data->lecture->chapter->course->name . '</a>';
                 })
                 ->addColumn('chapter', function ($data) {
                     return $data->lecture->chapter->title;
@@ -101,6 +102,37 @@ class AssignmentController extends Controller
         return view('instructor.courses.assignment.edit-form', $data);
     }
 
+    public function view(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $assignments = StudentAssignment::with('student', 'assignment.lecture')->whereHas('assignment.lecture.chapter.course', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->get();
+            return datatables($assignments)
+                ->addIndexColumn()
+                ->addColumn('name', function ($data) {
+                    return $data->student->first_name . ' ' . $data->student->last_name;
+                })
+                ->addColumn('assignment', function ($data) {
+                    return $data->assignment->title;
+                })
+                ->addColumn('action', function ($data) {
+                    return '<ul class="d-flex align-items-center cg-5 justify-content-center">
+                <li class="d-flex gap-2">
+                    <button onclick="getEditModal(\'' . route('instructor.courses.assignments.show', $data->id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
+            </button>
+                </li>
+            </ul>';
+                })
+                ->rawColumns(['name', 'course', 'chapter', 'lecture', 'days', 'status', 'action'])
+                ->make(true);
+        }
+
+        $data['course_id'] = $id;
+        return view('instructor.courses.assignment.view', $data);
+    }
+
     public function update(Request $request, $id)
     {
 
@@ -117,10 +149,26 @@ class AssignmentController extends Controller
         return redirect()->back()->with('success', 'Assignment updated successfully.');
     }
 
+    public function submitGrade(Request $request, $student_id, $assignment)
+    {
+        $studentAssignment = StudentAssignment::with('assignment.lecture.chapter.course')->where('student_id', $student_id)
+            ->where('instructor_assignments_id', $assignment)->first();
+        $studentAssignment->grade = $request->grade;
+        $studentAssignment->save();
+        return redirect()->route('instructor.courses.assignments.view', $studentAssignment->assignment->lecture->chapter->course->id)->with('success', 'Assignment updated successfully.');
+    }
+
     public function updateStatus(Request $request)
     {
         InstructorAssignments::find($request->id)->update(['status' => $request->status]);
         return response()->json(['message' => 'Assignment status updated successfully.']);
+    }
+
+    public function show($id)
+    {
+        $data['assignment'] = StudentAssignment::with('student')->find($id);
+
+        return view('instructor.courses.assignment.show', $data);
     }
 
     public function delete(Request $request, $id)

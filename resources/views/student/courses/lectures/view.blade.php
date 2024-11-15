@@ -124,7 +124,9 @@
                                                        @if($assignment->submittedAssignments->isNotEmpty()) disabled @endif>
                                                 <input type="file" name="assignments[]" multiple
                                                        class="form-control mb-2"
+                                                       accept=".doc,.docx,.pdf,image/*"
                                                        @if($assignment->submittedAssignments->isNotEmpty()) disabled @endif>
+
                                             </section>
                                             <section class="mt-3">
                                                 <button class="btn zBtn-three"

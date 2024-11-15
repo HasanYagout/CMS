@@ -68,8 +68,8 @@ class DashboardController extends Controller
 //            ->get();
         $data['student'] = Student::where('user_id', Auth::id())->first();
         $student = Auth::user()->student;
-        $collegeId = $student->college_id;
-        $data['news'] = News::where('college_id', $collegeId)->get();
+        $collegeId = $student->department_id;
+        $data['news'] = News::where('department_id', $collegeId)->get();
         $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query) {
             $query->where('student_id', Auth::id());
         })->count();

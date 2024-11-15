@@ -33,8 +33,42 @@
             </table>
         </div>
     </x-wrapper>
+    <div class="modal fade zModalTwo modal-lg" id="edit-modal" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content zModalTwo-content">
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('script')
-    <script src="{{ asset('assets/admin/js/news.js') }}"></script>
+    <script>
+        $(document).on('change', '.toggle-status', function () {
+            var adminId = $(this).data('id');
+            var status = $(this).is(':checked') ? 1 : 0;
 
+            $.ajax({
+                url: '{{ route("admin.news.updateStatus") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: adminId,
+                    status: status
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        toastr.success('Status updated successfully.');
+                    } else {
+                        toastr.error('Failed to update status.');
+                    }
+                },
+                error: function () {
+                    toastr.error('Error updating status.');
+                }
+            });
+        });
+
+    </script>
+    <script src="{{ asset('assets/admin/js/news.js') }}"></script>
 @endpush
