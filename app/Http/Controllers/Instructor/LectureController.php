@@ -16,10 +16,18 @@ class LectureController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            $selectedCourse = $request->get('selectedCourse');
             $user = Auth::user();
-            $lectures = Lecture::whereHas('chapter.course.availability', function ($query) use ($user) {
+            $query = Lecture::whereHas('chapter.course.availability', function ($query) use ($user) {
                 $query->where('instructor_id', $user->id);
-            })->get();
+            });
+            if ($selectedCourse) {
+                $query->whereHas('chapter.course', function ($query) use ($selectedCourse) {
+                    $query->where('id', $selectedCourse);
+                });
+            }
+            $lectures = $query->get();
+
 
             return datatables($lectures)
                 ->addIndexColumn()
@@ -70,7 +78,6 @@ class LectureController extends Controller
                 ->make(true);
         }
         $data['courses'] = Availabilities::with('course')->where('instructor_id', Auth::id())->get();
-
         $data['showCourseManagement'] = 'show';
         $data['activeCourseLecture'] = 'active';
         return view('instructor.courses.lectures.index', $data);
@@ -108,7 +115,7 @@ class LectureController extends Controller
                     'type' => 'image',
                     'url' => $path,
                 ]);
-                
+
             }
         }
 
@@ -120,14 +127,12 @@ class LectureController extends Controller
         return Lecture::where('chapter_id', $id)->orderBy('created_at', 'DESC')->get();
     }
 
-    public function getLatestLecture($courseId)
+    public function getLastLecture($courseId)
     {
-
-        $latestLecture = Lecture::whereHas('chapter', function ($query) use ($courseId) {
+        $lastLecture = Lecture::whereHas('chapters.course', function ($query) use ($courseId) {
             $query->where('course_id', $courseId);
-        })->orderBy('end_date', 'desc')->first();
-
-        return response()->json(['latest_lecture' => $latestLecture]);
+        })->orderBy('start_date', 'desc')->first();
+        return response()->json($lastLecture);
     }
 
     public function edit($id)

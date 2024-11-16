@@ -61,7 +61,7 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::get('/', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
                 Route::get('/get/{id}', 'getLecturesByCourseId')->name('get');
-                Route::get('/latest/{course_id}', 'getLatestLecture')->name('latest');
+                Route::get('/latest/{course_id}', 'getLastLecture')->name('latest');
                 Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::post('/update/{id}', 'update')->name('update');
                 Route::post('/delete/{id}', 'delete')->name('delete');

@@ -105,12 +105,19 @@ class ChapterController extends Controller
     public function getChaptersAndAvailability($courseId)
     {
         $chapters = Chapter::where('course_id', $courseId)->get();
-        $availability = Availabilities::where('course_id', $courseId)->first();
+        $course = Course::with('availabilities')->find($courseId);
 
         return response()->json([
             'chapters' => $chapters,
-            'availability' => $availability,
+            'availabilities' => $course->availabilities,
+            'course' => $course,
         ]);
+    }
+
+    public function getLastLecture($courseId)
+    {
+        $lastLecture = Lecture::where('course_id', $courseId)->orderBy('start_date', 'desc')->first();
+        return response()->json($lastLecture);
     }
 
     public function getChapters($courseId)
