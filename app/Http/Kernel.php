@@ -55,6 +55,8 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'token' => \App\Http\Middleware\EnsureTokenIsValid::class,
+        'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'course' => \App\Http\Middleware\CourseIdMiddleware::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'instructor' => \App\Http\Middleware\Instructor::class,

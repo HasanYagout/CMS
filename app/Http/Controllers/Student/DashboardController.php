@@ -17,71 +17,46 @@ class DashboardController extends Controller
 {
     public function index()
     {
-//        $data['activeHome']='active';
-//
-//        $studentId = Auth::id(); // Assuming the student is logged in
-//        $data['assignments'] = InstructorAssignments::with('lecture')
-//            ->whereIn('lecture_id', function ($query) use ($studentId) {
-//                $query->select('course_id')
-//                    ->from('enrollment')
-//                    ->where('student_id', $studentId);
-//
-//            })
-//            ->whereBetween('due_date', [
-//                Carbon::now()->format('Y-m-d'),
-//                Carbon::now()->addDays(3)->format('Y-m-d')
-//            ])->get();
-//
-//        $data['quizzes'] = InstructorQuiz::with('course')
-//            ->whereIn('lecture_id', function ($query) use ($studentId) {
-//                $query->select('course_id')
-//                    ->from('enrollment')
-//                    ->where('student_id', $studentId);
-//            })
-//            ->whereBetween('due_date', [
-//                Carbon::now()->format('Y-m-d'),
-//                Carbon::now()->addDays(3)->format('Y-m-d')
-//            ])->get();
-//
-//        $data['attentions']=$data['assignments']->merge($data['quizzes']);
-//        $data['days']=[];
-//        $data['hours']=[];
-//        foreach ($data['attentions'] as $index=>$attention) {
-//            $difference=Carbon::now()->diff($attention->due_date);
-//            $data['days'][$index]=$difference->d;
-//            $data['hours'][$index]=$difference->h;
-//        }
-//
-//        $data['lectures']=Chapter::with('course')
-//            ->whereIn('course_id', function ($query) use ($studentId) {
-//                $query->select('course_id')
-//                    ->from('enrollment')
-//                    ->where('student_id', $studentId);
-//            })
-//            ->get();
-//        $data['announcements']=Announcement::with('course')
-//            ->whereIn('course_id', function ($query) use ($studentId) {
-//                $query->select('course_id')
-//                    ->from('enrollment')
-//                    ->where('student_id', $studentId);
-//            })
-//            ->get();
+        $data['activeHome'] = 'active';
+
+
+        $studentId = Auth::id(); // Assuming the student is logged in
+        $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })->get();
+
+        $data['assignments'] = InstructorAssignments::with('lecture')
+            ->whereBetween('due_date', [
+                Carbon::now()->format('Y-m-d'),
+                Carbon::now()->addDays(3)->format('Y-m-d')
+            ])->get();
+
+        $data['quizzes'] = InstructorQuiz::with('course')
+            ->whereBetween('due_date', [
+                Carbon::now()->format('Y-m-d'),
+                Carbon::now()->addDays(3)->format('Y-m-d')
+            ])->get();
+
         $data['student'] = Student::where('user_id', Auth::id())->first();
         $student = Auth::user()->student;
         $collegeId = $student->department_id;
         $data['news'] = News::where('department_id', $collegeId)->get();
-        $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query) {
-            $query->where('student_id', Auth::id());
-        })->count();
+        $data['attentions'] = $data['assignments']->merge($data['quizzes']);
 
-        $data['assignments'] = InstructorAssignments::whereHas('lecture.chapter.course.enrollments', function ($query) {
-            $query->where('student_id', Auth::id());
-        })->count();
 
-        $data['quizzes'] = InstructorQuiz::whereHas('lecture.chapter.course.enrollments', function ($query) {
-            $query->where('student_id', Auth::id());
-        })->count();
-        $data['activeHome'] = 'active';
+//        $data['announcements'] = Announcement::whereHas('course.enrollments', function ($query) {
+//            $query->where('student_id', Auth::id());
+//        })->count();
+
+//        $data['assignments'] = InstructorAssignments::whereHas('lecture.chapter.course.enrollments', function ($query) {
+//            $query->where('student_id', Auth::id());
+//        })->count();
+//
+//        $data['quizzes'] = InstructorQuiz::whereHas('lecture.chapter.course.enrollments', function ($query) {
+//            $query->where('student_id', Auth::id());
+//        })->count();
+
+
         return view('student.dashboard', $data);
     }
 }
