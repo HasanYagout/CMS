@@ -28,7 +28,11 @@
 @endphp
 
 @if($authenticatedUser)
-
+    <div class="bg-white mobileMenu p-13">
+        <button
+            class="bd-one bd-c-ededed bd-ra-12 w-30 h-30 d-flex justify-content-center align-items-center text-707070 p-0 bg-transparent">
+            <i class="fa-solid fa-bars"></i></button>
+    </div>
     <div class="zSidebar border border-1 shadow-sm zSidebar">
         <div class="zSidebar-overlay"></div>
         <!-- Logo -->
