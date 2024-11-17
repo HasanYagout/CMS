@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\Course;
 use App\Models\InstructorAssignments;
 use App\Models\InstructorQuiz;
 use App\Models\Student;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Request;
 
 class HomeController extends Controller
 {
-    public function notifications(Request $request)
+    public function notifications()
     {
         $studentId = Auth::id(); // Get the current logged-in student's ID
 
@@ -47,6 +48,23 @@ class HomeController extends Controller
 
         // Return a JSON response
         return response()->json($data);
+    }
+
+    public function enrolled_courses()
+    {
+        $studentId = Auth::id();
+
+        $courses = Course::whereHas('enrollments', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId)
+                ->where('status', 1)
+                ->whereHas('payment', function ($query) {
+                    $query->where('is_paid', true);
+                });
+        })
+            ->with(['availability.instructor']) // Eager load the instructor
+            ->get();
+        
+        return response()->json($courses);
     }
 
 }

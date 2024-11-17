@@ -14,4 +14,5 @@ Route::group(['middleware' => ['auth:sanctum', 'token']], function () {
     });
 
     Route::get('/notifications', [HomeController::class, 'notifications']);
+    Route::get('/enrolled_courses', [HomeController::class, 'enrolled_courses']);
 });
