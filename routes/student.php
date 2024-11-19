@@ -21,7 +21,7 @@ Route::group(['middleware' => ['student'], 'prefix' => 'student', 'as' => 'stude
         Route::get('/info/{slug}', [CourseController::class, 'info'])->name('info');
 
         Route::group(['prefix' => 'chapters', 'as' => 'chapters.'], function () {
-            Route::get('view/{id}', [ChapterController::class, 'index'])->name('view');
+            Route::get('view/{slug}', [ChapterController::class, 'index'])->name('view');
         });
 
         Route::group(['prefix' => 'assignments', 'as' => 'assignments.'], function () {
