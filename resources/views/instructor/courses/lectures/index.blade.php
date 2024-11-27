@@ -7,10 +7,11 @@
             @csrf
             <div class="col-lg-4">
                 <label class="form-label" for="course">Course</label>
+
                 <select class="form-control" name="course_id" id="course">
                     <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                        <option value="{{ $course->course_id }}">{{ $course->course->name }}</option>
                     @endforeach
                 </select>
             </div>

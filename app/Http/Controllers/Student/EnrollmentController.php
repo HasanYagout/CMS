@@ -115,7 +115,7 @@ class EnrollmentController extends Controller
                 [
                     'student_id' => Auth::id(),
                     'course_id' => $id,
-                    'status' => false
+                    'status' => true
                 ]
             );
             Payment::create(
