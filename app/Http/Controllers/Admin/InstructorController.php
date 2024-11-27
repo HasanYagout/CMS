@@ -82,15 +82,17 @@ class InstructorController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the form inputs
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'gender' => 'required|string|in:male,female',
             'degree' => 'required|string|max:255',
-            'birth_date' => 'required|date',
+            'birth_date' => ['required', 'date', 'before:' . now()->subYears(20)->format('Y-m-d')],
+            'phone' => 'required|regex:/^7[0-9]{8}$/'
         ]);
+
 
         $departmentId = Auth::user()->admin->department_id;
 

@@ -120,7 +120,7 @@ class EnrollmentController extends Controller
             );
             Payment::create(
                 ['enrollment_id' => $enrollment_id,
-                    'is_paid' => false,
+                    'is_paid' => true,
                     'student_id' => Auth::id()
                 ]
             );

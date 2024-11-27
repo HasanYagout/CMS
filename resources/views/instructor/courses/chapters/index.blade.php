@@ -12,10 +12,11 @@
                             <div class="primary-form-group-wrap">
                                 <label for="instructor" class="form-label">{{ __('Courses') }} <span
                                         class="text-danger">*</span></label>
+
                                 <select name="course_id" class="primary-form-control" id="body" spellcheck="false">
                                     <option value="" selected></option>
                                     @foreach($courses as $course)
-                                        <option value="{{ $course->id }}">{{ $course->course->name }}</option>
+                                        <option value="{{ $course->course->id }}">{{ $course->course->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

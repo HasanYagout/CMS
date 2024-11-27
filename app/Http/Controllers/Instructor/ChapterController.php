@@ -74,7 +74,7 @@ class ChapterController extends Controller
 
     public function store(Request $request)
     {
-
+        
         $request->validate([
             'chapters' => 'required',
             'course_id' => 'required|exists:courses,id',
