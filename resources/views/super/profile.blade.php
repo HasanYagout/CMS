@@ -5,7 +5,9 @@
         <div class="col-lg-4">
             <x-wrapper title="Profile">
                 <section class="mt-17">
-                    <img onerror="this.src='{{ asset('assets/images/no-image.webp') }}'" style="height: 200px; width: 200px" src="{{ asset('storage/profile/' . $user->image) }}" alt="">
+                    <img onerror="this.src='{{ asset('assets/images/no-image.webp') }}'"
+                         style="height: 200px; width: 200px" src="{{ asset('storage/profile/' . $user->image) }}"
+                         alt="">
                 </section>
             </x-wrapper>
         </div>
@@ -13,26 +15,31 @@
             <x-wrapper title="">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="about-tab" data-bs-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+                        <a class="nav-link active" id="about-tab" data-bs-toggle="tab" href="#about" role="tab"
+                           aria-controls="about" aria-selected="true">About</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="photo-tab" data-bs-toggle="tab" href="#photo" role="tab" aria-controls="photo" aria-selected="false">Edit photo</a>
+                        <a class="nav-link" id="photo-tab" data-bs-toggle="tab" href="#photo" role="tab"
+                           aria-controls="photo" aria-selected="false">Edit photo</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="password-tab" data-bs-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Edit password</a>
+                        <a class="nav-link" id="password-tab" data-bs-toggle="tab" href="#password" role="tab"
+                           aria-controls="password" aria-selected="false">Edit password</a>
                     </li>
                 </ul>
                 <div class="tab-content mt-3" id="myTabContent">
-                    <div class="tab-pane fade active show text-black" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    <div class="tab-pane fade active show text-black" id="about" role="tabpanel"
+                         aria-labelledby="about-tab">
                         <section class="d-flex flex-column gap-2">
                             <section class="d-flex justify-content-between">
                                 <h5>Name:</h5>
+                             
                                 <h5>{{ $user->admin->first_name . ' ' . $user->admin->last_name }}</h5>
                             </section>
-                            <section class="d-flex justify-content-between">
-                                <h5>Department:</h5>
-                                <h5>{{ $user->admin->department->name }}</h5>
-                            </section>
+                            {{--                            <section class="d-flex justify-content-between">--}}
+                            {{--                                <h5>Department:</h5>--}}
+                            {{--                                <h5>{{ $user->admin->department->name }}</h5>--}}
+                            {{--                            </section>--}}
                             <section class="d-flex justify-content-between">
                                 <h5>Email:</h5>
                                 <h5>{{ $user->email }}</h5>
@@ -45,7 +52,8 @@
 
                     </div>
                     <div class="tab-pane fade text-black" id="photo" role="tabpanel" aria-labelledby="photo-tab">
-                        <form method="POST" action="{{ route('superAdmin.profile.update') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('superAdmin.profile.update') }}"
+                              enctype="multipart/form-data">
                             @csrf
                             <label class="form-label" for="image">Upload Image</label>
                             <input name="image" class="form-control" type="file">

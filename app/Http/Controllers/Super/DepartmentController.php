@@ -51,6 +51,7 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate(['title' => 'required']);
         Department::create(['name' => $request->name]);
         return redirect()->route('superAdmin.department.index')->with('success', 'Department created Successfully');
     }

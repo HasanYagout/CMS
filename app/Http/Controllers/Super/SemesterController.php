@@ -50,6 +50,7 @@ class SemesterController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate(['title' => 'required']);
         Semester::create(['name' => $request->title]);
         return redirect()->route('superAdmin.semesters.index')->with('success', 'Semester Created Successfully');
 

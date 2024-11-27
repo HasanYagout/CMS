@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $data['courses'] = Course::count();
         $data['instructors'] = Instructor::count();
         $data['students'] = Student::count();
-        $data['admins'] = Admin::count();
+        $data['admins'] = Admin::where('user_id', '!=', Auth::id())->count();
         $data['departments'] = Department::count();
         $data['semesters'] = Semester::count();
         $data['activeHome'] = 'active';

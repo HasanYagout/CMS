@@ -144,7 +144,7 @@
                                 timer: 2000,
                                 icon: "success",
                             });
-                            toastr.success("Instructor deleted successfully.");
+                            toastr.success("Admin deleted successfully.");
                             table.ajax.reload();
                         } else {
                             toastr.error(response.error);

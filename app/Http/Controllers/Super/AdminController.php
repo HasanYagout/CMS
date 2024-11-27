@@ -26,7 +26,7 @@ class AdminController extends Controller
                 ->addColumn('name', function ($data) {
                     return $data->admin->first_name . ' ' . $data->admin->last_name;
                 })
-                ->addColumn('name', function ($data) {
+                ->addColumn('email', function ($data) {
                     return $data->email;
                 })
                 ->addColumn('department', function ($data) {
@@ -125,7 +125,7 @@ class AdminController extends Controller
         $admin->department_id = $request->department_id;
         $admin->save();
 
-        return response()->json(['success' => true]);
+        return redirect()->route('superAdmin.admin.index')->with('success', 'admin updated successfully.');
     }
 
     public function updateStatus(Request $request)
@@ -136,8 +136,8 @@ class AdminController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $admin = User::find($id);
-        if (!$admin) {
+        $user = User::find($id);
+        if (!$user) {
             return response()->json(['error' => 'Admin not found.'], 404);
         }
         $hasCourses = Course::where('user_id', $id)->exists();
@@ -145,7 +145,10 @@ class AdminController extends Controller
         if ($hasCourses) {
             return response()->json(['error' => 'Cannot delete admin as they have associated courses.']);
         }
-        $admin->delete();
+        $user->delete();
+        Admin::where('user_id', $id)->delete();
+        return response()->json(['success' => 'Admin Deleted Successfully.']);
+
     }
 
 }
