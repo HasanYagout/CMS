@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum', 'token']], function () {
             Route::post('/store', [QuizController::class, 'store'])->name('store');
         });
 
+
         Route::group(['prefix' => 'announcements', 'as' => 'announcements.'], function () {
             Route::get('/{course_id}', [AnnouncementController::class, 'index'])->name('index');
             Route::post('/store', [AnnouncementController::class, 'store'])->name('store');

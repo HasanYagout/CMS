@@ -22,9 +22,12 @@
                                     </section>
                                 </div>
                                 <div class="bg-transparent card-footer d-flex justify-content-between">
-                                    <span
-                                        class="text-black">{{$course->availability->instructor->first_name.' '.$course->availability->instructor->last_name}}</span>
-                                    <span class="text-third-color">{{$course->start_date}}</span>
+                                    @if($course->availability)
+
+                                        <span
+                                            class="text-black">{{$course->availability->instructor->first_name.' '.$course->availability->instructor->last_name}}</span>
+                                        <span class="text-third-color">{{$course->start_date}}</span>
+                                    @endif
 
                                 </div>
                             </div>

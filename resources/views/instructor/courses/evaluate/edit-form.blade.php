@@ -1,8 +1,11 @@
-<form class="ajax reset" action="{{route('instructor.courses.forums.update',$student->id)}}" method="post"
+<form class="ajax reset"
+      action="{{route('instructor.courses.evaluate.update',['course_id'=>$course,'student_id'=>$student->id])}}"
+      method="post"
       data-handler="commonResponseForModal">
+
     @csrf
     <div class="modal-body zModalTwo-body model-lg">
-        <!-- Header -->
+
         <div class="d-flex justify-content-between align-items-center pb-30">
             <h4 class="fs-20 fw-500 lh-38 text-1b1c17">{{ __('Final Evaluation') }}</h4>
             <div class="mClose">
@@ -18,13 +21,15 @@
         </div>
         <div class="row">
             <div class="col-12">
+
                 <div class="primary-form-group mt-2">
                     <div class="primary-form-group-wrap">
                         <label for="questions" class="form-label">{{ __('Final Comment') }} <span
                                 class="text-danger">*</span></label>
                         <textarea name="description"
                                   class="primary-form-control summernoteOne min-h-180" id="description"
-                                  placeholder="Details" spellcheck="false"></textarea>
+                                  placeholder="Details"
+                                  spellcheck="false">{{$student->evaluate ? $student->evaluate->description : ''}}</textarea>
                     </div>
                 </div>
             </div>

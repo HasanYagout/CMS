@@ -51,7 +51,8 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
         });
         Route::group(['prefix' => 'evaluate', 'as' => 'evaluate.'], function () {
             Route::controller(\App\Http\Controllers\Instructor\EvaluateController::class)->group(function () {
-                Route::get('/edit/{student_id}', 'edit')->name('edit');
+                Route::get('/edit/{course_id}/{student_id}', 'edit')->name('edit');
+                Route::post('/update/{course_id}/{student_id}', 'update')->name('update');
 
             });
         });
@@ -95,6 +96,7 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/update/{id}', 'update')->name('update');
                 Route::post('/delete/{id}', 'delete')->name('delete');
                 Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+                Route::get('/view/{id}', 'view')->name('view');
             });
         });
 
@@ -136,14 +138,7 @@ Route::group(['middleware' => ['instructor'], 'prefix' => 'instructor', 'as' => 
                 Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
             });
         });
-        Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
-            Route::controller(StudentController::class)->group(function () {
-                Route::get('/index', 'index')->name('index');
-                Route::post('/delete/{id}', 'delete')->name('delete');
-                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
 
-            });
-        });
     });
 
     Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {

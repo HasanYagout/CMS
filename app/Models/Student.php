@@ -21,6 +21,11 @@ class Student extends Model
         return $this->hasMany(Enrollment::class);
     }
 
+    public function evaluate()
+    {
+        return $this->hasOne(Evaluate::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -28,7 +33,7 @@ class Student extends Model
 
     public function submittedAssignments()
     {
-        return $this->hasMany(StudentAssignment::class, '');
+        return $this->hasMany(StudentAssignment::class);
     }
 
     public function department()
@@ -44,5 +49,10 @@ class Student extends Model
     public function attendance()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(StudentAssignment::class);
     }
 }

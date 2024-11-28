@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Instructor;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Instructor\InstructorQuiz;
+use App\Http\Controllers\Instructor\StudentQuiz;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,7 @@ class StudentController extends Controller
     {
         if ($request->ajax()) {
             $enrollments = Enrollment::with('student', 'course', 'payment')->get();
-            
+
             return datatables($enrollments)
                 ->addIndexColumn()
                 ->addColumn('course', function ($enrollment) {
@@ -47,9 +49,8 @@ class StudentController extends Controller
                 ->rawColumns(['payment_status', 'status'])
                 ->make(true);
         }
-        $data['showCourseManagement'] = 'show';
         $data['activeCourseStudent'] = 'active';
-        return view('instructor.courses.enrollment.index', $data);
+        return view('admin.courses.enrollment.index', $data);
     }
 
     public function updateStatus(Request $request)

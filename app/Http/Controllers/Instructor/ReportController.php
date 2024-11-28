@@ -121,8 +121,7 @@ class ReportController extends Controller
             return datatables($students)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
-
-                    return '<a href="' . route('admin.reports.grades', ['course_id' => $data->id]) . '">' . $data->student->first_name . ' ' . $data->student->last_name . '</a>';
+                    return $data->student->first_name . ' ' . $data->student->last_name;
                 })
                 ->addColumn('assignments', function ($data) use ($submittedAssignments, $assignmentGradesSum) {
                     $studentAssignments = $submittedAssignments->where('student_id', $data->student_id);
@@ -146,7 +145,7 @@ class ReportController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<ul class="d-flex align-items-center cg-5 justify-content-center">
                 <li class="d-flex gap-2">
-                    <button onclick="getEditModal(\'' . route('instructor.courses.evaluate.edit', $data->student_id) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
+                    <button onclick="getEditModal(\'' . route('instructor.courses.evaluate.edit', ['course_id' => $data->course_id, 'student_id' => $data->student_id]) . '\', \'#edit-modal\')" class="d-flex justify-content-center align-items-center w-30 h-30 rounded-circle bd-one bd-c-ededed bg-white" data-bs-toggle="modal" data-bs-target="#edit-modal" title="' . __('Upload') . '">
                 <img src="' . asset('assets/images/icon/edit.svg') . '" alt="upload" />
             </button>
                 </li>

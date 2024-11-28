@@ -108,9 +108,11 @@ class AssignmentController extends Controller
             $assignments = StudentAssignment::with('student', 'assignment.lecture')->whereHas('assignment.lecture.chapter.course', function ($query) use ($id) {
                 $query->where('id', $id);
             })->get();
+
             return datatables($assignments)
                 ->addIndexColumn()
                 ->addColumn('name', function ($data) {
+                   
                     return $data->student->first_name . ' ' . $data->student->last_name;
                 })
                 ->addColumn('assignment', function ($data) {

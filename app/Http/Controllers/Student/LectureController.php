@@ -21,7 +21,10 @@ class LectureController extends Controller
     public function view($courseId, $lectureId)
     {
         $course = Course::with([
-            'chapters.lectures.quizzes',
+            'chapters.lectures.quizzes' => function ($query) {
+                $query->whereDate('due_date', Carbon::today())
+                    ->orWhereDate('due_date', Carbon::tomorrow());
+            },
             'chapters.lectures.activities.studentActivity',
             'chapters.lectures.assignments.submittedAssignments',
             'chapters.lectures.quizzes.submittedQuiz',
@@ -53,16 +56,20 @@ class LectureController extends Controller
         $attendedLectures = Attendance::where('student_id', $studentId)
             ->whereIn('lecture_id', $lectures->pluck('id'))
             ->count();
+
+        // Calculate quiz grades
         $totalQuizGrades = $activeLecture->quizzes->sum('grade');
         $studentTotalQuizGrades = $activeLecture->quizzes->map(function ($quiz) use ($studentId) {
             $studentQuiz = StudentQuiz::where('instructor_quiz_id', $quiz->id)
                 ->where('student_id', $studentId)
                 ->first();
             return $studentQuiz ? $studentQuiz->grade : 0;
-        })
-            ->sum();
+        })->sum();
 
-        $quizzes = $activeLecture->quizzes->map(function ($quiz) use ($studentId) {
+        // Filter quizzes to show only those due tomorrow
+        $quizzes = $activeLecture->quizzes->filter(function ($quiz) {
+            return Carbon::parse($quiz->due_date)->isSameDay(Carbon::tomorrow());
+        })->map(function ($quiz) use ($studentId) {
             $studentQuiz = StudentQuiz::where('instructor_quiz_id', $quiz->id)
                 ->where('student_id', $studentId)->first();
             $quiz->alreadySubmitted = $studentQuiz ? true : false;
@@ -71,9 +78,10 @@ class LectureController extends Controller
             return $quiz;
         });
 
+        // Calculate assignment and activity grades
         $totalAssignmentGrade = $activeLecture->assignments->filter(fn($assignment) => $assignment->submittedAssignments->isNotEmpty())->sum(fn($assignment) => $assignment->submittedAssignments->first()->grade);
-
         $totalActivityGrade = $activeLecture->activities->filter(fn($activity) => $activity->studentActivity->isNotEmpty())->sum(fn($activity) => $activity->studentActivity->first()->grade);
+
         $data = [
             'course' => $course,
             'activeLecture' => $activeLecture,
@@ -86,7 +94,7 @@ class LectureController extends Controller
             'submittedAssignments' => $activeLecture->assignments->filter(fn($assignment) => $assignment->submittedAssignments->isNotEmpty())->count(),
             'submittedActivities' => $activeLecture->activities->filter(fn($activity) => $activity->studentActivity->isNotEmpty())->count(),
             'submittedQuizzes' => $activeLecture->quizzes->filter(fn($quiz) => $quiz->submittedQuiz->isNotEmpty())->count(),
-            'quizzes' => $activeLecture->quizzes,
+            'quizzes' => $quizzes,  // Use filtered quizzes
             'totalAssignmentGrade' => $totalAssignmentGrade,
             'totalActivityGrade' => $totalActivityGrade,
             'totalQuizGrades' => $totalQuizGrades,

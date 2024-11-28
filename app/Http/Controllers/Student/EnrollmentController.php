@@ -54,7 +54,7 @@ class EnrollmentController extends Controller
             })
             ->whereBetween('due_date', [
                 Carbon::now()->format('Y-m-d'),
-                Carbon::now()->addDays(3)->format('Y-m-d')
+                Carbon::now()->addDay(1)->format('Y-m-d')
             ])
             ->get();
         $data['attentions'] = $data['assignments']->merge($data['quizzes']);

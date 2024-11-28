@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\StudentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,6 +30,14 @@ Route::group(['middleware' => ['admin'], 'prefix' => 'admin', 'as' => 'admin.'],
             Route::post('/updateStatus', [AvailabilityController::class, 'updateStatus'])->name('updateStatus');
             Route::delete('/delete/{id}', [AvailabilityController::class, 'destroy'])->name('delete');
 
+        });
+        Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
+            Route::controller(StudentController::class)->group(function () {
+                Route::get('/index', 'index')->name('index');
+                Route::post('/delete/{id}', 'delete')->name('delete');
+                Route::post('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+
+            });
         });
         Route::group(['prefix' => 'chapters', 'as' => 'chapters.'], function () {
             Route::get('/', [CourseController::class, 'chapter'])->name('index');

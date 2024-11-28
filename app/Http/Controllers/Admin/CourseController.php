@@ -243,6 +243,7 @@ class CourseController extends Controller
             'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
         $course = Course::find($id);
         $course->name = $request->title;
         $course->start_date = $request->start_date;
@@ -250,10 +251,19 @@ class CourseController extends Controller
         $course->semester_id = $request->semester_id;
         $course->description = $request->description;
         if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail');
-            $thumbnailPath = $thumbnail->store('courses', 'public');
-            $course->image = $thumbnailPath;
+            $file = $request->file('thumbnail');
+            $date = now()->format('Ymd'); // Get current date in YYYYMMDD format
+            $randomSlug = Str::random(10); // Generate a random string of 10 characters
+            $randomNumber = rand(100000, 999999); // Generate a random number
+
+            $fileName = $date . '_' . $randomSlug . '_' . $randomNumber . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/courses'), $fileName); // Save the file to the specified path
+
+            $image = $fileName; // Save only the file name to the database
         }
+        
+        $course->image = $image;
+
         $course->save();
         return redirect()->route('admin.courses.create')->with('success', 'Course updated successfully.');
     }

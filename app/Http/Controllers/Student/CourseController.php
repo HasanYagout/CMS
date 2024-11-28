@@ -16,11 +16,8 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $data['courses'] = Course::whereHas('availability', function ($query) {
-            $query->where('department_id', Auth::user()->student->department_id);
-        })->with('availability')->get();
-
-
+        $data['courses'] = Course::where('department_id', Auth::user()->student->department_id)->with('availability')->get();
+        
         $data['activeCourseALL'] = 'active';
         $data['showCourseManagement'] = 'show';
         return view('student.courses.index', $data);

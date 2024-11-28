@@ -19,7 +19,7 @@ class ForumController extends Controller
             return datatables($forum)
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
-                    return $data->title;
+                    return '<a href="' . route('instructor.courses.forums.view', $data->id) . '">' . $data->title . '</a>';
                 })
                 ->addColumn('course', function ($data) {
 
@@ -48,13 +48,13 @@ class ForumController extends Controller
                 </li>
             </ul>';
                 })
-                ->rawColumns(['name', 'action', 'status'])
+                ->rawColumns(['name', 'action', 'status', 'title'])
                 ->make(true);
         }
         $data['courses'] = Course::whereHas('availability', function ($query) {
             $query->where('instructor_id', Auth::id());
         })->where('department_id', Auth::user()->instructor->department_id)->get();
-       
+
         $data['showCourseManagement'] = 'show';
         $data['activeCourseForum'] = 'active';
         return view('instructor.courses.forum.index', $data);
@@ -135,4 +135,33 @@ class ForumController extends Controller
         $forum->delete();
         return response()->json(['message' => 'Forum deleted successfully.']);
     }
+
+    public function view($id)
+    {
+
+        $data['forums'] = Forum::with('comment.user')->where('instructor_id', Auth::id())->get();
+
+        // Check if there are any forums
+        if ($data['forums']->isEmpty()) {
+            $data['activeForum'] = null; // No forums available
+        } else {
+            $data['activeForum'] = Forum::where('instructor_id', Auth::id())
+                ->when(empty($request->id), function ($query) {
+                    return $query->first();
+                }, function ($query) use ($id) {
+                    return $query->find($id);
+                });
+
+            // If the active forum was not found, set it to null
+            if (!$data['activeForum']) {
+                $data['activeForum'] = $data['forums']->first(); // Fallback to the first forum if no active forum is found
+            }
+        }
+        $data['activeCourseForum'] = 'active';
+        $data['showCourseManagement'] = 'show';
+
+        return view('instructor.courses.forum.view', $data);
+    }
+
+
 }
