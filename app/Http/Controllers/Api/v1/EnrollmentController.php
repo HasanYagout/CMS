@@ -19,7 +19,7 @@ class EnrollmentController extends Controller
     public function view($slug)
     {
         try {
-            $course = Course::where('slug', $slug)->first();
+            $course = Course::where('slug', $slug)->with(['availability.instructor'])->first();
 
             if (!$course) {
                 return response()->json(['message' => 'Course not found.'], 404);
@@ -44,7 +44,7 @@ class EnrollmentController extends Controller
                 ->get();
 
             // Get quizzes for the logged-in student within the next 3 days
-            $quizzes = InstructorQuiz::with('course')
+            $quizzes = InstructorQuiz::with('lecture.chapter.course')
                 ->whereHas('lecture.chapters.course', function ($query) use ($course) {
                     $query->where('id', $course->id);
                 })

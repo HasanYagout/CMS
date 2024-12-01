@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\v1\MaterialController;
 use App\Http\Controllers\Api\v1\QuizController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\NewsController;
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -22,7 +24,7 @@ Route::group(['middleware' => ['auth:sanctum', 'token']], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
+    Route::get('/news', [HomeController::class, 'news']);
     Route::get('/notifications', [HomeController::class, 'notifications']);
     Route::get('/enrolled_courses', [HomeController::class, 'enrolled_courses']);
 
@@ -52,7 +54,6 @@ Route::group(['middleware' => ['auth:sanctum', 'token']], function () {
             Route::post('/remaining_time', [QuizController::class, 'remaining_time'])->name('remaining_time');
             Route::post('/store', [QuizController::class, 'store'])->name('store');
         });
-
 
         Route::group(['prefix' => 'announcements', 'as' => 'announcements.'], function () {
             Route::get('/{course_id}', [AnnouncementController::class, 'index'])->name('index');

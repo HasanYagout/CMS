@@ -16,7 +16,9 @@ class ChapterController extends Controller
             // Fetch chapters related to the course using the course slug
             $chapters = Chapter::whereHas('course', function ($query) use ($slug) {
                 $query->where('slug', $slug);
-            })->get();
+            })
+                ->with('lectures')
+                ->get();
 
             // Check if any chapters are found
             if ($chapters->isEmpty()) {

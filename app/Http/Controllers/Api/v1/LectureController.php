@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Lecture;
+
 
 class LectureController extends Controller
 {
@@ -29,7 +31,13 @@ class LectureController extends Controller
             }
 
             // Find the active lecture
-            $activeLecture = $course->chapters->flatMap->lectures->firstWhere('id', $lectureId);
+            $activeLecture = Lecture::whereHas('chapters.course', function ($query) use ($courseId) {
+                $query->where('id', $courseId);
+            })
+                ->with('materials') // Eager load related materials for the lecture
+                ->find($lectureId); // Fetch the lecture by its ID
+
+            // Check if the lecture exists
             $lectures = $course->chapters->flatMap->lectures;
 
             if (!$activeLecture) {
@@ -37,15 +45,9 @@ class LectureController extends Controller
             }
 
             // Check if the lecture is accessible today or tomorrow
-            $today = Carbon::today();
-            $tomorrow = Carbon::tomorrow();
-            $startDate = Carbon::parse($activeLecture->start_date);
-            if (!$startDate->isSameDay($today) && !$startDate->isSameDay($tomorrow)) {
-                return response()->json(['error' => 'Lecture is not accessible at this time.'], 403);
-            }
+
 
             // Calculate total number of lectures
-            $totalLectures = $lectures->count();
 
             // Calculate the number of lectures attended by the student
             $studentId = Auth::id();
@@ -70,10 +72,7 @@ class LectureController extends Controller
 
             // Prepare the data for the response
             $data = [
-                'course' => $course,
                 'activeLecture' => $activeLecture,
-                'lectures' => $lectures,
-                'totalLectures' => $totalLectures,
                 'attendedLectures' => $attendedLectures,
                 'totalQuizzes' => $activeLecture->quizzes->count(),
                 'totalAssignments' => $activeLecture->assignments->count(),
@@ -81,7 +80,6 @@ class LectureController extends Controller
                 'submittedAssignments' => $activeLecture->assignments->filter(fn($assignment) => $assignment->submittedAssignments->isNotEmpty())->count(),
                 'submittedActivities' => $activeLecture->activities->filter(fn($activity) => $activity->studentActivity->isNotEmpty())->count(),
                 'submittedQuizzes' => $activeLecture->quizzes->filter(fn($quiz) => $quiz->submittedQuiz->isNotEmpty())->count(),
-                'quizzes' => $activeLecture->quizzes,
                 'totalAssignmentGrade' => $totalAssignmentGrade,
                 'totalActivityGrade' => $totalActivityGrade,
                 'totalQuizGrades' => $totalQuizGrades,

@@ -81,7 +81,8 @@ class LectureController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate(['course_id' => 'required|exists:courses,id',
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
             'chapter_id' => 'required|exists:chapters,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -113,12 +114,24 @@ class LectureController extends Controller
 
                 // Store the file with the new name
                 $path = $image->storeAs('materials', $newFileName, 'public');
-                
+
+                // Determine the file type based on the MIME type
+                $mimeType = $image->getClientMimeType();
+                $type = '';
+
+                if (str_starts_with($mimeType, 'image/')) {
+                    $type = 'image';
+                } elseif (str_starts_with($mimeType, 'video/')) {
+                    $type = 'video';
+                } elseif ($mimeType === 'application/pdf') {
+                    $type = 'pdf';
+                }
+
                 // Create the material record
                 Material::create([
                     'lecture_id' => $lecture->id,
                     'title' => $newFileName,
-                    'type' => 'image',
+                    'type' => $type,
                     'url' => $path,
                 ]);
             }

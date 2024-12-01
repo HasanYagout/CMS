@@ -29,6 +29,8 @@ class ForumController extends Controller
                 $data['activeForum'] = $data['forums']->first(); // Fallback to the first forum if no active forum is found
             }
         }
+        return response()->json($data, 200);
+
 
 
     }
