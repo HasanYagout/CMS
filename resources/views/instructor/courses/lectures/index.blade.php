@@ -7,7 +7,6 @@
             @csrf
             <div class="col-lg-4">
                 <label class="form-label" for="course">Course</label>
-
                 <select class="form-control" name="course_id" id="course">
                     <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
@@ -21,16 +20,6 @@
                 <select class="form-control" name="chapter_id" id="chapters">
                     <option value="">-- Select Chapter --</option>
                 </select>
-            </div>
-
-            <div class="col-lg-4">
-                <label class="form-label" for="start_date">Start Date</label>
-                <input class="form-control" name="start_date" type="datetime-local">
-            </div>
-
-            <div class="col-lg-4">
-                <label class="form-label" for="end_date">End Date</label>
-                <input class="form-control" name="end_date" type="datetime-local">
             </div>
 
             <div class="col-lg-4">
@@ -72,13 +61,7 @@
             <th scope="col">
                 <div>{{ __('Lecture') }}</div>
             </th>
-
-            <th scope="col">
-                <div>{{ __('Start Date') }}</div>
-            </th>
-            <th scope="col">
-                <div>{{ __('End Date') }}</div>
-            </th>
+            
             <th scope="col">
                 <div class="text-center">{{ __('Status') }}</div>
             </th>

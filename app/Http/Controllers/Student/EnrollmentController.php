@@ -36,10 +36,7 @@ class EnrollmentController extends Controller
                     ->from('enrollment')
                     ->where('student_id', $studentId);
             })
-            ->whereBetween('due_date', [
-                Carbon::now()->format('Y-m-d'),
-                Carbon::now()->addDays(3)->format('Y-m-d')
-            ])
+            ->where('status', 1)
             ->get();
 
         // Get quizzes for the logged-in student within the next 3 days
@@ -69,7 +66,7 @@ class EnrollmentController extends Controller
         $data['lectures'] = Lecture::whereHas('chapter.course', function ($query) use ($data) {
             $query->where('id', $data['course']->id);
         })
-            ->whereBetween('start_date', [Carbon::today(), Carbon::today()->addDays(3)])
+            ->where('status', 1)
             ->with('chapter.course')
             ->get();
 
@@ -133,11 +130,6 @@ class EnrollmentController extends Controller
 
     }
 
-    public function info($slug)
-    {
-
-
-    }
 
     public function view()
     {

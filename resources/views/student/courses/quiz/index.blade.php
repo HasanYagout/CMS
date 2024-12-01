@@ -24,8 +24,9 @@
                         <h3>{{ $quiz->title }}</h3>
                         <h3 class="fs-18">{{ \Carbon\Carbon::parse($quiz->end_date)->format('d M, Y') }}</h3>
                     </section>
-                    <section class="quiz fw-bold rounded-end-4 rounded-top-4 mb-2 text-black d-flex justify-content-around p-13 {{ $bgColor }} ">
-                        <span>{{ $quiz->title }}</span>
+                    <section
+                        class="quiz fw-bold rounded-end-4 rounded-top-4 mb-2 text-black d-flex justify-content-around p-13 {{ $bgColor }} ">
+                        <span>{{ $quiz->lecture->title }}</span>
                         <span>Delivery time: {{ \Carbon\Carbon::parse($quiz->due_date)->format('h:i A d M, Y') }}</span>
                         @if($isPastDue)
                             <span>Status: {{ $submitted ? 'Submitted on time' : 'Not Submitted' }}</span>

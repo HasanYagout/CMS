@@ -60,7 +60,7 @@
 
                                 <h3 class="text-center text-secondary-color p-13">{{ $activeLecture->title }}</h3>
                                 <hr class="m-0">
-                                <p class="p-14 text-black text-break">{{ $activeLecture->description }}</p>
+                                <p class="p-14 text-black text-break">{!! $activeLecture->description !!}</p>
                                 <hr class="m-0">
                                 <section class="d-flex mt-20 fs-18 fw-bold justify-content-around text-black">
                                     <span>Starts at: {{ \Carbon\Carbon::parse($activeLecture->start_date)->format('j M, Y') }}</span>
@@ -76,17 +76,19 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="content" role="tabpanel" aria-labelledby="contact-tab">
+
                         @if($activeLecture->materials)
-                            <div class="row">
+                            <div class="row gap-3">
                                 @foreach($activeLecture->materials as $material)
-                                    <div class="col-lg-4">
+
+                                    <div class="col-lg-4 border border-3">
                                         @if($material->type == 'image')
-                                            <img src="{{ asset('storage/' . $material->file_path) }}" alt=""
+                                            <img src="{{ asset('storage/' . $material->url) }}" alt=""
                                                  style="max-width: 100%;">
                                         @elseif($material->type == 'video')
                                             <video controls style="max-width: 100%;">
-                                                <source src="{{ asset('storage/' . $material->file_path) }}"
-                                                        type="video/{{ pathinfo($material->file_path, PATHINFO_EXTENSION) }}">
+                                                <source src="{{ asset('storage/' . $material->url) }}"
+                                                        type="video/{{ pathinfo($material->url, PATHINFO_EXTENSION) }}">
                                                 Your browser does not support the video tag.
                                             </video>
                                         @endif
@@ -162,6 +164,7 @@
                     <div class="tab-pane fade" id="quizzes" role="tabpanel" aria-labelledby="contact-tab">
                         <h3 class="text-black mt-3 mb-3 text-center">{{ $activeLecture->title }}</h3>
                         <hr>
+                        
                         @if(!is_null($quizzes))
                             @foreach($quizzes as $quiz)
                                 <h3 class="text-black">{{ $quiz->title }}</h3>

@@ -14,8 +14,7 @@
                     <li>You will be automatically submitted when time is up.</li>
                 </ol>
                 <hr>
-                @foreach ($quiz->questions as $index=> $question)
-                    
+                @foreach($quiz->questions as $index=> $question)
                     <div class="mb-4">
                         <h5 class="text-secondary-color mb-2"><span
                                 class="me-2">{{$index+1}} -</span>{{ $question->text }}</h5>

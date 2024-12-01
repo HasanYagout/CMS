@@ -22,12 +22,12 @@ class LectureController extends Controller
     {
         $course = Course::with([
             'chapters.lectures.quizzes' => function ($query) {
-                $query->whereDate('due_date', Carbon::today())
-                    ->orWhereDate('due_date', Carbon::tomorrow());
+                $query->where('status', 1);
             },
             'chapters.lectures.activities.studentActivity',
             'chapters.lectures.assignments.submittedAssignments',
             'chapters.lectures.quizzes.submittedQuiz',
+            'chapters.lectures.materials',
         ])->find($courseId);
 
         if (!$course) {
@@ -35,16 +35,15 @@ class LectureController extends Controller
         }
 
         $activeLecture = $course->chapters->flatMap->lectures->firstWhere('id', $lectureId);
+
         $lectures = $course->chapters->flatMap->lectures;
 
         if (!$activeLecture) {
             return redirect()->back()->with('error', 'Lecture not found.');
         }
 
-        $today = Carbon::today();
-        $tomorrow = Carbon::tomorrow();
-        $startDate = Carbon::parse($activeLecture->start_date);
-        if (!$startDate->isSameDay($today) && !$startDate->isSameDay($tomorrow)) {
+        // Check if the lecture status is 1
+        if ($activeLecture->status !== 1) {
             return redirect()->route('student.courses.index')->with('error', 'Lecture is not accessible at this time.');
         }
 
@@ -67,9 +66,7 @@ class LectureController extends Controller
         })->sum();
 
         // Filter quizzes to show only those due tomorrow
-        $quizzes = $activeLecture->quizzes->filter(function ($quiz) {
-            return Carbon::parse($quiz->due_date)->isSameDay(Carbon::tomorrow());
-        })->map(function ($quiz) use ($studentId) {
+        $quizzes = $activeLecture->quizzes->map(function ($quiz) use ($studentId) {
             $studentQuiz = StudentQuiz::where('instructor_quiz_id', $quiz->id)
                 ->where('student_id', $studentId)->first();
             $quiz->alreadySubmitted = $studentQuiz ? true : false;
@@ -103,7 +100,6 @@ class LectureController extends Controller
 
         return view('student.courses.lectures.view', $data);
     }
-
 
     public function store(Request $request)
     {

@@ -10,6 +10,7 @@ use App\Models\Lecture;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class LectureController extends Controller
 {
@@ -44,12 +45,6 @@ class LectureController extends Controller
                 })
                 ->addColumn('zoom_link', function ($data) {
                     return $data->zoom_link;
-                })
-                ->addColumn('start_date', function ($data) {
-                    return $data->start_date;
-                })
-                ->addColumn('end_date', function ($data) {
-                    return $data->end_date;
                 })
                 ->addColumn('status', function ($data) {
                     $checked = $data->status ? 'checked' : '';
@@ -88,8 +83,6 @@ class LectureController extends Controller
 
         $request->validate(['course_id' => 'required|exists:courses,id',
             'chapter_id' => 'required|exists:chapters,id',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'zoom_link' => 'nullable|url',
@@ -97,8 +90,6 @@ class LectureController extends Controller
 
         $lecture = new Lecture();
         $lecture->chapter_id = $request->chapter_id;
-        $lecture->start_date = $request->start_date;
-        $lecture->end_date = $request->end_date;
         $lecture->title = $request->title;
         $lecture->status = 1;
         $lecture->description = $request->description;
@@ -106,18 +97,33 @@ class LectureController extends Controller
         $lecture->save();
 
         // Save materials
+
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('materials', 'public');
+                // Extract the original file name without extension
+                $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+
+                // Generate a slug from the original file name
+                $slug = Str::slug($originalName);
+
+                // Append a random number to the slug
+                $randomNumber = rand(1000, 9999);
+                $newFileName = $slug . '_' . $randomNumber . '.' . $image->getClientOriginalExtension();
+
+                // Store the file with the new name
+                $path = $image->storeAs('materials', $newFileName, 'public');
+                
+                // Create the material record
                 Material::create([
                     'lecture_id' => $lecture->id,
-                    'title' => $image->getClientOriginalName(),
+                    'title' => $newFileName,
                     'type' => 'image',
                     'url' => $path,
                 ]);
-
             }
         }
+
 
         return redirect()->route('instructor.courses.lectures.index')->with('success', 'Lecture added successfully.');
     }
@@ -131,13 +137,12 @@ class LectureController extends Controller
     {
         $lastLecture = Lecture::whereHas('chapters.course', function ($query) use ($courseId) {
             $query->where('course_id', $courseId);
-        })->orderBy('start_date', 'desc')->first();
+        })->first();
         return response()->json($lastLecture);
     }
 
     public function edit($id)
     {
-
         $data['lecture'] = Lecture::with('chapter.course.availability')->where('id', $id)->first();
         return view('instructor.courses.lectures.edit-form', $data);
     }

@@ -23,10 +23,7 @@ class DashboardController extends Controller
         $data['lectures'] = Lecture::whereHas('chapter.course.availability', function ($query) {
             $query->where('instructor_id', Auth::id());
         })
-            ->where(function ($query) use ($today, $tomorrow) {
-                $query->whereDate('start_date', $today)
-                    ->orWhereDate('start_date', $tomorrow);
-            })->with('chapter.course')
+            ->where('status', 1)->with('chapter.course')
             ->get();
 
         $data['assignments'] = InstructorAssignments::whereHas('lecture.chapter.course.availability', function ($query) {

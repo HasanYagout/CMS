@@ -23,14 +23,10 @@
             search: "<span class='searchIcon'><i class='fa-solid fa-magnifying-glass'></i></span>",
         },
         dom: '<"tableTop"<"row align-items-center"<"col-sm-6"<"d-flex align-items-center cg-5"<"tableSearch float-start"f><"z-filter-button">>><"col-sm-6"<"tableLengthInput float-end"l>><"col-sm-12"<"z-filter-block">>>>tr<"tableBottom"<"row align-items-center"<"col-sm-6"<"tableInfo"i>><"col-sm-6"<"tablePagi"p>>>><"clear">',
-
         columns: [
             { data: "course", name: "course" },
             { data: "chapter", name: "chapter" },
             { data: "lecture", name: "lecture" },
-            // {data: 'zoom_link', name: 'zoom_link'},
-            { data: "start_date", name: "start_date" },
-            { data: "end_date", name: "end_date" },
             {
                 data: "status",
                 name: "status",
