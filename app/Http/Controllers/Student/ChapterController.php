@@ -11,10 +11,19 @@ use Illuminate\Support\Facades\Auth;
 
 class ChapterController extends Controller
 {
-    public function index(Request $request,$slug)
+    public function index(Request $request, $slug)
     {
-           $data['course']= Course::with('chapters')->where('slug',$slug)->firstOrFail();
-            $data['activeChapters']='active';
-        return view('student.courses.chapters.index',$data);
+        // Eager load chapters with lectures that have status 1
+        $data['course'] = Course::where('slug', $slug)
+            ->with(['chapters' => function ($query) {
+                $query->with(['lectures' => function ($query) {
+                    $query->where('status', 1);
+                }]);
+            }])
+            ->firstOrFail();
+
+        $data['activeChapters'] = 'active';
+        return view('student.courses.chapters.index', $data);
     }
+
 }

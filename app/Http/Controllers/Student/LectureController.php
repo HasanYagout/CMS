@@ -44,8 +44,9 @@ class LectureController extends Controller
 
         // Check if the lecture status is 1
         if ($activeLecture->status !== 1) {
-            return redirect()->route('student.courses.index')->with('error', 'Lecture is not accessible at this time.');
+            return back()->with('error', 'Lecture is not accessible at this time.');
         }
+
 
         // Calculate the total number of lectures
         $totalLectures = $lectures->count();
