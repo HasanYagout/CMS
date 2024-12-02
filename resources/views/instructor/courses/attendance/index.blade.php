@@ -93,6 +93,7 @@
 
                                     // Attendance checkbox
                                     const $tdCheckbox = $('<td></td>');
+
                                     const $checkbox = $('<input></input>', {
                                         type: 'checkbox',
                                         class: 'attendance-checkbox',

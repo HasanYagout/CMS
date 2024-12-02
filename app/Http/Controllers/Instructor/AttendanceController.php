@@ -25,6 +25,7 @@ class AttendanceController extends Controller
                             // Get the attendance status for this lecture and student
                             $attendance = Attendance::where('student_id', $enrollment->student->user_id)
                                 ->where('lecture_id', $lecture->id)
+                                ->where('status', 1)
                                 ->first();
 
                             return [
