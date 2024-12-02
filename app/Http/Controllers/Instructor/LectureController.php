@@ -154,6 +154,20 @@ class LectureController extends Controller
         return response()->json($lastLecture);
     }
 
+//    public function getLastLecture($courseId)
+//    {
+//        // Get the last lecture based on the course_id through the chapter
+//        $lastLecture = Lecture::whereHas('chapter', function ($query) use ($courseId) {
+//            $query->where('course_id', $courseId); // Filter by course_id in the chapter
+//        })
+//            ->orderBy('start_date', 'desc') // Order by the most recent lecture date
+//            ->first();
+//
+//        // Return the last lecture as JSON response
+//        return response()->json($lastLecture);
+//    }
+
+
     public function edit($id)
     {
         $data['lecture'] = Lecture::with('chapter.course.availability')->where('id', $id)->first();

@@ -136,27 +136,44 @@ class ForumController extends Controller
         return response()->json(['message' => 'Forum deleted successfully.']);
     }
 
-    public function view($id)
+//    public function view($id)
+//    {
+//
+//        $data['forums'] = Forum::with('comment.user')->where('instructor_id', Auth::id())->get();
+//
+//        // Check if there are any forums
+//        if ($data['forums']->isEmpty()) {
+//            $data['activeForum'] = null; // No forums available
+//        } else {
+//            $data['activeForum'] = Forum::where('instructor_id', Auth::id())
+//                ->when(empty($request->id), function ($query) {
+//                    return $query->first();
+//                }, function ($query) use ($id) {
+//                    return $query->find($id);
+//                });
+//
+//            // If the active forum was not found, set it to null
+//            if (!$data['activeForum']) {
+//                $data['activeForum'] = $data['forums']->first(); // Fallback to the first forum if no active forum is found
+//            }
+//        }
+//        $data['activeCourseForum'] = 'active';
+//        $data['showCourseManagement'] = 'show';
+//
+//        return view('instructor.courses.forum.view', $data);
+//    }
+    public function view(Request $request, $id)
     {
-
         $data['forums'] = Forum::with('comment.user')->where('instructor_id', Auth::id())->get();
 
-        // Check if there are any forums
+        // Determine the active forum
+        $data['activeForum'] = $data['forums']->firstWhere('id', $id) ?? $data['forums']->first();
+
+        // Check if there are no forums
         if ($data['forums']->isEmpty()) {
             $data['activeForum'] = null; // No forums available
-        } else {
-            $data['activeForum'] = Forum::where('instructor_id', Auth::id())
-                ->when(empty($request->id), function ($query) {
-                    return $query->first();
-                }, function ($query) use ($id) {
-                    return $query->find($id);
-                });
-
-            // If the active forum was not found, set it to null
-            if (!$data['activeForum']) {
-                $data['activeForum'] = $data['forums']->first(); // Fallback to the first forum if no active forum is found
-            }
         }
+
         $data['activeCourseForum'] = 'active';
         $data['showCourseManagement'] = 'show';
 

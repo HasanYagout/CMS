@@ -10,7 +10,7 @@
                     @foreach($forums as $forum)
                         <li>
                             <a class="d-flex flex-column fs-12 fw-bold text-primary-color {{ $activeForum && $activeForum->id == $forum->id ? 'active bg-custom-primary-light text-primary-color' : '' }}"
-                               href="{{ route('student.courses.forum.index', ['course_id' => $forum->course_id, 'id' => $forum->id]) }}">
+                               href="{{ route('instructor.courses.forums.view', ['id' => $forum->id]) }}">
                                 <span class="fw-bold">{{ $forum->title }}</span>
                             </a>
                         </li>
